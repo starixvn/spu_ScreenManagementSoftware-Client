@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<serverconfigs>
+  <CMSAddress>http://10.19.10.25:8080/xibo/web</CMSAddress>
+  <ServerKey>JohnTest</ServerKey>
+  <LocalStorage>DEFAULT</LocalStorage>
+</serverconfigs>
