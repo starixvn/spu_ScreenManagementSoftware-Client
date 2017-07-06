@@ -1,0 +1,1 @@
+Taskkill /IM SMSClientWatchdog.exe /F

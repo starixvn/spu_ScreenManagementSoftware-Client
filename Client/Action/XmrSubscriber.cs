@@ -269,7 +269,7 @@ namespace XiboClient.Logic
 
         private void WriteLog(string content)
         {
-            using (var sw = new System.IO.StreamWriter(File.Open(@"C:\XiboLog.txt", FileMode.Append), Encoding.GetEncoding("iso-8859-1")))
+            using (var sw = new System.IO.StreamWriter(File.Open(@"C:\SMSLog.txt", FileMode.Append), Encoding.GetEncoding("iso-8859-1")))
             {
                 sw.WriteLine(DateTime.Now.ToString() + ": " + content);
                 sw.Close();
