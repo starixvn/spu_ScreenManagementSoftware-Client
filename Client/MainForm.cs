@@ -384,6 +384,7 @@ namespace XiboClient
 
                     // Start watchdog
                     WatchDogManager.Start();
+                    Trace.WriteLine(new LogMessage("MainForm - Init Watchdog", "Init watchdog successfully"), LogType.Info.ToString());
                 }
                 catch (Exception e)
                 {

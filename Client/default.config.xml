@@ -15,9 +15,9 @@
   <RequiredFilesFile>requiredFiles.xml</RequiredFilesFile>
   <VideoRenderingEngine>WindowsMediaPlayer</VideoRenderingEngine>
   <LibraryPath>DEFAULT</LibraryPath>
-  <ServerKey>JohnTest</ServerKey>
+  <ServerKey>123456</ServerKey>
   <DisplayName>COMPUTERNAME</DisplayName>
-  <ServerUri>http://10.19.10.25:8080/xibo/web</ServerUri>
+  <ServerUri>https://ha.nexdev.net:7708/web/</ServerUri>
   <ProxyUser></ProxyUser>
   <ProxyPassword></ProxyPassword>
   <ProxyDomain></ProxyDomain>
