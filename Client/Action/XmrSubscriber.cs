@@ -22,6 +22,7 @@ namespace XiboClient.Logic
         private const string UPGRADEVERSION_FOLDER = @"C:\SMSClientInstaller";
         private const string UPGRADEVERSION_FILENAME = "SMSClientInstaller.zip";
         private const string UPGRADEVERSION_INSTALLATIONFILENAME = "setup.exe";
+        private const string LATESTVERSION_STORAGE = @"\\10.70.70.242\www\SPU\SMS_UpgradeVersion\";
         public static object _locker = new object();
 
         // Members to stop the thread
@@ -215,11 +216,11 @@ namespace XiboClient.Logic
                 myWebClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCompleted);
                 myWebClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressCallback);
                 myWebClient.DownloadFileAsync(new Uri(myStringWebResource), UPGRADEVERSION_FOLDER + @"\" + UPGRADEVERSION_FILENAME);
-                WriteLog("Downloading upgdrade files ........");
+                Trace.WriteLine(new LogMessage("MainForm", "Downloading Version files"), LogType.Info.ToString());
             }
             catch (Exception e)
             {
-                WriteLog("Download upgdrade files failed. Error: " + e.ToString());
+                Trace.WriteLine(new LogMessage("MainForm Error", "Download Version files failed. Error: " + e.ToString()), LogType.Error.ToString());
             }
         }
 
@@ -228,13 +229,13 @@ namespace XiboClient.Logic
             try
             {
                 System.IO.Compression.ZipFile.ExtractToDirectory(UPGRADEVERSION_FOLDER + @"\" + UPGRADEVERSION_FILENAME, UPGRADEVERSION_FOLDER);
-                WriteLog("Download and unzipped compeleted ........");
+                Thread.Sleep(5000);
+                Trace.WriteLine(new LogMessage("MainForm", "Download and unzipped compeleted"), LogType.Info.ToString());
                 InstallNewVersion();
             }
             catch (Exception ae)
             {
-
-                WriteLog("Extract upgdrade files failed. Error: " + ae.ToString());
+                Trace.WriteLine(new LogMessage("MainForm Error", "Extract upgdrade files failed. Error: " + ae.ToString()), LogType.Error.ToString());
             }
         }
 
@@ -250,30 +251,28 @@ namespace XiboClient.Logic
             }
             catch (Exception ae)
             {
-                WriteLog("Progress upgdrade files failed. Error: " + ae.ToString());
+                Trace.WriteLine(new LogMessage("MainForm Error", "Progress upgdrade files failed. Error: " + ae.ToString()), LogType.Error.ToString());
             }
         }
 
         private void InstallNewVersion()
         {
-            Process[] processes = Process.GetProcesses().Where(l => l.ProcessName.ToLower().StartsWith("sms")).ToArray();
-            foreach(var process in processes)
+            Process[] processes1 = Process.GetProcessesByName("SMSClientWatchdog");
+            Process[] processes2 = Process.GetProcessesByName("SMSClient");
+            Process.Start(UPGRADEVERSION_FOLDER + @"\" + UPGRADEVERSION_INSTALLATIONFILENAME);
+
+            Thread.Sleep(1000);
+            foreach (var process in processes1)
             {
                 process.Kill();
             }
 
-            Thread.Sleep(1000);
-
-            Process.Start(UPGRADEVERSION_FOLDER + @"\" + UPGRADEVERSION_INSTALLATIONFILENAME);
-        }
-
-        private void WriteLog(string content)
-        {
-            using (var sw = new System.IO.StreamWriter(File.Open(@"C:\SMSLog.txt", FileMode.Append), Encoding.GetEncoding("iso-8859-1")))
+            foreach (var process in processes2)
             {
-                sw.WriteLine(DateTime.Now.ToString() + ": " + content);
-                sw.Close();
+                process.Kill();
             }
+
+            Trace.WriteLine(new LogMessage("MainForm", "Kill all SMS's processes. Ready to install new version"), LogType.Info.ToString());
         }
     }
 }

@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XiboClient", "XiboClient.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XiboClientWatchdog", "..\SMS-Windows-Client-Watchdog\XiboClientWatchdog.csproj", "{7C5DE0A1-D6BE-4FAE-AE24-30C0B8276469}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SMSClientInstaller", "..\SMSClientInstaller\SMSClientInstaller.vdproj", "{837C9845-9493-45D4-A7AC-A23D2201AB37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,12 @@ Global
 		{7C5DE0A1-D6BE-4FAE-AE24-30C0B8276469}.Release|x64.Build.0 = Release|x64
 		{7C5DE0A1-D6BE-4FAE-AE24-30C0B8276469}.Release|x86.ActiveCfg = Release|x86
 		{7C5DE0A1-D6BE-4FAE-AE24-30C0B8276469}.Release|x86.Build.0 = Release|x86
+		{837C9845-9493-45D4-A7AC-A23D2201AB37}.Debug|Any CPU.ActiveCfg = Debug
+		{837C9845-9493-45D4-A7AC-A23D2201AB37}.Debug|x64.ActiveCfg = Debug
+		{837C9845-9493-45D4-A7AC-A23D2201AB37}.Debug|x86.ActiveCfg = Debug
+		{837C9845-9493-45D4-A7AC-A23D2201AB37}.Release|Any CPU.ActiveCfg = Release
+		{837C9845-9493-45D4-A7AC-A23D2201AB37}.Release|x64.ActiveCfg = Release
+		{837C9845-9493-45D4-A7AC-A23D2201AB37}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

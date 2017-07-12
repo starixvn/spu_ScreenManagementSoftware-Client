@@ -33,6 +33,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -47,6 +48,7 @@ namespace XiboClient
     public partial class MainForm : Form
     {
         private const string VERSION_FOLDER = @"C:\SMSClientInstaller";
+        private const string LATESTVERSION_STORAGE = @"\\10.70.70.242\www\SPU\SMS_UpgradeVersion\";
         private const string LATESTVERSION_FILENAME = "SMSClientVersion.txt";
         private const string UPGRADEVERSION_FILENAME = "SMSClientInstaller.zip";
         private const string UPGRADEVERSION_INSTALLATIONFILENAME = "setup.exe";
@@ -181,11 +183,12 @@ namespace XiboClient
             {
                 myWebClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadVersionFileCompleted);
                 myWebClient.DownloadFileAsync(new Uri(myStringWebResource), VERSION_FOLDER + @"\" + LATESTVERSION_FILENAME);
+
                 Trace.WriteLine(new LogMessage("MainForm", "Downloading Version files"), LogType.Info.ToString());
             }
             catch (Exception e)
             {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Download Version files failed. Error: " + e.ToString()), LogType.Info.ToString());
+                Trace.WriteLine(new LogMessage("MainForm Error", "Download Version files failed. Error: " + e.ToString()), LogType.Error.ToString());
             }
         }
 
@@ -212,12 +215,14 @@ namespace XiboClient
                 {
                     UpgradeNewVersion();
                 }
-
-                Trace.WriteLine(new LogMessage("MainForm", "Current Client Version is already the latest one."), LogType.Info.ToString());
+                else
+                {
+                    Trace.WriteLine(new LogMessage("MainForm", "Current Client Version is already the latest one."), LogType.Info.ToString());
+                }
             }
             catch (Exception ae)
             {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Read Version files failed. Error: " + ae.ToString()), LogType.Info.ToString());
+                Trace.WriteLine(new LogMessage("MainForm Error", "Read Version files failed. Error: " + ae.ToString()), LogType.Error.ToString());
             }
         }
 
@@ -238,7 +243,7 @@ namespace XiboClient
             }
             catch (Exception e)
             {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Download upgdrade files failed. Error: " + e.ToString()), LogType.Info.ToString());
+                Trace.WriteLine(new LogMessage("MainForm Error", "Download upgdrade files failed. Error: " + e.ToString()), LogType.Error.ToString());
             }
         }
 
@@ -247,13 +252,13 @@ namespace XiboClient
             try
             {
                 System.IO.Compression.ZipFile.ExtractToDirectory(VERSION_FOLDER + @"\" + UPGRADEVERSION_FILENAME, VERSION_FOLDER);
-
+                Thread.Sleep(5000);
                 Trace.WriteLine(new LogMessage("MainForm", "Download and unzipped compeleted"), LogType.Info.ToString());
                 InstallNewVersion();
             }
             catch (Exception ae)
             {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Extract upgdrade files failed. Error: " + ae.ToString()), LogType.Info.ToString());
+                Trace.WriteLine(new LogMessage("MainForm Error", "Extract upgdrade files failed. Error: " + ae.ToString()), LogType.Error.ToString());
             }
         }
 
@@ -269,29 +274,34 @@ namespace XiboClient
             }
             catch (Exception ae)
             {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Progress upgdrade files failed. Error: " + ae.ToString()), LogType.Info.ToString());
+                Trace.WriteLine(new LogMessage("MainForm Error", "Progress upgdrade files failed. Error: " + ae.ToString()), LogType.Error.ToString());
             }
         }
 
         private void InstallNewVersion()
         {
-            Process[] processes = Process.GetProcesses().Where(l => l.ProcessName.ToLower().StartsWith("sms")).ToArray();
-            foreach (var process in processes)
+            try
             {
-                process.Kill();
+                Process[] processes1 = Process.GetProcessesByName("SMSClientWatchdog");
+                Process[] processes2 = Process.GetProcessesByName("SMSClient");
+                Process.Start(VERSION_FOLDER + @"\" + UPGRADEVERSION_INSTALLATIONFILENAME);
+
+                Thread.Sleep(1000);
+                foreach (var process in processes1)
+                {
+                    process.Kill();
+                }
+
+                foreach (var process in processes2)
+                {
+                    process.Kill();
+                }
+
+                Trace.WriteLine(new LogMessage("MainForm", "Kill all SMS's processes. Ready to install new version"), LogType.Info.ToString());
             }
-
-            Thread.Sleep(1000);
-
-            Process.Start(VERSION_FOLDER + @"\" + UPGRADEVERSION_INSTALLATIONFILENAME);
-        }
-
-        private void WriteLog(string content)
-        {
-            using (var sw = new System.IO.StreamWriter(File.Open(@"c:\SMSLog.txt", FileMode.Append), Encoding.GetEncoding("iso-8859-1")))
+            catch (Exception ae)
             {
-                sw.WriteLine(DateTime.Now.ToString() + ": " + content);
-                sw.Close();
+                Trace.WriteLine(new LogMessage("MainForm Error", "Kill running processes failed. Error: " + ae.ToString()), LogType.Error.ToString());
             }
         }
 
