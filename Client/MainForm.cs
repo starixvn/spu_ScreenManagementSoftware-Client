@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 /*
  * Xibo - Digitial Signage - http://www.xibo.org.uk
  * Copyright (C) 2006-16 Daniel Garner
@@ -201,10 +202,10 @@ namespace XiboClient
 
                 Version latestClientVersion = new Version(ApplicationSettings.Default.ClientVersion);
                 int latestClientCodeVersion = ApplicationSettings.Default.ClientCodeVersion;
-
+                string clientVersion = "";
                 using (StreamReader file = new StreamReader(VERSION_FOLDER + @"\" + LATESTVERSION_FILENAME))
                 {
-                    var clientVersion = file.ReadLine().ToString();
+                    clientVersion = file.ReadLine().ToString();
                     latestClientVersion = string.IsNullOrEmpty(clientVersion) ? latestClientVersion : new Version(clientVersion);
                     latestClientCodeVersion = int.Parse(file.ReadLine().ToString());
                     file.Close();
@@ -213,6 +214,9 @@ namespace XiboClient
                 var versionCompareResult = latestClientVersion.CompareTo(currentClientVersion);
                 if (versionCompareResult > 0 || (versionCompareResult == 0 && latestClientCodeVersion > currentClientCodeVersion))
                 {
+                    ApplicationSettings.Default.ClientCodeVersion = latestClientCodeVersion;
+                    ApplicationSettings.Default.ClientVersion = clientVersion;
+                    ApplicationSettings.Default.Save();
                     UpgradeNewVersion();
                 }
                 else

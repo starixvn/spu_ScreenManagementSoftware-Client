@@ -354,6 +354,9 @@
     <None Include="Resources\licence.txt" />
     <None Include="Resources\logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo F|xcopy /Y "$(TargetPath)" "$(TargetDir)\Xibo.scr"</PostBuildEvent>

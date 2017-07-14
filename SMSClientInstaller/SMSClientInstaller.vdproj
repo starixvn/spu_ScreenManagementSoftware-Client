@@ -45,8 +45,38 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_15CD34783E15958B4F4E0B3E53FE1CA5"
+        "OwnerKey" = "8:_23A9A20A66D847309CF5A3DA856BC22D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_15CD34783E15958B4F4E0B3E53FE1CA5"
+        "OwnerKey" = "8:_A3CBBAEE4A354BAC94FEDD37A130082B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_15CD34783E15958B4F4E0B3E53FE1CA5"
+        "OwnerKey" = "8:_3BD246B292EA4DE3A1BF9A29CF75A5D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1FCE0E9F9E6647A1A1AB5A3C8EF41139"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2157C4F97EA4828579FFB5873BF44338"
+        "OwnerKey" = "8:_23A9A20A66D847309CF5A3DA856BC22D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2157C4F97EA4828579FFB5873BF44338"
+        "OwnerKey" = "8:_3BD246B292EA4DE3A1BF9A29CF75A5D2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -225,18 +255,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C7E7271FAC3DBDD4C3BE1707217BD8D7"
-        "OwnerKey" = "8:_3BD246B292EA4DE3A1BF9A29CF75A5D2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C7E7271FAC3DBDD4C3BE1707217BD8D7"
-        "OwnerKey" = "8:_23A9A20A66D847309CF5A3DA856BC22D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_D273E49545FC44C09C9344B107F38F65"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -279,24 +297,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F0C03C0C1457DD9790D4F2BAE366FD73"
-        "OwnerKey" = "8:_A3CBBAEE4A354BAC94FEDD37A130082B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F0C03C0C1457DD9790D4F2BAE366FD73"
-        "OwnerKey" = "8:_23A9A20A66D847309CF5A3DA856BC22D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F0C03C0C1457DD9790D4F2BAE366FD73"
-        "OwnerKey" = "8:_3BD246B292EA4DE3A1BF9A29CF75A5D2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_F47D93D780FD44C2B6AEDF9A47A82679"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -316,49 +316,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9CBDD3CCBAC0BBDAB1D2DCEDFC0E9C50"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0726B39E9A2E4B3D9CB0670666822467"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_23A9A20A66D847309CF5A3DA856BC22D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_3BD246B292EA4DE3A1BF9A29CF75A5D2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C7E7271FAC3DBDD4C3BE1707217BD8D7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0452D3970B7491885641BD131DCC77F7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A3CBBAEE4A354BAC94FEDD37A130082B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F0C03C0C1457DD9790D4F2BAE366FD73"
+        "OwnerKey" = "8:_0726B39E9A2E4B3D9CB0670666822467"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -407,6 +371,42 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_B2F2082DECCCAC6C914CC3973F4309F8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9CBDD3CCBAC0BBDAB1D2DCEDFC0E9C50"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0452D3970B7491885641BD131DCC77F7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3BD246B292EA4DE3A1BF9A29CF75A5D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_23A9A20A66D847309CF5A3DA856BC22D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2157C4F97EA4828579FFB5873BF44338"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_15CD34783E15958B4F4E0B3E53FE1CA5"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -464,6 +464,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -643,6 +659,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_15CD34783E15958B4F4E0B3E53FE1CA5"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:XiboClient.XmlSerializers, Version=10.8.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_15CD34783E15958B4F4E0B3E53FE1CA5"
+                    {
+                    "Name" = "8:XiboClient.XmlSerializers.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:XiboClient.XmlSerializers.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_7A9314B555894FAC93C79C547C845E2B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1FCE0E9F9E6647A1A1AB5A3C8EF41139"
             {
             "SourcePath" = "8:..\\XiboClientInstaller\\StopClientWatchdog.vbs"
@@ -661,6 +708,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2157C4F97EA4828579FFB5873BF44338"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=691faec150a7fa7b, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_2157C4F97EA4828579FFB5873BF44338"
+                    {
+                    "Name" = "8:Nini.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Nini.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_1C44B0A997CB4D4CA9E05C6DF653437D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_267BB4040E4CA819402E99102FEEB9DB"
@@ -1209,37 +1287,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C7E7271FAC3DBDD4C3BE1707217BD8D7"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=691faec150a7fa7b, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_C7E7271FAC3DBDD4C3BE1707217BD8D7"
-                    {
-                    "Name" = "8:Nini.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Nini.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_1C44B0A997CB4D4CA9E05C6DF653437D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D273E49545FC44C09C9344B107F38F65"
             {
             "SourcePath" = "8:..\\..\\LongTest\\LongTest\\Xibo Library\\moment.js"
@@ -1391,37 +1438,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F0C03C0C1457DD9790D4F2BAE366FD73"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:XiboClient.XmlSerializers, Version=10.8.1.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_F0C03C0C1457DD9790D4F2BAE366FD73"
-                    {
-                    "Name" = "8:XiboClient.XmlSerializers.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:XiboClient.XmlSerializers.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_7A9314B555894FAC93C79C547C845E2B"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F47D93D780FD44C2B6AEDF9A47A82679"
@@ -1639,15 +1655,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SMSClient"
-        "ProductCode" = "8:{7062D17C-DAC9-4A4A-8DC0-E001E2D146FF}"
-        "PackageCode" = "8:{1E63C67A-38AC-4AB5-9D24-D4FF46F0ECAA}"
+        "ProductCode" = "8:{1169316E-B092-48F5-951D-7CF486C35F93}"
+        "PackageCode" = "8:{D4E6C163-14F5-4EE1-AB53-E8BD6B6937A8}"
         "UpgradeCode" = "8:{D8005279-5009-46F4-AB8E-B069EC1BDC0D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
+        "InstallAllUsers" = "11:TRUE"
+        "ProductVersion" = "8:1.8.4"
         "Manufacturer" = "8:SMS Group"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -2025,7 +2041,7 @@
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4C7589C91EB846D5A0B2BE0664DA2EA6"
             {
             "Name" = "8:Uninstall SMS Client"
-            "Arguments" = "8:/x {7062D17C-DAC9-4A4A-8DC0-E001E2D146FF} /qr"
+            "Arguments" = "8:/x {1169316E-B092-48F5-951D-7CF486C35F93} /qr"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
@@ -2048,6 +2064,20 @@
             "Folder" = "8:_4939AA1EB9374BAA8448D62BD83BFD5D"
             "WorkingFolder" = "8:_7A9314B555894FAC93C79C547C845E2B"
             "Icon" = "8:_969CC3DFA7E74EE189E6F41D2D7649B3"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F3ED2942BB494453B993ADE4810F9B26"
+            {
+            "Name" = "8:Uninstall SMS Client"
+            "Arguments" = "8:/x {1169316E-B092-48F5-951D-7CF486C35F93} /qr"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_9BE3CC90EC1E44338A06ADE82B8EAA73"
+            "Folder" = "8:_7A9314B555894FAC93C79C547C845E2B"
+            "WorkingFolder" = "8:_763902933FA948D8BDDA335900865139"
+            "Icon" = "8:_010CACC05FB64960866E933292EBDBF4"
             "Feature" = "8:"
             }
         }
