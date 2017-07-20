@@ -7,7 +7,7 @@
  * Xibo is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * any later version. 
+ * any later version.
  *
  * Xibo is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,18 +17,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Xibo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Security.Cryptography.X509Certificates;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Net;
-using System.Windows.Forms;
-using XiboClient.Properties;
 using System.Diagnostics;
+using System.Drawing;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Windows.Forms;
 using System.Xml;
+using XiboClient.Properties;
 using XiboClient.XmdsAgents;
 
 namespace XiboClient
@@ -49,7 +50,7 @@ namespace XiboClient
             _pingTimer = new Timer();
             _pingTimer.Tick += new EventHandler(CheckRegisterStatus);
             _pingTimer.Interval = _PING_INTERVAL;
-            
+
             // Set the icon
             Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
 
@@ -108,7 +109,7 @@ namespace XiboClient
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void xmds1_RegisterDisplayCompleted(object sender, XiboClient.xmds.RegisterDisplayCompletedEventArgs e)
+        private void xmds1_RegisterDisplayCompleted(object sender, XiboClient.xmds.RegisterDisplayCompletedEventArgs e)
         {
             tbStatus.ResetText();
 
@@ -126,7 +127,7 @@ namespace XiboClient
                 var resultStatusMessage = RegisterAgent.ProcessRegisterXml(e.Result);
                 tbStatus.AppendText(resultStatusMessage + " - Auto ping #" + _pingCounter.ToString());
 
-                if(resultStatusMessage.Contains("Display is active and ready to start"))
+                if (resultStatusMessage.Contains("Display is active and ready to start"))
                 {
                     // Start the player
                     _pingTimer.Stop();
@@ -137,11 +138,11 @@ namespace XiboClient
             }
         }
 
-       /// <summary>
-       /// Save settings
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
+        /// <summary>
+        /// Save settings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonSaveSettings_Click(object sender, EventArgs e)
         {
             tbStatus.ResetText();
@@ -174,17 +175,16 @@ namespace XiboClient
 
                 // Call register
                 xmds1.RegisterDisplayAsync(
-                    ApplicationSettings.Default.ServerKey, 
-                    ApplicationSettings.Default.HardwareKey, 
-                    ApplicationSettings.Default.DisplayName, 
-                    "windows", 
-                    ApplicationSettings.Default.ClientVersion, 
-                    ApplicationSettings.Default.ClientCodeVersion, 
-                    Environment.OSVersion.ToString(), 
+                    ApplicationSettings.Default.ServerKey,
+                    ApplicationSettings.Default.HardwareKey,
+                    ApplicationSettings.Default.DisplayName,
+                    "windows",
+                    ApplicationSettings.Default.ClientVersion,
+                    ApplicationSettings.Default.ClientCodeVersion,
+                    Environment.OSVersion.ToString(),
                     _hardwareKey.MacAddress,
                     _hardwareKey.Channel,
                     _hardwareKey.getXmrPublicKey());
-
 
                 _pingTimer.Start();
             }
@@ -198,7 +198,6 @@ namespace XiboClient
         {
             this.Close();
         }
-
 
         private void buttonLibrary_Click(object sender, EventArgs e)
         {
@@ -263,7 +262,7 @@ namespace XiboClient
             Debug.WriteLine("[IN]", "SetGlobalProxy");
 
             Debug.WriteLine("Trying to detect a proxy.", "SetGlobalProxy");
-            
+
             if (ApplicationSettings.Default.ProxyUser != "")
             {
                 // disable expect100Continue
@@ -273,7 +272,7 @@ namespace XiboClient
 
                 NetworkCredential nc = new NetworkCredential(ApplicationSettings.Default.ProxyUser, ApplicationSettings.Default.ProxyPassword);
 
-                if (ApplicationSettings.Default.ProxyDomain != "") 
+                if (ApplicationSettings.Default.ProxyDomain != "")
                     nc.Domain = ApplicationSettings.Default.ProxyDomain;
 
                 WebRequest.DefaultWebProxy.Credentials = nc;
