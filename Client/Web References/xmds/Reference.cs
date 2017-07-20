@@ -35,6 +35,8 @@ namespace XiboClient.xmds {
         
         private System.Threading.SendOrPostCallback GetFileOperationCompleted;
         
+        private System.Threading.SendOrPostCallback CheckAndUpgradeNewVersionOperationCompleted;
+        
         private System.Threading.SendOrPostCallback ScheduleOperationCompleted;
         
         private System.Threading.SendOrPostCallback BlackListOperationCompleted;
@@ -55,7 +57,7 @@ namespace XiboClient.xmds {
         
         /// <remarks/>
         public xmds() {
-            this.Url = "http://192.168.0.28/xmds.php?v=5";
+            this.Url = "https://ha.nexdev.net:7709/xmds.php?v=5";
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;
@@ -97,6 +99,9 @@ namespace XiboClient.xmds {
         
         /// <remarks/>
         public event GetFileCompletedEventHandler GetFileCompleted;
+        
+        /// <remarks/>
+        public event CheckAndUpgradeNewVersionCompletedEventHandler CheckAndUpgradeNewVersionCompleted;
         
         /// <remarks/>
         public event ScheduleCompletedEventHandler ScheduleCompleted;
@@ -239,6 +244,38 @@ namespace XiboClient.xmds {
             if ((this.GetFileCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetFileCompleted(this, new GetFileCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:xmds#CheckAndUpgradeNewVersion", RequestNamespace="urn:xmds", ResponseNamespace="urn:xmds")]
+        [return: System.Xml.Serialization.SoapElementAttribute("file", DataType="base64Binary")]
+        public byte[] CheckAndUpgradeNewVersion(string currentVersion, bool isForced) {
+            object[] results = this.Invoke("CheckAndUpgradeNewVersion", new object[] {
+                        currentVersion,
+                        isForced});
+            return ((byte[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void CheckAndUpgradeNewVersionAsync(string currentVersion, bool isForced) {
+            this.CheckAndUpgradeNewVersionAsync(currentVersion, isForced, null);
+        }
+        
+        /// <remarks/>
+        public void CheckAndUpgradeNewVersionAsync(string currentVersion, bool isForced, object userState) {
+            if ((this.CheckAndUpgradeNewVersionOperationCompleted == null)) {
+                this.CheckAndUpgradeNewVersionOperationCompleted = new System.Threading.SendOrPostCallback(this.OnCheckAndUpgradeNewVersionOperationCompleted);
+            }
+            this.InvokeAsync("CheckAndUpgradeNewVersion", new object[] {
+                        currentVersion,
+                        isForced}, this.CheckAndUpgradeNewVersionOperationCompleted, userState);
+        }
+        
+        private void OnCheckAndUpgradeNewVersionOperationCompleted(object arg) {
+            if ((this.CheckAndUpgradeNewVersionCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.CheckAndUpgradeNewVersionCompleted(this, new CheckAndUpgradeNewVersionCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -604,6 +641,32 @@ namespace XiboClient.xmds {
         private object[] results;
         
         internal GetFileCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public byte[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((byte[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    public delegate void CheckAndUpgradeNewVersionCompletedEventHandler(object sender, CheckAndUpgradeNewVersionCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class CheckAndUpgradeNewVersionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal CheckAndUpgradeNewVersionCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }

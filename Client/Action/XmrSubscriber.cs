@@ -19,10 +19,9 @@ namespace XiboClient.Logic
 {
     internal class XmrSubscriber
     {
-        private const string UPGRADEVERSION_FOLDER = @"C:\SMSClientInstaller";
-        private const string UPGRADEVERSION_FILENAME = "SMSClientInstaller.zip";
-        private const string UPGRADEVERSION_INSTALLATIONFILENAME = "setup.exe";
-        private const string LATESTVERSION_STORAGE = @"\\10.70.70.242\www\SPU\SMS_UpgradeVersion\";
+        private const string UPGRADEVERSION_FOLDER = @"\SMSClientInstaller";
+        private const string UPGRADEVERSION_FILENAME = @"\SMSClientInstaller.zip";
+        private const string UPGRADEVERSION_INSTALLATIONFILENAME = @"\setup.exe";
         public static object _locker = new object();
 
         // Members to stop the thread
@@ -286,66 +285,45 @@ namespace XiboClient.Logic
 
         private void UpgradeNewVersion()
         {
-            string myStringWebResource = null;
-
-            var myWebClient = new WebClient();
-            myStringWebResource = ApplicationSettings.Default.ServerUri + "/UpgradeVersion/" + UPGRADEVERSION_FILENAME;
-            if (Directory.Exists(UPGRADEVERSION_FOLDER))
+            using (xmds.xmds xmds = new xmds.xmds())
             {
-                Directory.Delete(UPGRADEVERSION_FOLDER, true);
+                xmds.Credentials = null;
+                xmds.Url = ApplicationSettings.Default.XiboClient_xmds_xmds;
+                xmds.UseDefaultCredentials = true;
+
+                var installerFile = xmds.CheckAndUpgradeNewVersion(ApplicationSettings.Default.ClientVersion + "." + ApplicationSettings.Default.ClientCodeVersion.ToString(), false);
+
+                if (installerFile != null)
+                {
+                    using (FileStream fileStream = File.Open(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, FileMode.Create, FileAccess.Write, FileShare.Read))
+                    {
+                        fileStream.Write(installerFile, 0, installerFile.Length);
+                        fileStream.Close();
+                    }
+
+                    InstallNewVersion();
+                }
             }
+        }
+
+        private void ExtractNewVersionFile()
+        {
+            if (Directory.Exists(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER))
+            {
+                Directory.Delete(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER, true);
+            }
+
+            Thread.Sleep(1000);            
+            System.IO.Compression.ZipFile.ExtractToDirectory(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER);
             Thread.Sleep(1000);
-            DirectoryInfo di = Directory.CreateDirectory(UPGRADEVERSION_FOLDER);
-
-            try
-            {
-                myWebClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCompleted);
-                myWebClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressCallback);
-                myWebClient.DownloadFileAsync(new Uri(myStringWebResource), UPGRADEVERSION_FOLDER + @"\" + UPGRADEVERSION_FILENAME);
-                Trace.WriteLine(new LogMessage("MainForm", "Downloading Version files"), LogType.Info.ToString());
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Download Version files failed. Error: " + e.ToString()), LogType.Error.ToString());
-            }
-        }
-
-        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            try
-            {
-                System.IO.Compression.ZipFile.ExtractToDirectory(UPGRADEVERSION_FOLDER + @"\" + UPGRADEVERSION_FILENAME, UPGRADEVERSION_FOLDER);
-                Thread.Sleep(5000);
-                Trace.WriteLine(new LogMessage("MainForm", "Download and unzipped compeleted"), LogType.Info.ToString());
-                InstallNewVersion();
-            }
-            catch (Exception ae)
-            {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Extract upgdrade files failed. Error: " + ae.ToString()), LogType.Error.ToString());
-            }
-        }
-
-        private void DownloadProgressCallback(object sender, DownloadProgressChangedEventArgs e)
-        {
-            try
-            {
-                string content = string.Format("{0}    downloaded {1} of {2} bytes. {3} % complete...",
-                    (string)e.UserState,
-                    e.BytesReceived,
-                    e.TotalBytesToReceive,
-                    e.ProgressPercentage);
-            }
-            catch (Exception ae)
-            {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Progress upgdrade files failed. Error: " + ae.ToString()), LogType.Error.ToString());
-            }
         }
 
         private void InstallNewVersion()
         {
+            ExtractNewVersionFile();
             Process[] processes1 = Process.GetProcessesByName("SMSClientWatchdog");
             Process[] processes2 = Process.GetProcessesByName("SMSClient");
-            Process.Start(UPGRADEVERSION_FOLDER + @"\" + UPGRADEVERSION_INSTALLATIONFILENAME);
+            Process.Start(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_INSTALLATIONFILENAME);
 
             Thread.Sleep(1000);
             foreach (var process in processes1)

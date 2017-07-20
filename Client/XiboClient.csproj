@@ -318,10 +318,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://192.168.0.28/xmds.php%3fv=5&amp;WSDL">
+    <WebReferenceUrl Include="https://ha.nexdev.net:7709/xmds.php%3fv=5&amp;WSDL">
       <UrlBehavior>Static</UrlBehavior>
       <RelPath>Web References\xmds\</RelPath>
-      <UpdateFromURL>http://192.168.0.28/xmds.php%3fv=5&amp;WSDL</UpdateFromURL>
+      <UpdateFromURL>https://ha.nexdev.net:7709/xmds.php%3fv=5&amp;WSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

@@ -48,11 +48,9 @@ namespace XiboClient
 {
     public partial class MainForm : Form
     {
-        private const string VERSION_FOLDER = @"C:\SMSClientInstaller";
-        private const string LATESTVERSION_STORAGE = @"\\10.70.70.242\www\SPU\SMS_UpgradeVersion\";
-        private const string LATESTVERSION_FILENAME = "SMSClientVersion.txt";
-        private const string UPGRADEVERSION_FILENAME = "SMSClientInstaller.zip";
-        private const string UPGRADEVERSION_INSTALLATIONFILENAME = "setup.exe";
+        private const string UPGRADEVERSION_FOLDER = @"\SMSClientInstaller";
+        private const string UPGRADEVERSION_FILENAME = @"\SMSClientInstaller.zip";
+        private const string UPGRADEVERSION_INSTALLATIONFILENAME = @"\setup.exe";
 
         /// <summary>
         /// Schedule Class
@@ -161,155 +159,37 @@ namespace XiboClient
         public MainForm()
         {
             InitializeComponent();
-            CheckLatestVersion();
+            //CheckLatestVersion();
+            //TestUpgradeNewVersion();
             InitializeXibo();
         }
 
-        #region Long check for updates
-        private void CheckLatestVersion()
+        private void TestUpgradeNewVersion()
         {
-            string myStringWebResource = null;
-
-            var myWebClient = new WebClient();
-            myStringWebResource = ApplicationSettings.Default.ServerUri + "/UpgradeVersion/" + LATESTVERSION_FILENAME;
-
-            if (Directory.Exists(VERSION_FOLDER))
+            using (xmds.xmds xmds = new xmds.xmds())
             {
-                Directory.Delete(VERSION_FOLDER, true);
-            }
-            Thread.Sleep(1000);
-            DirectoryInfo di = Directory.CreateDirectory(VERSION_FOLDER);
+                xmds.Credentials = null;
+                xmds.Url = ApplicationSettings.Default.XiboClient_xmds_xmds;
+                xmds.UseDefaultCredentials = true;
 
-            try
-            {
-                myWebClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadVersionFileCompleted);
-                myWebClient.DownloadFileAsync(new Uri(myStringWebResource), VERSION_FOLDER + @"\" + LATESTVERSION_FILENAME);
+                var result = xmds.CheckAndUpgradeNewVersion(ApplicationSettings.Default.ClientVersion + "." + ApplicationSettings.Default.ClientCodeVersion.ToString(), true);
 
-                Trace.WriteLine(new LogMessage("MainForm", "Downloading Version files"), LogType.Info.ToString());
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Download Version files failed. Error: " + e.ToString()), LogType.Error.ToString());
-            }
-        }
-
-        private void DownloadVersionFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            try
-            {
-                Version currentClientVersion = new Version(ApplicationSettings.Default.ClientVersion);
-                int currentClientCodeVersion = ApplicationSettings.Default.ClientCodeVersion;
-
-                Version latestClientVersion = new Version(ApplicationSettings.Default.ClientVersion);
-                int latestClientCodeVersion = ApplicationSettings.Default.ClientCodeVersion;
-                string clientVersion = "";
-                using (StreamReader file = new StreamReader(VERSION_FOLDER + @"\" + LATESTVERSION_FILENAME))
+                if (result != null)
                 {
-                    clientVersion = file.ReadLine().ToString();
-                    latestClientVersion = string.IsNullOrEmpty(clientVersion) ? latestClientVersion : new Version(clientVersion);
-                    latestClientCodeVersion = int.Parse(file.ReadLine().ToString());
-                    file.Close();
-                }
+                    // Write the result to disk
+                    using (FileStream fileStream = File.Open(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, FileMode.Create, FileAccess.Write, FileShare.Read))
+                    {
+                        fileStream.Write(result, 0, result.Length);
+                        fileStream.Close();
+                    }
 
-                var versionCompareResult = latestClientVersion.CompareTo(currentClientVersion);
-                if (versionCompareResult > 0 || (versionCompareResult == 0 && latestClientCodeVersion > currentClientCodeVersion))
-                {
-                    ApplicationSettings.Default.ClientCodeVersion = latestClientCodeVersion;
-                    ApplicationSettings.Default.ClientVersion = clientVersion;
-                    ApplicationSettings.Default.Save();
-                    UpgradeNewVersion();
-                }
-                else
-                {
-                    Trace.WriteLine(new LogMessage("MainForm", "Current Client Version is already the latest one."), LogType.Info.ToString());
+                    // Install the new version
+                    //InstallNewVersion();
+                    System.IO.Compression.ZipFile.ExtractToDirectory(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER);
+                    Thread.Sleep(5000);
                 }
             }
-            catch (Exception ae)
-            {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Read Version files failed. Error: " + ae.ToString()), LogType.Error.ToString());
-            }
         }
-
-        private void UpgradeNewVersion()
-        {
-            string myStringWebResource = null;
-
-            var myWebClient = new WebClient();
-            myStringWebResource = ApplicationSettings.Default.ServerUri + "/UpgradeVersion/" + UPGRADEVERSION_FILENAME;
-
-            try
-            {
-                myWebClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCompleted);
-                myWebClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressCallback);
-                myWebClient.DownloadFileAsync(new Uri(myStringWebResource), VERSION_FOLDER + @"\" + UPGRADEVERSION_FILENAME);
-
-                Trace.WriteLine(new LogMessage("MainForm", "Downloading upgdrade files"), LogType.Info.ToString());
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Download upgdrade files failed. Error: " + e.ToString()), LogType.Error.ToString());
-            }
-        }
-
-        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            try
-            {
-                System.IO.Compression.ZipFile.ExtractToDirectory(VERSION_FOLDER + @"\" + UPGRADEVERSION_FILENAME, VERSION_FOLDER);
-                Thread.Sleep(5000);
-                Trace.WriteLine(new LogMessage("MainForm", "Download and unzipped compeleted"), LogType.Info.ToString());
-                InstallNewVersion();
-            }
-            catch (Exception ae)
-            {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Extract upgdrade files failed. Error: " + ae.ToString()), LogType.Error.ToString());
-            }
-        }
-
-        private void DownloadProgressCallback(object sender, DownloadProgressChangedEventArgs e)
-        {
-            try
-            {
-                string content = string.Format("{0}    downloaded {1} of {2} bytes. {3} % complete...",
-                    (string)e.UserState,
-                    e.BytesReceived,
-                    e.TotalBytesToReceive,
-                    e.ProgressPercentage);
-            }
-            catch (Exception ae)
-            {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Progress upgdrade files failed. Error: " + ae.ToString()), LogType.Error.ToString());
-            }
-        }
-
-        private void InstallNewVersion()
-        {
-            try
-            {
-                Process[] processes1 = Process.GetProcessesByName("SMSClientWatchdog");
-                Process[] processes2 = Process.GetProcessesByName("SMSClient");
-                Process.Start(VERSION_FOLDER + @"\" + UPGRADEVERSION_INSTALLATIONFILENAME);
-
-                Thread.Sleep(1000);
-                foreach (var process in processes1)
-                {
-                    process.Kill();
-                }
-
-                foreach (var process in processes2)
-                {
-                    process.Kill();
-                }
-
-                Trace.WriteLine(new LogMessage("MainForm", "Kill all SMS's processes. Ready to install new version"), LogType.Info.ToString());
-            }
-            catch (Exception ae)
-            {
-                Trace.WriteLine(new LogMessage("MainForm Error", "Kill running processes failed. Error: " + ae.ToString()), LogType.Error.ToString());
-            }
-        }
-
-        #endregion
 
         private void InitializeXibo()
         {
