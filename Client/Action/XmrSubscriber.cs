@@ -323,7 +323,7 @@ namespace XiboClient.Logic
             ExtractNewVersionFile();
             Process[] processes1 = Process.GetProcessesByName("SMSClientWatchdog");
             Process[] processes2 = Process.GetProcessesByName("SMSClient");
-            Process.Start(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_INSTALLATIONFILENAME);
+            Process.Start(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER + UPGRADEVERSION_INSTALLATIONFILENAME);
 
             Thread.Sleep(1000);
             foreach (var process in processes1)

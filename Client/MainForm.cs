@@ -159,36 +159,7 @@ namespace XiboClient
         public MainForm()
         {
             InitializeComponent();
-            //CheckLatestVersion();
-            //TestUpgradeNewVersion();
             InitializeXibo();
-        }
-
-        private void TestUpgradeNewVersion()
-        {
-            using (xmds.xmds xmds = new xmds.xmds())
-            {
-                xmds.Credentials = null;
-                xmds.Url = ApplicationSettings.Default.XiboClient_xmds_xmds;
-                xmds.UseDefaultCredentials = true;
-
-                var result = xmds.CheckAndUpgradeNewVersion(ApplicationSettings.Default.ClientVersion + "." + ApplicationSettings.Default.ClientCodeVersion.ToString(), true);
-
-                if (result != null)
-                {
-                    // Write the result to disk
-                    using (FileStream fileStream = File.Open(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, FileMode.Create, FileAccess.Write, FileShare.Read))
-                    {
-                        fileStream.Write(result, 0, result.Length);
-                        fileStream.Close();
-                    }
-
-                    // Install the new version
-                    //InstallNewVersion();
-                    System.IO.Compression.ZipFile.ExtractToDirectory(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER);
-                    Thread.Sleep(5000);
-                }
-            }
         }
 
         private void InitializeXibo()
