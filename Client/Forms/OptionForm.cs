@@ -27,6 +27,7 @@ using System.Drawing;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using XiboClient.Properties;
@@ -37,17 +38,15 @@ namespace XiboClient
     public partial class OptionForm : Form
     {
         private HardwareKey _hardwareKey;
-        private const int _PING_INTERVAL = 5000;
-        private static Timer _pingTimer;
-        private static bool _shouldPingForAcceptance = false;
-        private static int _pingCounter = 0;
+        private const int _PING_INTERVAL = 1000;
+        private static System.Windows.Forms.Timer _pingTimer;
 
         public OptionForm()
         {
             InitializeComponent();
 
             // The timer to ping for admin's acceptance
-            _pingTimer = new Timer();
+            _pingTimer = new System.Windows.Forms.Timer();
             _pingTimer.Tick += new EventHandler(CheckRegisterStatus);
             _pingTimer.Interval = _PING_INTERVAL;
 
@@ -66,7 +65,7 @@ namespace XiboClient
 
             // XMDS completed event
             xmds1.RegisterDisplayCompleted += new XiboClient.xmds.RegisterDisplayCompletedEventHandler(xmds1_RegisterDisplayCompleted);
-
+            
             // Set global proxy information
             OptionForm.SetGlobalProxy();
 
@@ -85,10 +84,10 @@ namespace XiboClient
 
             Debug.WriteLine("Loaded Options Form", "OptionForm");
 
-            PingServerForAcceptance();
+            RegisterAndStartClient();
         }
 
-        private void PingServerForAcceptance()
+        private void RegisterAndStartClient()
         {
             if (ApplicationSettings.Default.ServerKey != "Please input Server Key")
             {
@@ -100,7 +99,6 @@ namespace XiboClient
 
         private void CheckRegisterStatus(Object myObject, EventArgs myEventArgs)
         {
-            _pingCounter++;
             buttonSaveSettings.PerformClick();
         }
 
@@ -113,9 +111,9 @@ namespace XiboClient
         {
             tbStatus.ResetText();
 
+            _pingTimer.Stop();
             if (e.Error != null)
             {
-                _pingTimer.Stop();
                 tbStatus.AppendText("Status" + Environment.NewLine);
 
                 Debug.WriteLine("Error returned from Call to XMDS Register Display.", "xmds1_RegisterDisplayCompleted");
@@ -125,16 +123,11 @@ namespace XiboClient
             else
             {
                 var resultStatusMessage = RegisterAgent.ProcessRegisterXml(e.Result);
-                tbStatus.AppendText(resultStatusMessage + " - Auto ping #" + _pingCounter.ToString());
+                tbStatus.AppendText(resultStatusMessage);
 
-                if (resultStatusMessage.Contains("Display is active and ready to start"))
-                {
-                    // Start the player
-                    _pingTimer.Stop();
-                    System.Threading.Thread.Sleep(3000);
-                    Close();
-                    Process.Start(Application.ExecutablePath);
-                }
+                Thread.Sleep(1000);
+                Close();
+                Process.Start(Application.ExecutablePath);
             }
         }
 
@@ -185,8 +178,6 @@ namespace XiboClient
                     _hardwareKey.MacAddress,
                     _hardwareKey.Channel,
                     _hardwareKey.getXmrPublicKey());
-
-                _pingTimer.Start();
             }
             catch (Exception ex)
             {

@@ -512,7 +512,7 @@ namespace XiboClient
         private System.Windows.Forms.TextBox splashOverride;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Button buttonExit;
-        private System.Windows.Forms.Button button1;
+        public System.Windows.Forms.Button button1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label5;

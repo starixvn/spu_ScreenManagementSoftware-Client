@@ -21,7 +21,7 @@ namespace XiboClient.Logic
     {
         private const string UPGRADEVERSION_FOLDER = @"\SMSClientInstaller";
         private const string UPGRADEVERSION_FILENAME = @"\SMSClientInstaller.zip";
-        private const string UPGRADEVERSION_INSTALLATIONFILENAME = @"\setup.exe";
+        private const string UPGRADEVERSION_INSTALLATIONFILENAME = @"\SMSInstallWrapper.exe";
         public static object _locker = new object();
 
         // Members to stop the thread
@@ -243,7 +243,9 @@ namespace XiboClient.Logic
                         case "UpgradeVersion":
                             UpgradeNewVersion();
                             break;
-
+                        case "RestartClient":
+                            RestartClient();
+                            break;
                         default:
                             new Thread(new ThreadStart(command.Run)).Start();
                             break;
@@ -306,18 +308,6 @@ namespace XiboClient.Logic
             }
         }
 
-        private void ExtractNewVersionFile()
-        {
-            if (Directory.Exists(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER))
-            {
-                Directory.Delete(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER, true);
-            }
-
-            Thread.Sleep(1000);            
-            System.IO.Compression.ZipFile.ExtractToDirectory(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER);
-            Thread.Sleep(1000);
-        }
-
         private void InstallNewVersion()
         {
             ExtractNewVersionFile();
@@ -337,6 +327,29 @@ namespace XiboClient.Logic
             }
 
             Trace.WriteLine(new LogMessage("MainForm", "Kill all SMS's processes. Ready to install new version"), LogType.Info.ToString());
+        }
+
+        private void ExtractNewVersionFile()
+        {
+            if (Directory.Exists(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER))
+            {
+                Directory.Delete(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER, true);
+            }
+
+            Thread.Sleep(1000);            
+            System.IO.Compression.ZipFile.ExtractToDirectory(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER);
+            Thread.Sleep(1000);
+        }
+
+        private void RestartClient()
+        {
+            Process[] processes = Process.GetProcessesByName("SMSClient");
+
+            Thread.Sleep(1000);
+            foreach (var process in processes)
+            {
+                process.Kill();
+            }
         }
 
         public void Restart()

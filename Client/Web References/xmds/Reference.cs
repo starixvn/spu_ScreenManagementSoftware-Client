@@ -31,6 +31,8 @@ namespace XiboClient.xmds {
         
         private System.Threading.SendOrPostCallback RegisterDisplayOperationCompleted;
         
+        private System.Threading.SendOrPostCallback IsAuthorisedOperationCompleted;
+        
         private System.Threading.SendOrPostCallback RequiredFilesOperationCompleted;
         
         private System.Threading.SendOrPostCallback GetFileOperationCompleted;
@@ -93,6 +95,9 @@ namespace XiboClient.xmds {
         
         /// <remarks/>
         public event RegisterDisplayCompletedEventHandler RegisterDisplayCompleted;
+        
+        /// <remarks/>
+        public event IsAuthorisedCompletedEventHandler IsAuthorisedCompleted;
         
         /// <remarks/>
         public event RequiredFilesCompletedEventHandler RequiredFilesCompleted;
@@ -172,6 +177,38 @@ namespace XiboClient.xmds {
             if ((this.RegisterDisplayCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.RegisterDisplayCompleted(this, new RegisterDisplayCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:xmds#IsAuthorised", RequestNamespace="urn:xmds", ResponseNamespace="urn:xmds")]
+        [return: System.Xml.Serialization.SoapElementAttribute("success")]
+        public bool IsAuthorised(string serverKey, string hardwareKey) {
+            object[] results = this.Invoke("IsAuthorised", new object[] {
+                        serverKey,
+                        hardwareKey});
+            return ((bool)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void IsAuthorisedAsync(string serverKey, string hardwareKey) {
+            this.IsAuthorisedAsync(serverKey, hardwareKey, null);
+        }
+        
+        /// <remarks/>
+        public void IsAuthorisedAsync(string serverKey, string hardwareKey, object userState) {
+            if ((this.IsAuthorisedOperationCompleted == null)) {
+                this.IsAuthorisedOperationCompleted = new System.Threading.SendOrPostCallback(this.OnIsAuthorisedOperationCompleted);
+            }
+            this.InvokeAsync("IsAuthorised", new object[] {
+                        serverKey,
+                        hardwareKey}, this.IsAuthorisedOperationCompleted, userState);
+        }
+        
+        private void OnIsAuthorisedOperationCompleted(object arg) {
+            if ((this.IsAuthorisedCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.IsAuthorisedCompleted(this, new IsAuthorisedCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -598,6 +635,32 @@ namespace XiboClient.xmds {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    public delegate void IsAuthorisedCompletedEventHandler(object sender, IsAuthorisedCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class IsAuthorisedCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal IsAuthorisedCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
             }
         }
     }

@@ -48,10 +48,6 @@ namespace XiboClient
 {
     public partial class MainForm : Form
     {
-        private const string UPGRADEVERSION_FOLDER = @"\SMSClientInstaller";
-        private const string UPGRADEVERSION_FILENAME = @"\SMSClientInstaller.zip";
-        private const string UPGRADEVERSION_INSTALLATIONFILENAME = @"\setup.exe";
-
         /// <summary>
         /// Schedule Class
         /// </summary>
@@ -83,6 +79,8 @@ namespace XiboClient
         private CacheManager _cacheManager;
 
         private ClientInfo _clientInfoForm;
+        private const int _PING_INTERVAL = 3000;
+        private static System.Windows.Forms.Timer _pingTimer;
 
         private delegate void ChangeToNextLayoutDelegate(string layoutPath);
         private delegate void ManageOverlaysDelegate(Collection<ScheduleItem> overlays);
@@ -165,6 +163,18 @@ namespace XiboClient
         private void InitializeXibo()
         {
             this.Text = Application.ProductName;
+
+            using (xmds.xmds xmds1 = new xmds.xmds())
+            {
+                if (!xmds1.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey))
+                {
+                    // The timer to ping for admin's approval
+                    _pingTimer = new System.Windows.Forms.Timer();
+                    _pingTimer.Tick += new EventHandler(CheckRegisterStatus);
+                    _pingTimer.Interval = _PING_INTERVAL;
+                    _pingTimer.Start();
+                }
+            }
 
             Thread.CurrentThread.Name = "UI Thread";
 
@@ -273,6 +283,28 @@ namespace XiboClient
                 KeyStore.Instance.ScreenSaver = true;
 
                 MouseInterceptor.Instance.MouseEvent += Instance_MouseEvent;
+            }
+        }
+
+        private void CheckRegisterStatus(Object myObject, EventArgs myEventArgs)
+        {
+            using(xmds.xmds xmds1 = new xmds.xmds())
+            {
+                if (xmds1.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey))
+                {
+                    _pingTimer.Stop();
+                    Process[] processes1 = Process.GetProcessesByName("SMSClientWatchdog");
+
+                    Thread.Sleep(1000);
+                    foreach (var process in processes1)
+                    {
+                        process.Kill();
+                    }
+
+                    Thread.Sleep(1000);
+                    Close();
+                    Process.Start(Application.ExecutablePath);
+                }
             }
         }
 

@@ -73,8 +73,6 @@ namespace XiboClient
                     {
                         CheckRegistry();
                         RunSettings();
-                        //WriteLog("Register player ...");
-                        //RegisterXibo();
                     }
                     else
                     {
