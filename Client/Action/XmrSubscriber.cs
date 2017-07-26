@@ -4,16 +4,12 @@ using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using XiboClient.Action;
 using XiboClient.Log;
-using XiboClient.XmdsAgents;
 
 namespace XiboClient.Logic
 {
@@ -303,7 +299,7 @@ namespace XiboClient.Logic
                         fileStream.Close();
                     }
 
-                    InstallNewVersion();
+                    Task.Factory.StartNew(() => InstallNewVersion());
                 }
             }
         }
@@ -311,22 +307,8 @@ namespace XiboClient.Logic
         private void InstallNewVersion()
         {
             ExtractNewVersionFile();
-            Process[] processes1 = Process.GetProcessesByName("SMSClientWatchdog");
-            Process[] processes2 = Process.GetProcessesByName("SMSClient");
+
             Process.Start(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER + UPGRADEVERSION_INSTALLATIONFILENAME);
-
-            Thread.Sleep(1000);
-            foreach (var process in processes1)
-            {
-                process.Kill();
-            }
-
-            foreach (var process in processes2)
-            {
-                process.Kill();
-            }
-
-            Trace.WriteLine(new LogMessage("MainForm", "Kill all SMS's processes. Ready to install new version"), LogType.Info.ToString());
         }
 
         private void ExtractNewVersionFile()
@@ -336,7 +318,7 @@ namespace XiboClient.Logic
                 Directory.Delete(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER, true);
             }
 
-            Thread.Sleep(1000);            
+            Thread.Sleep(1000);
             System.IO.Compression.ZipFile.ExtractToDirectory(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER);
             Thread.Sleep(1000);
         }

@@ -1,52 +1,105 @@
 ﻿namespace SMSInstallWrapper
 {
-    using Microsoft.Win32;
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
-    using System.Text;
+    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Xml;
 
     class Program
     {
         private const string PRODUCTCODE = "{1169316E-B092-48F5-951D-7CF486C35F93}";
-        private const string SMSINSTALLER = "SMSClientInstaller.msi";
-        private const string ADOBEFLASHINSTALLER = "flashplayer26pp_xa_install.msi";
+        private const string SMSINSTALLER = @"\SMSClientInstaller.msi";
+        private const string ADOBEFLASHINSTALLER = @"\Adobe_Flash_Player_26_PPAPI_sib.msi";
+        private static string currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SMS Client Library\SMSClientInstaller";
 
         static void Main(string[] args)
         {
-            InstallPrerequisites();
+            System.Console.WriteLine("Duong dan hien tai: " + currentDirectory);
+
+            System.Console.WriteLine("Dong chuong trinh hien tai");
+            var task = KillOldProcess();
+            task.Wait();
+
+            System.Console.WriteLine("Cai dat flash");
+            task = InstallFlash();
+            task.Wait();
+
+            Thread.Sleep(1000);
+
+            System.Console.WriteLine("Xoa ban cu");
+            task = UninstallSMSClient();
+            task.Wait();
+
+            Thread.Sleep(1000);
+
+            System.Console.WriteLine("Cai ban moi");
+            task = InstallSMSClient();
+            task.Wait();
+
+            System.Console.WriteLine("Xonggggggggg!");
+
+            Thread.Sleep(10000);
         }
 
-        private static void InstallPrerequisites()
+        private static Task KillOldProcess()
         {
-            using (Process process1 = new Process())
+            var task = Task.Factory.StartNew(() =>
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
+                var processes1 = Process.GetProcessesByName("SMSClientWatchdog");
+                var processes2 = Process.GetProcessesByName("SMSClient");
 
-                startInfo.CreateNoWindow = true;
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.FileName = @"msiexec";
-                startInfo.Arguments = @"/i " + ADOBEFLASHINSTALLER + " /passive";
-                startInfo.UseShellExecute = false;
-                //startInfo.Verb = "runas";
-                process1.EnableRaisingEvents = true;
-                process1.Exited += new EventHandler(CheckToUninstallSMSClient);
-                process1.StartInfo = startInfo;
-                process1.Start();
-                process1.WaitForExit();
-                process1.Close();
+                foreach (var process in processes1)
+                {
+                    process.Kill();
+                }
+
+                foreach (var process in processes2)
+                {
+                    process.Kill();
+                }
+            });
+
+            return task;
+        }
+
+        private static Task InstallFlash()
+        {
+            var file = "\"" + currentDirectory + ADOBEFLASHINSTALLER + "\"";
+
+            if (File.Exists(currentDirectory + ADOBEFLASHINSTALLER))
+            {
+                System.Console.WriteLine(currentDirectory + ADOBEFLASHINSTALLER);
             }
+
+            var task = Task.Factory.StartNew(() =>
+            {
+                using (Process process = new Process())
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.WorkingDirectory = currentDirectory;
+                    startInfo.CreateNoWindow = true;
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.FileName = @"msiexec.exe";
+                    startInfo.Arguments = @"/i " + file + " /passive";
+                    startInfo.UseShellExecute = false;
+                    startInfo.Verb = "runas";
+                    process.EnableRaisingEvents = true;
+                    process.StartInfo = startInfo;
+                    process.Start();
+                    process.WaitForExit();
+                    process.Dispose();
+                }
+            });
+
+            return task;
         }
 
-        private static void CheckToUninstallSMSClient(object sender, System.EventArgs e)
+        private static Task UninstallSMSClient()
         {
-            try
+            var task = Task.Factory.StartNew(() =>
             {
-                using (Process process2 = new Process())
+                using (Process process = new Process())
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo();
 
@@ -56,38 +109,47 @@
                     startInfo.Arguments = @"/x " + PRODUCTCODE + " /passive";
                     startInfo.UseShellExecute = false;
                     startInfo.Verb = "runas";
-                    process2.EnableRaisingEvents = true;
-                    process2.Exited += new EventHandler(InstallSMSClient);
-                    process2.StartInfo = startInfo;
-                    process2.Start();
-                    process2.WaitForExit();
-                    process2.Close();
+                    process.EnableRaisingEvents = true;
+                    process.StartInfo = startInfo;
+                    process.Start();
+                    process.WaitForExit();
+                    process.Dispose();
                 }
-            }
-            catch
-            {
-                InstallSMSClient(null, null);
-            }
+            });
+
+            return task;
         }
 
-        private static void InstallSMSClient(object sender, System.EventArgs e)
+        private static Task InstallSMSClient()
         {
-            using (Process process3 = new Process())
+            var file = "\"" + currentDirectory + SMSINSTALLER + "\"";
+
+            if (File.Exists(currentDirectory + SMSINSTALLER))
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-
-                startInfo.CreateNoWindow = true;
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.FileName = @"msiexec";
-                startInfo.Arguments = @"/i " + SMSINSTALLER + " /passive";
-                startInfo.UseShellExecute = false;
-                //startInfo.Verb = "runas";
-
-                process3.StartInfo = startInfo;
-                process3.Start();
-                process3.WaitForExit();
-                process3.Close();
+                System.Console.WriteLine(currentDirectory + SMSINSTALLER);
             }
+
+            var task = Task.Factory.StartNew(() =>
+            {
+                using (Process process = new Process())
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+
+                    startInfo.CreateNoWindow = true;
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.FileName = @"msiexec";
+                    startInfo.Arguments = @"/i " + file + " /passive";
+                    startInfo.UseShellExecute = false;
+                    startInfo.Verb = "runas";
+
+                    process.StartInfo = startInfo;
+                    process.Start();
+                    process.WaitForExit();
+                    process.Dispose();
+                }
+            });
+
+            return task;
         }
     }
 }
