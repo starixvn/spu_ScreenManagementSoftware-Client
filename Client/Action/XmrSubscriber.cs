@@ -299,7 +299,7 @@ namespace XiboClient.Logic
                         fileStream.Close();
                     }
 
-                    Task.Factory.StartNew(() => InstallNewVersion());
+                    InstallNewVersion();
                 }
             }
         }
