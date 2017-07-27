@@ -38,7 +38,7 @@ namespace XiboClient
     public partial class OptionForm : Form
     {
         private HardwareKey _hardwareKey;
-        private const int _PING_INTERVAL = 1000;
+        private const int _PING_INTERVAL = 500;
         private static System.Windows.Forms.Timer _pingTimer;
 
         public OptionForm()

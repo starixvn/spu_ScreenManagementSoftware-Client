@@ -347,6 +347,7 @@
       <DependentUpon>ClientInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\splash.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +356,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="new-icon.ico" />
+    <EmbeddedResource Include="Resources\splash_origin.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Resources\licence.txt" />
     <None Include="Resources\logo.png" />
   </ItemGroup>

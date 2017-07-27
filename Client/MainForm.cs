@@ -362,10 +362,13 @@ namespace XiboClient
             {
                 using (var xmds = new xmds.xmds())
                 {
-                    if (xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey))
+                    try
                     {
-                        break;
+                        var isAuthorized = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
+                        if (isAuthorized)
+                            break;
                     }
+                    catch { }
                 }
 
                 Thread.Sleep(3000);
@@ -947,8 +950,17 @@ namespace XiboClient
         {
             // We are running with the Default.xml - meaning the schedule doesnt exist
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            Stream resourceStream = assembly.GetManifestResourceStream("XiboClient.Resources.splash.jpg");
-
+            bool isApproved = false;
+            try
+            {
+                using (var xmds = new xmds.xmds())
+                {
+                    isApproved = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
+                }
+            }
+            catch { }
+            
+            Stream resourceStream = isApproved ? assembly.GetManifestResourceStream("XiboClient.Resources.splash_origin.jpg") : assembly.GetManifestResourceStream("XiboClient.Resources.splash.jpg");
             Debug.WriteLine("Showing Splash Screen");
 
             // Load into a stream and then into an Image

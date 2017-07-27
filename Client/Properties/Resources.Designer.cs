@@ -72,7 +72,7 @@ namespace XiboClient.Properties {
         ///Xibo is distributed in the hope that it will be useful,
         ///but WITHOUT ANY WARRANTY; without even the implied warranty of
         ///MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-        ///GNU Affero Gene [rest of string was truncated]&quot;;.
+        ///GNU  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string licence {
             get {

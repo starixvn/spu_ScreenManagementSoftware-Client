@@ -157,6 +157,7 @@ namespace XiboClient
             this.textBoxServerKey.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxServerKey.Location = new System.Drawing.Point(233, 84);
             this.textBoxServerKey.Name = "textBoxServerKey";
+            this.textBoxServerKey.PasswordChar = '*';
             this.textBoxServerKey.Size = new System.Drawing.Size(317, 29);
             this.textBoxServerKey.TabIndex = 2;
             // 
