@@ -68,6 +68,7 @@ namespace XiboClient
         private int _layoutId;
         private bool _screenSaver = false;
         private bool _showingSplash = false;
+        private bool _isApproved = false;
 
         double _layoutWidth;
         double _layoutHeight;
@@ -162,6 +163,17 @@ namespace XiboClient
 
         private void InitializeXibo()
         {
+            try
+            {
+                using (var xmds = new xmds.xmds())
+                {
+                    _isApproved = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
+                }
+            }
+            catch
+            {
+            }
+
             this.Text = Application.ProductName;
 
             //using (xmds.xmds xmds1 = new xmds.xmds())
@@ -248,7 +260,7 @@ namespace XiboClient
                 Trace.Listeners.Add(listener);
             }
 
-//#if !DEBUG
+            //#if !DEBUG
             // Initialise the watchdog
             if (!_screenSaver)
             {
@@ -266,7 +278,7 @@ namespace XiboClient
                     Trace.WriteLine(new LogMessage("MainForm - InitializeXibo", "Cannot start watchdog. E = " + e.Message), LogType.Error.ToString());
                 }
             }
-//#endif
+            //#endif
             // An empty set of overlay regions
             _overlays = new Collection<Region>();
 
@@ -288,7 +300,7 @@ namespace XiboClient
 
         private void CheckRegisterStatus(Object myObject, EventArgs myEventArgs)
         {
-            using(xmds.xmds xmds1 = new xmds.xmds())
+            using (xmds.xmds xmds1 = new xmds.xmds())
             {
                 if (xmds1.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey))
                 {
@@ -358,21 +370,26 @@ namespace XiboClient
         /// <param name="e"></param>
         void MainForm_Shown(object sender, EventArgs e)
         {
-            while (true)
+            var task = Task.Factory.StartNew(() =>
             {
-                using (var xmds = new xmds.xmds())
+                while (true)
                 {
-                    try
+                    using (var xmds = new xmds.xmds())
                     {
-                        var isAuthorized = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
-                        if (isAuthorized)
-                            break;
+                        try
+                        {
+                            var isAuthorized = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
+                            if (isAuthorized)
+                                break;
+                        }
+                        catch { }
                     }
-                    catch { }
-                }
 
-                Thread.Sleep(3000);
-            }
+                    Thread.Sleep(3000);
+                }
+            });
+
+            task.Wait();
 
             // Create a cachemanager
             SetCacheManager();
@@ -950,17 +967,8 @@ namespace XiboClient
         {
             // We are running with the Default.xml - meaning the schedule doesnt exist
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            bool isApproved = false;
-            try
-            {
-                using (var xmds = new xmds.xmds())
-                {
-                    isApproved = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
-                }
-            }
-            catch { }
-            
-            Stream resourceStream = isApproved ? assembly.GetManifestResourceStream("XiboClient.Resources.splash_origin.jpg") : assembly.GetManifestResourceStream("XiboClient.Resources.splash.jpg");
+
+            Stream resourceStream = _isApproved ? assembly.GetManifestResourceStream("XiboClient.Resources.splash_origin.jpg") : assembly.GetManifestResourceStream("XiboClient.Resources.splash.jpg");
             Debug.WriteLine("Showing Splash Screen");
 
             // Load into a stream and then into an Image
