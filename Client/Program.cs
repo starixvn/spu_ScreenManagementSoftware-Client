@@ -262,6 +262,7 @@ namespace XiboClient
 
             return cpuInfo;
         }
+
         private static string GetVolumeSerial(string strDriveLetter)
         {
             Debug.WriteLine("[IN]", "GetVolumeSerial");
@@ -274,6 +275,7 @@ namespace XiboClient
 
             return disk["VolumeSerialNumber"].ToString();
         }
+
         private static string GetMacAddress()
         {
             string macAddresses = string.Empty;

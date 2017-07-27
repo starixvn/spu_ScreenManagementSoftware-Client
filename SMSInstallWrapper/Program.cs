@@ -11,38 +11,41 @@
         private const string PRODUCTCODE = "{1169316E-B092-48F5-951D-7CF486C35F93}";
         private const string SMSINSTALLER = @"\SMSClientInstaller.msi";
         private const string ADOBEFLASHINSTALLER = @"\Adobe_Flash_Player_26_PPAPI_sib.msi";
-        private static string currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SMS Client Library\SMSClientInstaller";
+        private static string currentDirectory = Directory.GetCurrentDirectory();
 
         static void Main(string[] args)
         {
+            if (!File.Exists(currentDirectory + SMSINSTALLER))
+            {
+                currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SMS Client Library\SMSClientInstaller";
+            }
+
             System.Console.WriteLine("Duong dan hien tai: " + currentDirectory);
 
             System.Console.WriteLine("Dong chuong trinh hien tai");
-            var task = KillOldProcess();
-            task.Wait();
-
-            System.Console.WriteLine("Cai dat flash");
-            task = InstallFlash();
-            task.Wait();
+            KillOldProcess();
 
             Thread.Sleep(1000);
 
             System.Console.WriteLine("Xoa ban cu");
-            task = UninstallSMSClient();
-            task.Wait();
+            UninstallSMSClient();
+
+            System.Console.WriteLine("Cai dat flash");
+            InstallFlash();
 
             Thread.Sleep(1000);
 
             System.Console.WriteLine("Cai ban moi");
-            task = InstallSMSClient();
-            task.Wait();
+            InstallSMSClient();
 
             System.Console.WriteLine("Xonggggggggg!");
 
-            Thread.Sleep(10000);
+            Thread.Sleep(1000);
+
+            Restart();
         }
 
-        private static Task KillOldProcess()
+        private static void KillOldProcess()
         {
             var task = Task.Factory.StartNew(() =>
             {
@@ -60,42 +63,42 @@
                 }
             });
 
-            return task;
+            task.Wait();
         }
 
-        private static Task InstallFlash()
+        private static void InstallFlash()
         {
-            var file = "\"" + currentDirectory + ADOBEFLASHINSTALLER + "\"";
-
             if (File.Exists(currentDirectory + ADOBEFLASHINSTALLER))
             {
                 System.Console.WriteLine(currentDirectory + ADOBEFLASHINSTALLER);
-            }
 
-            var task = Task.Factory.StartNew(() =>
-            {
-                using (Process process = new Process())
+                var task = Task.Factory.StartNew(() =>
                 {
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.WorkingDirectory = currentDirectory;
-                    startInfo.CreateNoWindow = true;
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.FileName = @"msiexec.exe";
-                    startInfo.Arguments = @"/i " + file + " /passive";
-                    startInfo.UseShellExecute = false;
-                    startInfo.Verb = "runas";
-                    process.EnableRaisingEvents = true;
-                    process.StartInfo = startInfo;
-                    process.Start();
-                    process.WaitForExit();
-                    process.Dispose();
-                }
-            });
+                    var file = "\"" + currentDirectory + ADOBEFLASHINSTALLER + "\"";
 
-            return task;
+                    using (Process process = new Process())
+                    {
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.WorkingDirectory = currentDirectory;
+                        startInfo.CreateNoWindow = true;
+                        startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        startInfo.FileName = @"msiexec.exe";
+                        startInfo.Arguments = @"/i " + file + " /passive";
+                        startInfo.UseShellExecute = false;
+                        startInfo.Verb = "runas";
+                        process.EnableRaisingEvents = true;
+                        process.StartInfo = startInfo;
+                        process.Start();
+                        process.WaitForExit();
+                        process.Dispose();
+                    }
+                });
+
+                task.Wait();
+            }
         }
 
-        private static Task UninstallSMSClient()
+        private static void UninstallSMSClient()
         {
             var task = Task.Factory.StartNew(() =>
             {
@@ -117,39 +120,48 @@
                 }
             });
 
-            return task;
+            task.Wait();
         }
 
-        private static Task InstallSMSClient()
+        private static void InstallSMSClient()
         {
-            var file = "\"" + currentDirectory + SMSINSTALLER + "\"";
-
             if (File.Exists(currentDirectory + SMSINSTALLER))
             {
                 System.Console.WriteLine(currentDirectory + SMSINSTALLER);
-            }
 
-            var task = Task.Factory.StartNew(() =>
-            {
-                using (Process process = new Process())
+                var task = Task.Factory.StartNew(() =>
                 {
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    var file = "\"" + currentDirectory + SMSINSTALLER + "\"";
 
-                    startInfo.CreateNoWindow = true;
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.FileName = @"msiexec";
-                    startInfo.Arguments = @"/i " + file + " /passive";
-                    startInfo.UseShellExecute = false;
-                    startInfo.Verb = "runas";
+                    using (Process process = new Process())
+                    {
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
 
-                    process.StartInfo = startInfo;
-                    process.Start();
-                    process.WaitForExit();
-                    process.Dispose();
-                }
-            });
+                        startInfo.CreateNoWindow = true;
+                        startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        startInfo.FileName = @"msiexec";
+                        startInfo.Arguments = @"/i " + file + " /passive";
+                        startInfo.UseShellExecute = false;
+                        startInfo.Verb = "runas";
 
-            return task;
+                        process.StartInfo = startInfo;
+                        process.Start();
+                        process.WaitForExit();
+                        process.Dispose();
+                    }
+                });
+
+                task.Wait();
+            }
+        }
+
+        private static void Restart()
+        {
+            var proc = new ProcessStartInfo();
+            proc.WindowStyle = ProcessWindowStyle.Hidden;
+            proc.FileName = "cmd";
+            proc.Arguments = "/C shutdown -f -r -t 0";
+            Process.Start(proc);
         }
     }
 }

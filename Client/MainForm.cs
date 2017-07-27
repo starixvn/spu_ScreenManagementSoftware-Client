@@ -164,17 +164,17 @@ namespace XiboClient
         {
             this.Text = Application.ProductName;
 
-            using (xmds.xmds xmds1 = new xmds.xmds())
-            {
-                if (!xmds1.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey))
-                {
-                    // The timer to ping for admin's approval
-                    _pingTimer = new System.Windows.Forms.Timer();
-                    _pingTimer.Tick += new EventHandler(CheckRegisterStatus);
-                    _pingTimer.Interval = _PING_INTERVAL;
-                    _pingTimer.Start();
-                }
-            }
+            //using (xmds.xmds xmds1 = new xmds.xmds())
+            //{
+            //    if (!xmds1.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey))
+            //    {
+            //        // The timer to ping for admin's approval
+            //        _pingTimer = new System.Windows.Forms.Timer();
+            //        _pingTimer.Tick += new EventHandler(CheckRegisterStatus);
+            //        _pingTimer.Interval = _PING_INTERVAL;
+            //        _pingTimer.Start();
+            //    }
+            //}
 
             Thread.CurrentThread.Name = "UI Thread";
 
@@ -358,6 +358,19 @@ namespace XiboClient
         /// <param name="e"></param>
         void MainForm_Shown(object sender, EventArgs e)
         {
+            while (true)
+            {
+                using (var xmds = new xmds.xmds())
+                {
+                    if (xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey))
+                    {
+                        break;
+                    }
+                }
+
+                Thread.Sleep(3000);
+            }
+
             // Create a cachemanager
             SetCacheManager();
 
