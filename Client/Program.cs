@@ -76,7 +76,6 @@ namespace XiboClient
                     }
                     else
                     {
-                        WriteLog("There is some args: " + args[0].ToLower().Trim().Substring(0, 2));
                         switch (args[0].ToLower().Trim().Substring(0, 2))
                         {
                             // Preview the screen saver
@@ -121,7 +120,6 @@ namespace XiboClient
                     Application.AddMessageFilter(KeyStore.Instance);
 
                     // No arguments were passed - we run the usual client
-                    //WriteLog("Run Client");
                     RunClient();
                 }
             }
@@ -181,9 +179,6 @@ namespace XiboClient
                 ApplicationSettings.Default.ServerKey,
                 ApplicationSettings.Default.HardwareKey,
                 ApplicationSettings.Default.DisplayName,
-                //"JohnTest",
-                //ApplicationSettings.Default.HardwareKey,
-                //"LongLuuDesktop",
                 "windows",
                 ApplicationSettings.Default.ClientVersion,
                 ApplicationSettings.Default.ClientCodeVersion,
@@ -191,8 +186,6 @@ namespace XiboClient
                 hardwareKey.MacAddress,
                 hardwareKey.Channel,
                 hardwareKey.getXmrPublicKey());
-
-            WriteLog("Register completed ...");
 
             XmrSubscriber a = new XmrSubscriber();
             a.Run();
@@ -204,14 +197,6 @@ namespace XiboClient
             //Process.Start(Application.ExecutablePath);
         }
 
-        private static void WriteLog(string content)
-        {
-            using (var sw = new StreamWriter(File.Open(@"C:\SMSLog.txt", FileMode.Append), Encoding.GetEncoding("iso-8859-1")))
-            {
-                sw.WriteLine(DateTime.Now.ToString() + ": " + content);
-            }
-        }
-
         private static void RunSettings()
         {
             // If we are showing the options form, enable visual styles
@@ -219,27 +204,6 @@ namespace XiboClient
 
             Trace.WriteLine(new LogMessage("Main", "Options Started"), LogType.Info.ToString());
             Application.Run(new OptionForm());
-        }
-
-        private static void RunSettingsByLong()
-        {
-            Trace.WriteLine(new LogMessage("Main", "Options Started"), LogType.Info.ToString());
-
-            var optionForm = new OptionForm();
-
-            optionForm.textBoxXmdsUri.Text = ApplicationSettings.Default.ServerUri;
-            optionForm.textBoxServerKey.Text = ApplicationSettings.Default.ServerKey;
-            optionForm.textBoxLibraryPath.Text = ApplicationSettings.Default.LibraryPath;
-            string systemDriveLetter = Path.GetPathRoot(Environment.SystemDirectory);
-
-            // Calculate the Hardware key from the CPUID and Volume Serial
-            optionForm.tbHardwareKey.Text = Hashes.MD5(GetCPUId() + GetVolumeSerial(systemDriveLetter[0].ToString()) + GetMacAddress());
-
-            //Application.Run(optionForm);
-            
-            optionForm.buttonSaveSettings.PerformClick();
-            //System.Threading.Thread.Sleep(1000);
-            //optionForm.button1.PerformClick();
         }
 
         private static string GetCPUId()
