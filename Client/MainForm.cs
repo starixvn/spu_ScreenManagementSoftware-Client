@@ -161,6 +161,29 @@ namespace XiboClient
             InitializeXibo();
         }
 
+        public MainForm(string register)
+        {
+            HardwareKey _hardwareKey = new HardwareKey();
+            using (var xmds1 = new xmds.xmds())
+            {
+                xmds1.RegisterDisplayAsync(
+                   ApplicationSettings.Default.ServerKey,
+                   ApplicationSettings.Default.HardwareKey,
+                   ApplicationSettings.Default.DisplayName,
+                   "windows",
+                   ApplicationSettings.Default.ClientVersion,
+                   ApplicationSettings.Default.ClientCodeVersion,
+                   Environment.OSVersion.ToString(),
+                   _hardwareKey.MacAddress,
+                   _hardwareKey.Channel,
+                   _hardwareKey.getXmrPublicKey());
+            }
+
+            InitializeComponent();
+            InitializeXibo();
+            this.Close();
+        }
+
         private void InitializeXibo()
         {
             try
@@ -172,6 +195,21 @@ namespace XiboClient
             }
             catch
             {
+                HardwareKey _hardwareKey = new HardwareKey();
+                using (var xmds1 = new xmds.xmds())
+                {
+                    xmds1.RegisterDisplayAsync(
+                       ApplicationSettings.Default.ServerKey,
+                       ApplicationSettings.Default.HardwareKey,
+                       ApplicationSettings.Default.DisplayName,
+                       "windows",
+                       ApplicationSettings.Default.ClientVersion,
+                       ApplicationSettings.Default.ClientCodeVersion,
+                       Environment.OSVersion.ToString(),
+                       _hardwareKey.MacAddress,
+                       _hardwareKey.Channel,
+                       _hardwareKey.getXmrPublicKey());
+                }
             }
 
             this.Text = Application.ProductName;
@@ -260,6 +298,7 @@ namespace XiboClient
                 Trace.Listeners.Add(listener);
             }
 
+            /*
             //#if !DEBUG
             // Initialise the watchdog
             if (!_screenSaver)
@@ -279,6 +318,8 @@ namespace XiboClient
                 }
             }
             //#endif
+             */
+ 
             // An empty set of overlay regions
             _overlays = new Collection<Region>();
 
@@ -380,7 +421,25 @@ namespace XiboClient
                         {
                             var isAuthorized = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
                             if (isAuthorized)
+                            {
+                                if (!_screenSaver)
+                                {
+                                    try
+                                    {
+                                        // Update/write the status.json file
+                                        File.WriteAllText(Path.Combine(ApplicationSettings.Default.LibraryPath, "status.json"), "{\"lastActivity\":\"" + DateTime.Now.ToString() + "\"}");
+
+                                        // Start watchdog
+                                        WatchDogManager.Start();
+                                        Trace.WriteLine(new LogMessage("MainForm - Init Watchdog", "Init watchdog successfully"), LogType.Info.ToString());
+                                    }
+                                    catch (Exception ee)
+                                    {
+                                        Trace.WriteLine(new LogMessage("MainForm - InitializeXibo", "Cannot start watchdog. E = " + ee.Message), LogType.Error.ToString());
+                                    }
+                                }
                                 break;
+                            }
                         }
                         catch { }
                     }

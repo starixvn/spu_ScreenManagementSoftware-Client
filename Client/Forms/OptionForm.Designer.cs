@@ -475,7 +475,6 @@ namespace XiboClient
             this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

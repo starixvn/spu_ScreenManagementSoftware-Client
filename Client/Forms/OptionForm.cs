@@ -38,7 +38,7 @@ namespace XiboClient
     public partial class OptionForm : Form
     {
         private HardwareKey _hardwareKey;
-        private const int _PING_INTERVAL = 500;
+        private const int _PING_INTERVAL = 100;
         private static System.Windows.Forms.Timer _pingTimer;
 
         public OptionForm()
@@ -125,7 +125,6 @@ namespace XiboClient
                 var resultStatusMessage = RegisterAgent.ProcessRegisterXml(e.Result);
                 tbStatus.AppendText(resultStatusMessage);
 
-                Thread.Sleep(1000);
                 Close();
                 Process.Start(Application.ExecutablePath);
             }

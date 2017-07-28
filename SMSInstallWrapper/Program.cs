@@ -20,27 +20,27 @@
                 currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SMS Client Library\SMSClientInstaller";
             }
 
-            System.Console.WriteLine("Duong dan hien tai: " + currentDirectory);
+            System.Console.WriteLine("Current Directory: " + currentDirectory);
 
-            System.Console.WriteLine("Dong chuong trinh hien tai");
+            System.Console.WriteLine("Current App's Directory");
             KillOldProcess();
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
-            System.Console.WriteLine("Xoa ban cu");
+            System.Console.WriteLine("Remove the old version");
             UninstallSMSClient();
 
-            System.Console.WriteLine("Cai dat flash");
+            System.Console.WriteLine("Install Adobe Flash Player");
             InstallFlash();
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
-            System.Console.WriteLine("Cai ban moi");
+            System.Console.WriteLine("Install the new version");
             InstallSMSClient();
 
-            System.Console.WriteLine("Xonggggggggg!");
+            System.Console.WriteLine("Done!");
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
             Restart();
         }

@@ -63,7 +63,6 @@ namespace XiboClient
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 #endif
             Trace.Listeners.Add(new XiboTraceListener());
-            
             try
             {
                 // Check for any passed arguments
@@ -203,9 +202,8 @@ namespace XiboClient
             Application.EnableVisualStyles(); // donot wanna show the form
 
             Trace.WriteLine(new LogMessage("Main", "Options Started"), LogType.Info.ToString());
-            Application.Run(new OptionForm());
+            Application.Run(new MainForm("Register"));            
         }
-
         private static string GetCPUId()
         {
             Debug.WriteLine("[IN]", "GetCPUId");
