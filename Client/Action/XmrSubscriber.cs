@@ -325,13 +325,11 @@ namespace XiboClient.Logic
 
         private void RestartClient()
         {
-            Process[] processes = Process.GetProcessesByName("SMSClient");
-
-            Thread.Sleep(1000);
-            foreach (var process in processes)
-            {
-                process.Kill();
-            }
+            var proc = new ProcessStartInfo();
+            proc.WindowStyle = ProcessWindowStyle.Hidden;
+            proc.FileName = "cmd";
+            proc.Arguments = "/C shutdown -f -r -t 0";
+            Process.Start(proc);
         }
 
         public void Restart()
