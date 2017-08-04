@@ -28,6 +28,15 @@
   <message name="IsAuthorisedResponse">
     <part name="success" type="xsd:boolean" />
   </message>
+  <message name="StoreClientCpuRamUsageRequest">
+    <part name="hardwareKey" type="xsd:string" />
+    <part name="cpuUsage" type="xsd:int" />
+    <part name="ramTotal" type="xsd:int" />
+    <part name="ramAvailable" type="xsd:int" />
+  </message>
+  <message name="StoreClientCpuRamUsageResponse">
+    <part name="success" type="xsd:boolean" />
+  </message>
   <message name="RequiredFilesRequest">
     <part name="serverKey" type="xsd:string" />
     <part name="hardwareKey" type="xsd:string" />
@@ -126,6 +135,11 @@
       <input message="tns:RegisterDisplayRequest" />
       <output message="tns:RegisterDisplayResponse" />
     </operation>
+    <operation name="StoreClientCpuRamUsage">
+      <documentation>Store the Clients CPU and RAM usage</documentation>
+      <input message="tns:StoreClientCpuRamUsageRequest" />
+      <output message="tns:StoreClientCpuRamUsageResponse" />
+    </operation>
     <operation name="IsAuthorised">
       <documentation>Check the Display is authorised</documentation>
       <input message="tns:IsAuthorisedRequest" />
@@ -200,6 +214,15 @@
     </operation>
     <operation name="IsAuthorised">
       <soap:operation soapAction="urn:xmds#IsAuthorised" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="urn:xmds" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:xmds" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="StoreClientCpuRamUsage">
+      <soap:operation soapAction="urn:xmds#StoreClientCpuRamUsage" style="rpc" />
       <input>
         <soap:body use="encoded" namespace="urn:xmds" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>

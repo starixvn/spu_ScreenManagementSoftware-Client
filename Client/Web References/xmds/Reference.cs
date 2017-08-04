@@ -31,6 +31,8 @@ namespace XiboClient.xmds {
         
         private System.Threading.SendOrPostCallback RegisterDisplayOperationCompleted;
         
+        private System.Threading.SendOrPostCallback StoreClientCpuRamUsageOperationCompleted;
+        
         private System.Threading.SendOrPostCallback IsAuthorisedOperationCompleted;
         
         private System.Threading.SendOrPostCallback RequiredFilesOperationCompleted;
@@ -95,6 +97,9 @@ namespace XiboClient.xmds {
         
         /// <remarks/>
         public event RegisterDisplayCompletedEventHandler RegisterDisplayCompleted;
+        
+        /// <remarks/>
+        public event StoreClientCpuRamUsageCompletedEventHandler StoreClientCpuRamUsageCompleted;
         
         /// <remarks/>
         public event IsAuthorisedCompletedEventHandler IsAuthorisedCompleted;
@@ -177,6 +182,42 @@ namespace XiboClient.xmds {
             if ((this.RegisterDisplayCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.RegisterDisplayCompleted(this, new RegisterDisplayCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:xmds#StoreClientCpuRamUsage", RequestNamespace="urn:xmds", ResponseNamespace="urn:xmds")]
+        [return: System.Xml.Serialization.SoapElementAttribute("success")]
+        public bool StoreClientCpuRamUsage(string hardwareKey, int cpuUsage, int ramTotal, int ramAvailable) {
+            object[] results = this.Invoke("StoreClientCpuRamUsage", new object[] {
+                        hardwareKey,
+                        cpuUsage,
+                        ramTotal,
+                        ramAvailable});
+            return ((bool)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, int ramTotal, int ramAvailable) {
+            this.StoreClientCpuRamUsageAsync(hardwareKey, cpuUsage, ramTotal, ramAvailable, null);
+        }
+        
+        /// <remarks/>
+        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, int ramTotal, int ramAvailable, object userState) {
+            if ((this.StoreClientCpuRamUsageOperationCompleted == null)) {
+                this.StoreClientCpuRamUsageOperationCompleted = new System.Threading.SendOrPostCallback(this.OnStoreClientCpuRamUsageOperationCompleted);
+            }
+            this.InvokeAsync("StoreClientCpuRamUsage", new object[] {
+                        hardwareKey,
+                        cpuUsage,
+                        ramTotal,
+                        ramAvailable}, this.StoreClientCpuRamUsageOperationCompleted, userState);
+        }
+        
+        private void OnStoreClientCpuRamUsageOperationCompleted(object arg) {
+            if ((this.StoreClientCpuRamUsageCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.StoreClientCpuRamUsageCompleted(this, new StoreClientCpuRamUsageCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -635,6 +676,32 @@ namespace XiboClient.xmds {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    public delegate void StoreClientCpuRamUsageCompletedEventHandler(object sender, StoreClientCpuRamUsageCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class StoreClientCpuRamUsageCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal StoreClientCpuRamUsageCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
             }
         }
     }

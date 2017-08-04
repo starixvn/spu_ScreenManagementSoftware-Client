@@ -145,6 +145,7 @@
     <Compile Include="Action\PlayerActionInterface.cs" />
     <Compile Include="Action\RevertToSchedulePlayerAction.cs" />
     <Compile Include="Control\EmbeddedServer.cs" />
+    <Compile Include="Control\ResourceUsageManager.cs" />
     <Compile Include="Control\WatchDogManager.cs" />
     <Compile Include="Error\DefaultLayoutException.cs" />
     <Compile Include="Forms\About.cs">
