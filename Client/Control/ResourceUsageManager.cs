@@ -5,12 +5,11 @@
 
     class ResourceUsageManager
     {
-        private const int RESOURCEUSAGE_INTERVAL = 20000;
         private static System.Timers.Timer resourceUsageTimer;
 
         public static void Start()
         {
-            resourceUsageTimer = new System.Timers.Timer(RESOURCEUSAGE_INTERVAL);
+            resourceUsageTimer = new System.Timers.Timer(ApplicationSettings.Default.ResourceUsageInterval);
             resourceUsageTimer.Elapsed += CollectClientResourceUsage;
             resourceUsageTimer.Start();            
         }
@@ -26,11 +25,15 @@
                 cpuUsage = (int)cpuCounter.NextValue();
                 long ramTotal = (long)(new Microsoft.VisualBasic.Devices.ComputerInfo()).TotalPhysicalMemory / 1024;
                 long ramAvailable = (long)ramCounter.NextValue() * 1024;
+                int ramUsage = (int)(ramAvailable / ramTotal);
 
-                using(xmds.xmds xmds1 = new xmds.xmds())
+                if (ApplicationSettings.Default.IsForcedSendResourceUsage || cpuUsage >= ApplicationSettings.Default.BenchmarkCPUUsage || ramUsage >= ApplicationSettings.Default.BenchmarkRAMUsage)
                 {
-                    var result = xmds1.StoreClientCpuRamUsage(ApplicationSettings.Default.HardwareKey, cpuUsage, ramTotal, ramAvailable);
-                    Trace.WriteLine(new LogMessage("Client Resource Collector", "CPU Usage: " + cpuUsage + "%; RAM Available: "+ ramAvailable), LogType.Info.ToString());
+                    using (xmds.xmds xmds1 = new xmds.xmds())
+                    {
+                        var result = xmds1.StoreClientCpuRamUsage(ApplicationSettings.Default.HardwareKey, cpuUsage, ramTotal, ramAvailable);
+                        Trace.WriteLine(new LogMessage("Client Resource Collector", "CPU Usage: " + cpuUsage + "%; RAM Available: " + ramAvailable), LogType.Info.ToString());
+                    }
                 }
             }
             catch (Exception err)

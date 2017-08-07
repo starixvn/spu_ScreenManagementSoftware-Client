@@ -559,5 +559,12 @@ namespace XiboClient
 
         // Settings HASH
         public string Hash { get; set; }
+
+        // Collecting Resource Usage
+
+        public bool IsForcedSendResourceUsage { get; set; }
+        public int ResourceUsageInterval { get; set; }
+        public int BenchmarkCPUUsage { get; set; }
+        public int BenchmarkRAMUsage { get; set; }
     }
 }

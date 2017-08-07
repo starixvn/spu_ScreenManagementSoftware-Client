@@ -53,4 +53,8 @@
   <XmrNetworkAddress></XmrNetworkAddress>
   <EmbeddedServerPort>9696</EmbeddedServerPort>
   <ScreenShotSize>0</ScreenShotSize>
+  <BenchmarkCPUUsage>80</BenchmarkCPUUsage>
+  <BenchmarkRAMUsage>80</BenchmarkRAMUsage>
+  <IsForcedSendResourceUsage>false</IsForcedSendResourceUsage>
+  <ResourceUsageInterval>60000</ResourceUsageInterval>
 </ApplicationSettings>
