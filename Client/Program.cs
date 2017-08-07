@@ -33,6 +33,7 @@ using System.Windows.Forms;
 using System.Xml;
 using XiboClient.Logic;
 using XiboClient.Properties;
+using XiboClient.Control;
 
 namespace XiboClient
 {
@@ -130,7 +131,7 @@ namespace XiboClient
             // Always flush at the end
             Trace.WriteLine(new LogMessage("Main", "Application Finished"), LogType.Info.ToString());
             Trace.Flush();
-
+            
             return 0;
         }
 

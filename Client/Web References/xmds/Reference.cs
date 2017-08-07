@@ -188,7 +188,7 @@ namespace XiboClient.xmds {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:xmds#StoreClientCpuRamUsage", RequestNamespace="urn:xmds", ResponseNamespace="urn:xmds")]
         [return: System.Xml.Serialization.SoapElementAttribute("success")]
-        public bool StoreClientCpuRamUsage(string hardwareKey, int cpuUsage, int ramTotal, int ramAvailable) {
+        public bool StoreClientCpuRamUsage(string hardwareKey, int cpuUsage, long ramTotal, long ramAvailable) {
             object[] results = this.Invoke("StoreClientCpuRamUsage", new object[] {
                         hardwareKey,
                         cpuUsage,
@@ -198,12 +198,12 @@ namespace XiboClient.xmds {
         }
         
         /// <remarks/>
-        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, int ramTotal, int ramAvailable) {
+        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, long ramTotal, long ramAvailable) {
             this.StoreClientCpuRamUsageAsync(hardwareKey, cpuUsage, ramTotal, ramAvailable, null);
         }
         
         /// <remarks/>
-        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, int ramTotal, int ramAvailable, object userState) {
+        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, long ramTotal, long ramAvailable, object userState) {
             if ((this.StoreClientCpuRamUsageOperationCompleted == null)) {
                 this.StoreClientCpuRamUsageOperationCompleted = new System.Threading.SendOrPostCallback(this.OnStoreClientCpuRamUsageOperationCompleted);
             }

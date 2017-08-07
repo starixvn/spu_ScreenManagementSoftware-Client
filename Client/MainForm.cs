@@ -431,6 +431,7 @@ namespace XiboClient
 
                                         // Start watchdog
                                         WatchDogManager.Start();
+                                        ResourceUsageManager.Start();
                                         Trace.WriteLine(new LogMessage("MainForm - Init Watchdog", "Init watchdog successfully"), LogType.Info.ToString());
                                     }
                                     catch (Exception ee)
