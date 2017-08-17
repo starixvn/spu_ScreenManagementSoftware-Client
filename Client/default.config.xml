@@ -55,6 +55,6 @@
   <ScreenShotSize>0</ScreenShotSize>
   <BenchmarkCPUUsage>80</BenchmarkCPUUsage>
   <BenchmarkRAMUsage>80</BenchmarkRAMUsage>
-  <IsForcedSendResourceUsage>false</IsForcedSendResourceUsage>
+  <IsForcedSendResourceUsage>true</IsForcedSendResourceUsage>
   <ResourceUsageInterval>60000</ResourceUsageInterval>
 </ApplicationSettings>

@@ -239,8 +239,11 @@ namespace XiboClient.Logic
                         case "UpgradeVersion":
                             UpgradeNewVersion();
                             break;
-                        case "RestartClient":
+                        case "RestartPC":
                             RestartClient();
+                            break;
+                        case "RestartPlayer":
+                            RestartPlayer();
                             break;
                         default:
                             new Thread(new ThreadStart(command.Run)).Start();
@@ -330,6 +333,17 @@ namespace XiboClient.Logic
             proc.FileName = "cmd";
             proc.Arguments = "/C shutdown -f -r -t 0";
             Process.Start(proc);
+        }
+
+        private void RestartPlayer()
+        {
+            Process[] processes = Process.GetProcessesByName("SMSClient");
+
+            Thread.Sleep(1000);
+            foreach (var process in processes)
+            {
+                process.Kill();
+            }
         }
 
         public void Restart()
