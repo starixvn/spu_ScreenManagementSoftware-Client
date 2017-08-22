@@ -328,25 +328,27 @@ namespace XiboClient.xmds {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:xmds#CheckAndUpgradeNewVersion", RequestNamespace="urn:xmds", ResponseNamespace="urn:xmds")]
         [return: System.Xml.Serialization.SoapElementAttribute("file", DataType="base64Binary")]
-        public byte[] CheckAndUpgradeNewVersion(string currentVersion, bool isForced) {
+        public byte[] CheckAndUpgradeNewVersion(string currentVersion, string fileName, bool isForced) {
             object[] results = this.Invoke("CheckAndUpgradeNewVersion", new object[] {
                         currentVersion,
+                        fileName,
                         isForced});
             return ((byte[])(results[0]));
         }
         
         /// <remarks/>
-        public void CheckAndUpgradeNewVersionAsync(string currentVersion, bool isForced) {
-            this.CheckAndUpgradeNewVersionAsync(currentVersion, isForced, null);
+        public void CheckAndUpgradeNewVersionAsync(string currentVersion, string fileName, bool isForced) {
+            this.CheckAndUpgradeNewVersionAsync(currentVersion, fileName, isForced, null);
         }
         
         /// <remarks/>
-        public void CheckAndUpgradeNewVersionAsync(string currentVersion, bool isForced, object userState) {
+        public void CheckAndUpgradeNewVersionAsync(string currentVersion, string fileName, bool isForced, object userState) {
             if ((this.CheckAndUpgradeNewVersionOperationCompleted == null)) {
                 this.CheckAndUpgradeNewVersionOperationCompleted = new System.Threading.SendOrPostCallback(this.OnCheckAndUpgradeNewVersionOperationCompleted);
             }
             this.InvokeAsync("CheckAndUpgradeNewVersion", new object[] {
                         currentVersion,
+                        fileName,
                         isForced}, this.CheckAndUpgradeNewVersionOperationCompleted, userState);
         }
         

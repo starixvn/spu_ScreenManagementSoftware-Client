@@ -237,7 +237,9 @@ namespace XiboClient.Logic
                     switch (code)
                     {
                         case "UpgradeVersion":
-                            UpgradeNewVersion();
+                            string upgradeVersionFileName = "";
+                            obj.TryGetValue("actionAdditionalInfo", out upgradeVersionFileName);
+                            UpgradeNewVersion(upgradeVersionFileName);
                             break;
                         case "RestartPC":
                             RestartClient();
@@ -284,7 +286,7 @@ namespace XiboClient.Logic
             }
         }
 
-        private void UpgradeNewVersion()
+        private void UpgradeNewVersion(string upgradeVersionFileName)
         {
             using (xmds.xmds xmds = new xmds.xmds())
             {
@@ -292,7 +294,7 @@ namespace XiboClient.Logic
                 xmds.Url = ApplicationSettings.Default.XiboClient_xmds_xmds;
                 xmds.UseDefaultCredentials = true;
 
-                var installerFile = xmds.CheckAndUpgradeNewVersion(ApplicationSettings.Default.ClientVersion + "." + ApplicationSettings.Default.ClientCodeVersion.ToString(), false);
+                var installerFile = xmds.CheckAndUpgradeNewVersion(ApplicationSettings.Default.ClientVersion + "." + ApplicationSettings.Default.ClientCodeVersion.ToString(), upgradeVersionFileName, false);
 
                 if (installerFile != null)
                 {

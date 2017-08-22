@@ -57,6 +57,7 @@
   </message>
   <message name="UpgradeRequest">
     <part name="currentVersion" type="xsd:string" />
+    <part name="fileName" type="xsd:string" />
     <part name="isForced" type="xsd:boolean" />
   </message>
   <message name="UpgradeResponse">

@@ -185,7 +185,7 @@ namespace XiboClient
         }
 
         private void InitializeXibo()
-        {
+        {            
             try
             {
                 using (var xmds = new xmds.xmds())
@@ -319,7 +319,7 @@ namespace XiboClient
             }
             //#endif
              */
- 
+
             // An empty set of overlay regions
             _overlays = new Collection<Region>();
 
