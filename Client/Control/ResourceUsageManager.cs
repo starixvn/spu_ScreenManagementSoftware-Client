@@ -11,7 +11,7 @@
         {
             resourceUsageTimer = new System.Timers.Timer(ApplicationSettings.Default.ResourceUsageInterval);
             resourceUsageTimer.Elapsed += CollectClientResourceUsage;
-            resourceUsageTimer.Start();            
+            resourceUsageTimer.Start();
         }
 
         private static void CollectClientResourceUsage(object sender, System.Timers.ElapsedEventArgs e)
