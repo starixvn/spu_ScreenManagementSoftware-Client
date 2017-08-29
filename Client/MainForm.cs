@@ -185,7 +185,7 @@ namespace XiboClient
         }
 
         private void InitializeXibo()
-        {            
+        {
             try
             {
                 using (var xmds = new xmds.xmds())
@@ -1217,6 +1217,8 @@ namespace XiboClient
 
                 // Take the ones we currently have up and remove them if they aren't in the new list
                 // We use a for loop so that we are able to remove the region from the collection
+                var removedOverlays = new Collection<Region>();
+
                 for (int i = 0; i < _overlays.Count; i++)
                 {
                     Region region = _overlays[i];
@@ -1237,8 +1239,13 @@ namespace XiboClient
                         region.Clear();
                         region.Dispose();
                         Controls.Remove(region);
-                        _overlays.Remove(region);
+                        removedOverlays.Add(region);
                     }
+                }
+
+                foreach (var region in removedOverlays)
+                {
+                    _overlays.Remove(region);
                 }
 
                 // Take the ones that are in the new list and add them
