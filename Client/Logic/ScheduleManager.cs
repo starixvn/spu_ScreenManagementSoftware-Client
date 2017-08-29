@@ -283,6 +283,8 @@ namespace XiboClient
         /// <returns></returns>
         private bool IsNewScheduleAvailable()
         {
+            bool forceChange = false;
+
             // Remove completed change actions
             removeLayoutChangeActionIfComplete();
 
@@ -333,10 +335,8 @@ namespace XiboClient
             // Load a new overlay schedule
             Collection<ScheduleItem> overlaySchedule = LoadNewOverlaySchedule();
 
-            bool forceChange = false;
-
             // If the current schedule is empty, always overwrite
-            if (_currentSchedule.Count == 0)
+            if (_currentSchedule.Count == 0 || _currentOverlaySchedule.Count != overlaySchedule.Count)
                 forceChange = true;
 
             // Log
@@ -369,7 +369,6 @@ namespace XiboClient
                 if (!overlaySchedule.Contains(layout))
                     forceChange = true;
             }
-
 
             // Set the new schedule
             _currentSchedule = newSchedule;
