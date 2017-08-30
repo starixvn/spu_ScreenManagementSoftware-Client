@@ -45,7 +45,8 @@ namespace XiboClient
         public Video(RegionOptions options)
             : base(options.width, options.height, options.top, options.left)
         {
-            _filePath = Uri.UnescapeDataString(options.uri).Replace('+',' ');
+            Loaded = true;
+            _filePath = Uri.UnescapeDataString(options.uri).Replace('+', ' ');
             _duration = options.duration;
 
             _videoPlayer = new VideoPlayer();
@@ -82,11 +83,11 @@ namespace XiboClient
                 Duration = 1;
                 _detectEnd = true;
             }
-                
+
             // Render media as normal (starts the timer, shows the form, etc)
             base.RenderMedia();
 
-            try 
+            try
             {
                 // Start Player
                 _videoPlayer.StartPlayer(_filePath);
@@ -99,7 +100,7 @@ namespace XiboClient
             catch (Exception ex)
             {
                 Trace.WriteLine(new LogMessage("Video - RenderMedia", ex.Message), LogType.Error.ToString());
-                
+
                 // Unable to start video - expire this media immediately
                 throw;
             }

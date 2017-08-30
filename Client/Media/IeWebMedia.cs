@@ -39,6 +39,9 @@ namespace XiboClient
         private int _documentCompletedCount = 0;
         private bool _reloadOnXmdsRefresh = false;
 
+        public delegate void LoadedDelegate();
+        public event LoadedDelegate LoadedEvent;
+
         public IeWebMedia(RegionOptions options)
             : base(options.width, options.height, options.top, options.left)
         {
@@ -101,6 +104,8 @@ namespace XiboClient
         /// <param name="e"></param>
         void _webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            Loaded = true;
+
             _documentCompletedCount++;
 
             // Prevent double document completions
@@ -167,7 +172,7 @@ namespace XiboClient
 
             // Refresh the local file cache with any new dimensions, etc.
             UpdateCacheIfNecessary();
-            
+
             return true;
         }
 

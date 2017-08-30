@@ -46,6 +46,9 @@ namespace XiboClient
         public delegate void DurationElapsedDelegate();
         public event DurationElapsedDelegate DurationElapsedEvent;
 
+        public delegate void LoadedDelegate();
+        public event LoadedDelegate LoadedEvent;
+
         private Media _media;
         private RegionOptions _options;
         private bool _hasExpired = false;
@@ -104,12 +107,12 @@ namespace XiboClient
         /// </summary>
         public RegionOptions regionOptions
         {
-            get 
-            { 
-                return this._options; 
+            get
+            {
+                return this._options;
             }
-            set 
-            { 
+            set
+            {
                 _options = value;
 
                 EvalOptions();
@@ -136,7 +139,7 @@ namespace XiboClient
         ///<summary>
         /// Evaulates the change in options
         ///</summary>
-        private void EvalOptions() 
+        private void EvalOptions()
         {
             // First time
             bool initialMedia = (_currentSequence == -1);
@@ -154,7 +157,7 @@ namespace XiboClient
             // Loop around trying to start the next media
             bool startSuccessful = false;
             int countTries = 0;
-            
+
             while (!startSuccessful)
             {
                 // If we go round this the same number of times as media objects, then we are unsuccessful and should exception
@@ -212,7 +215,7 @@ namespace XiboClient
                 // First thing we do is stop the current stat record
                 if (!initialMedia)
                     CloseCurrentStatRecord();
-                
+
                 // Start the new media
                 try
                 {
@@ -281,14 +284,14 @@ namespace XiboClient
                     Trace.WriteLine(new LogMessage("Region - SetNextMediaNodeInOptions", "Unable to dispose of audio item"), LogType.Audit.ToString());
                 }
             }
-            
+
             // Empty the options node
             _options.Audio.Clear();
 
             // Get a media node
             bool validNode = false;
             int numAttempts = 0;
-            
+
             // Loop through all the nodes in order
             while (numAttempts < _options.mediaNodes.Count)
             {
@@ -309,6 +312,9 @@ namespace XiboClient
                     if (DurationElapsedEvent != null)
                         DurationElapsedEvent();
 
+                    if (LoadedEvent != null)
+                        LoadedEvent();
+
                     // We want to continue on to show the next media (unless the duration elapsed event triggers a region change)
                     if (_layoutExpired)
                         return true;
@@ -319,14 +325,14 @@ namespace XiboClient
                 XmlAttributeCollection nodeAttributes = mediaNode.Attributes;
 
                 // Set the media id
-                if (nodeAttributes["id"].Value != null) 
+                if (nodeAttributes["id"].Value != null)
                     _options.mediaid = nodeAttributes["id"].Value;
 
                 // Check isnt blacklisted
                 if (_blackList.BlackListed(_options.mediaid))
                 {
                     Trace.WriteLine(new LogMessage("Region - SetNextMediaNode", string.Format("MediaID [{0}] has been blacklisted.", _options.mediaid)), LogType.Error.ToString());
-                    
+
                     // Increment the number of attempts and try again
                     numAttempts++;
 
@@ -507,7 +513,7 @@ namespace XiboClient
                         options.Dictionary.Add("volume", audioNode.Attributes["volume"].Value);
 
                     Media audioMedia = new Audio(options);
-                    
+
                     // Bind to the media complete event
                     audioMedia.DurationElapsedEvent += audio_DurationElapsedEvent;
 
@@ -543,7 +549,7 @@ namespace XiboClient
             Media media;
 
             Trace.WriteLine(new LogMessage("Region - CreateNextMediaNode", string.Format("Creating new media: {0}, {1}", options.type, options.mediaid)), LogType.Audit.ToString());
-            
+
             if (options.render == "html")
             {
                 media = new IeWebMedia(options);
@@ -618,7 +624,9 @@ namespace XiboClient
 
             // Add event handler for when this completes
             media.DurationElapsedEvent += new Media.DurationElapsedDelegate(media_DurationElapsedEvent);
-            
+
+            media.LoadedEvent += new Media.LoadedDelegate(media_LoadedEvent);
+
             return media;
         }
 
@@ -786,6 +794,11 @@ namespace XiboClient
             }
         }
 
+        private void media_LoadedEvent()
+        {
+            LoadedEvent();
+        }
+
         /// <summary>
         /// Clears the Region of anything that it shouldnt still have... 
         /// called when Destroying a Layout and when Removing an Overlay
@@ -857,6 +870,7 @@ namespace XiboClient
 
                     // Unbind and dispose
                     _media.DurationElapsedEvent -= media_DurationElapsedEvent;
+                    _media.LoadedEvent -= media_LoadedEvent;
                     _media.Dispose();
                     _media = null;
 
@@ -868,7 +882,7 @@ namespace XiboClient
                 }
                 finally
                 {
-                    if (_media != null) 
+                    if (_media != null)
                         _media = null;
                 }
             }

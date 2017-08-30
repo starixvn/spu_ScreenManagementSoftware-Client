@@ -610,6 +610,21 @@ namespace XiboClient
             ChangeToNextLayout(layoutPath);
         }
 
+        delegate void SetEnableCallback(System.Windows.Forms.Control control, bool enable);
+
+
+        private void SetVisible(System.Windows.Forms.Control control, bool enable)
+        {
+            if (control.InvokeRequired)
+            {
+                control.BeginInvoke(new SetEnableCallback(SetVisible), control, enable);
+            }
+            else
+            {
+                control.Visible = enable;
+            }
+        }
+
         /// <summary>
         /// Change to the next layout
         /// </summary>
@@ -728,6 +743,11 @@ namespace XiboClient
         /// </summary>
         private void PrepareLayout(string layoutPath)
         {
+            if (!Controls.Contains(labelPleaseWait))
+            {
+                Controls.Add(labelPleaseWait);
+            }
+
             // Get this layouts XML
             XmlDocument layoutXml = new XmlDocument();
             DateTime layoutModifiedTime;
@@ -938,6 +958,7 @@ namespace XiboClient
 
                 Region temp = new Region(ref _statLog, ref _cacheManager);
                 temp.DurationElapsedEvent += new Region.DurationElapsedDelegate(temp_DurationElapsedEvent);
+                temp.LoadedEvent += new Region.LoadedDelegate(temp_LoadedEvent);
                 temp.BorderStyle = _borderStyle;
 
                 Debug.WriteLine("Created new region", "MainForm - Prepare Layout");
@@ -963,6 +984,12 @@ namespace XiboClient
             {
                 region.BringToFront();
             }
+        }
+
+        private void temp_LoadedEvent()
+        {
+            if (Controls.Contains(labelPleaseWait))
+                Controls.Remove(labelPleaseWait);
         }
 
         /// <summary>

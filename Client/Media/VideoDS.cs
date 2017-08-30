@@ -42,6 +42,7 @@ namespace XiboClient
         public VideoDS(RegionOptions options)
             : base(options.width, options.height, options.top, options.left)
         {
+            Loaded = true;
             _filesPlayed = 0;
             _videoPlayer = new VideoPlayer();
             _videoPlayer.Width = options.width;

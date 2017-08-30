@@ -34,6 +34,11 @@ namespace XiboClient
         public event DurationElapsedDelegate DurationElapsedEvent;
         protected int _filesPlayed = 1;
 
+        public delegate void LoadedDelegate();
+        public event LoadedDelegate LoadedEvent;
+
+        public bool Loaded;
+
         /// <summary>
         /// Gets or Sets the duration of this media. Will be 0 if ""
         /// </summary>
@@ -75,6 +80,8 @@ namespace XiboClient
         // Private Timer
         protected Timer _timer;
         private bool _timerStarted = false;
+
+        protected Timer _timer2;
 
         /// <summary>
         /// Refresh Rate
@@ -144,7 +151,7 @@ namespace XiboClient
 
             Width = width;
             Height = height;
-            Location = new System.Drawing.Point(0, 0);        
+            Location = new System.Drawing.Point(0, 0);
 
             // Transparency
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
@@ -174,6 +181,12 @@ namespace XiboClient
                 _timer.Tick += new EventHandler(timer_Tick);
 
                 _timerStarted = true;
+
+                _timer2 = new Timer();
+                _timer2.Interval = (100);
+                _timer2.Start();
+
+                _timer2.Tick += new EventHandler(timer2_Tick);
             }
         }
 
@@ -186,6 +199,9 @@ namespace XiboClient
             {
                 _timer.Stop();
                 _timer.Start();
+
+                _timer2.Stop();
+                _timer2.Start();
             }
             else
             {
@@ -196,7 +212,7 @@ namespace XiboClient
         /// <summary>
         /// Render Media call
         /// </summary>
-        public virtual void RenderMedia() 
+        public virtual void RenderMedia()
         {
             // Start the timer for this media
             StartTimer();
@@ -217,6 +233,19 @@ namespace XiboClient
 
             // Signal that this Media Item's duration has elapsed
             SignalElapsedEvent();
+        }
+
+        protected virtual void timer2_Tick(object sender, EventArgs e)
+        {
+            // Once it has expired we might as well stop the timer?
+            _timer2.Stop();
+
+            // Signal that this Media Item's duration has elapsed
+            if(Loaded)
+            {
+                if (LoadedEvent != null)
+                    LoadedEvent();
+            }
         }
 
         /// <summary>
