@@ -796,7 +796,9 @@ namespace XiboClient
 
         private void media_LoadedEvent()
         {
-            LoadedEvent();
+            _media.LoadedEvent -= media_LoadedEvent;
+            if (LoadedEvent != null)
+                LoadedEvent();
         }
 
         /// <summary>

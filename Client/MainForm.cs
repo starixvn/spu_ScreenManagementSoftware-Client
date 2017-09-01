@@ -746,6 +746,7 @@ namespace XiboClient
             if (!Controls.Contains(labelPleaseWait))
             {
                 Controls.Add(labelPleaseWait);
+                Trace.WriteLine(new LogMessage("PLEASE WAIT", "PrepareLayout"), LogType.Error.ToString());
             }
 
             // Get this layouts XML
@@ -818,7 +819,8 @@ namespace XiboClient
             }
 
             // New region and region options objects
-            _regions = new Collection<Region>();
+            var regions = new Collection<Region>();
+            _regions = _regions ?? new Collection<Region>();
             RegionOptions options = new RegionOptions();
             options.LayoutModifiedDate = layoutModifiedTime;
 
@@ -960,16 +962,46 @@ namespace XiboClient
                 temp.DurationElapsedEvent += new Region.DurationElapsedDelegate(temp_DurationElapsedEvent);
                 temp.LoadedEvent += new Region.LoadedDelegate(temp_LoadedEvent);
                 temp.BorderStyle = _borderStyle;
+                temp.hash = _cacheManager.GetMD5(_layoutId + ".xlf");
 
                 Debug.WriteLine("Created new region", "MainForm - Prepare Layout");
 
                 // Dont be fooled, this innocent little statement kicks everything off
                 temp.regionOptions = options;
 
-                _regions.Add(temp);
-                Controls.Add(temp);
+                regions.Add(temp);
 
                 Debug.WriteLine("Adding region", "MainForm - Prepare Layout");
+            }
+
+            if (_regions.Count > 0)
+            {
+                var oldRegion = _regions[0];
+                var newRegion = regions[0];
+
+                if (newRegion == null || oldRegion.scheduleId != newRegion.scheduleId || newRegion.hash != oldRegion.hash || oldRegion.regionOptions.regionId != newRegion.regionOptions.regionId)
+                {
+                    foreach (var item in _regions)
+                    {
+                        Controls.Remove(item);
+                    }
+
+                    foreach (var item in regions)
+                    {
+                        Controls.Add(item);
+                    }
+
+                    _regions = regions;
+                }
+            }
+            else
+            {
+                foreach (var item in regions)
+                {
+                    Controls.Add(item);
+                }
+
+                _regions = regions;
             }
 
             // We have loaded a layout and therefore are no longer showing the splash screen
@@ -1139,6 +1171,8 @@ namespace XiboClient
         /// </summary>
         private void DestroyLayout()
         {
+            return;
+
             Debug.WriteLine("Destroying Layout", "MainForm - DestoryLayout");
 
             if (_regions == null)

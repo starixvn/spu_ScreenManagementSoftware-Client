@@ -104,8 +104,6 @@ namespace XiboClient
         /// <param name="e"></param>
         void _webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            Loaded = true;
-
             _documentCompletedCount++;
 
             // Prevent double document completions
@@ -121,6 +119,8 @@ namespace XiboClient
 
             // Show the browser
             _webBrowser.Visible = true;
+
+            Loaded = true;
         }
 
         /// <summary>
