@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 
 namespace XiboClient.Logic
@@ -8,6 +9,10 @@ namespace XiboClient.Logic
     [Serializable]
     public class Command
     {
+        private const string UPGRADEVERSION_FOLDER = @"\SMSClientInstaller";
+        private const string UPGRADEVERSION_FILENAME = @"\SMSClientInstaller.zip";
+        private const string UPGRADEVERSION_INSTALLATIONFILENAME = @"\SMSInstallWrapper.exe";
+
         public string Code;
         public string CommandString;
         public string Validation;
@@ -45,6 +50,10 @@ namespace XiboClient.Logic
             else if (Code == "RestartPlayer")
             {
                 return RestartPlayer();
+            }
+            else if (Code == "UpgradeVersion")
+            {
+                return GetUpdate();
             }
             else
             {
@@ -108,6 +117,52 @@ namespace XiboClient.Logic
             }
 
             return true;
+        }
+
+        private bool GetUpdate()
+        {
+            var upgradeVersionFileName = AdditionalInfo;
+
+            using (xmds.xmds xmds = new xmds.xmds())
+            {
+                xmds.Credentials = null;
+                xmds.Url = ApplicationSettings.Default.XiboClient_xmds_xmds;
+                xmds.UseDefaultCredentials = true;
+
+                var installerFile = xmds.CheckAndUpgradeNewVersion(ApplicationSettings.Default.ClientVersion + "." + ApplicationSettings.Default.ClientCodeVersion.ToString(), upgradeVersionFileName, false);
+
+                if (installerFile != null)
+                {
+                    using (FileStream fileStream = File.Open(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, FileMode.Create, FileAccess.Write, FileShare.Read))
+                    {
+                        fileStream.Write(installerFile, 0, installerFile.Length);
+                        fileStream.Close();
+                    }
+
+                    InstallNewVersion();
+                }
+            }
+
+            return true;
+        }
+
+        private void InstallNewVersion()
+        {
+            ExtractNewVersionFile();
+
+            Process.Start(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER + UPGRADEVERSION_INSTALLATIONFILENAME);
+        }
+
+        private void ExtractNewVersionFile()
+        {
+            if (Directory.Exists(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER))
+            {
+                Directory.Delete(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER, true);
+            }
+
+            Thread.Sleep(1000);
+            System.IO.Compression.ZipFile.ExtractToDirectory(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FOLDER);
+            Thread.Sleep(1000);
         }
     }
 }

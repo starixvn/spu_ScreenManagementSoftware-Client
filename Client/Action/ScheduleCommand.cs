@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace XiboClient.Logic
 {
@@ -12,8 +9,10 @@ namespace XiboClient.Logic
         public String Code { get; set; }
         public Command Command { get; set; }
         public int ScheduleId { get; set; }
+        public string AdditionalInfo { get; set; }
 
         private bool _run = false;
+
         public bool HasRun
         {
             get
@@ -34,6 +33,7 @@ namespace XiboClient.Logic
             {
                 // Get a fresh command from settings
                 Command = Command.GetByCode(Code);
+                Command.AdditionalInfo = AdditionalInfo;
 
                 // Run the command.
                 success = Command.Run();
