@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using System.Threading;
 
 namespace XiboClient.Logic
 {
@@ -12,6 +11,7 @@ namespace XiboClient.Logic
         public string Code;
         public string CommandString;
         public string Validation;
+        public string AdditionalInfo;
 
         public bool notifyStatus()
         {
@@ -41,6 +41,10 @@ namespace XiboClient.Logic
                 {
                     return true;
                 }
+            }
+            else if (Code == "RestartPlayer")
+            {
+                return RestartPlayer();
             }
             else
             {
@@ -91,6 +95,19 @@ namespace XiboClient.Logic
             }
 
             throw new KeyNotFoundException("Command Not Found");
+        }
+
+        private bool RestartPlayer()
+        {
+            Process[] processes = Process.GetProcessesByName("SMSClient");
+
+            Thread.Sleep(500);
+            foreach (var process in processes)
+            {
+                process.Kill();
+            }
+
+            return true;
         }
     }
 }

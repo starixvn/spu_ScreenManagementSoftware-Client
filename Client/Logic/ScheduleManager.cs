@@ -7,7 +7,7 @@
  * Xibo is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * any later version. 
+ * any later version.
  *
  * Xibo is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,21 +17,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Xibo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Security.Cryptography;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Diagnostics;
-using XiboClient.Log;
 using System.Threading;
-using XiboClient.Logic;
-using System.Globalization;
+using System.Xml;
 using XiboClient.Action;
+using XiboClient.Log;
+using XiboClient.Logic;
+using XiboClient.XmdsAgents;
 
 /// 17/02/12 Dan Added a static method to get the schedule XML from disk into a string and to write it to the disk
 /// 20/02/12 Dan Tweaked log types on a few trace messages
@@ -42,28 +41,33 @@ namespace XiboClient
     /// <summary>
     /// Schedule manager controls the currently running schedule
     /// </summary>
-    class ScheduleManager
+    internal class ScheduleManager
     {
         #region "Constructor"
 
         // Thread Logic
         public static object _locker = new object();
+
         private bool _forceStop = false;
         private ManualResetEvent _manualReset = new ManualResetEvent(false);
 
         // Event for new schedule
         public delegate void OnNewScheduleAvailableDelegate();
+
         public event OnNewScheduleAvailableDelegate OnNewScheduleAvailable;
 
         public delegate void OnRefreshScheduleDelegate();
+
         public event OnRefreshScheduleDelegate OnRefreshSchedule;
 
         // Event for Subscriber inactive
         public delegate void OnScheduleManagerCheckCompleteDelegate();
+
         public event OnScheduleManagerCheckCompleteDelegate OnScheduleManagerCheckComplete;
 
         // Member Varialbes
         private string _location;
+
         private Collection<LayoutChangePlayerAction> _layoutChangeActions;
         private Collection<OverlayLayoutPlayerAction> _overlayLayoutActions;
         private Collection<ScheduleItem> _layoutSchedule;
@@ -75,7 +79,7 @@ namespace XiboClient
         private bool _refreshSchedule;
         private CacheManager _cacheManager;
         private DateTime _lastScreenShotDate;
-        
+
         /// <summary>
         /// The currently playing layout Id
         /// </summary>
@@ -89,9 +93,13 @@ namespace XiboClient
             set
             {
                 _clientInfoForm = value;
+                _scheduleAgent.ClientInfoForm = value;
             }
         }
+
         private ClientInfo _clientInfoForm;
+
+        private ScheduleAndFilesAgent _scheduleAgent;
 
         /// <summary>
         /// Creates a new schedule Manager
@@ -114,9 +122,11 @@ namespace XiboClient
             _overlayLayoutActions = new Collection<OverlayLayoutPlayerAction>();
 
             _lastScreenShotDate = DateTime.MinValue;
+
+            _scheduleAgent = MakeAgent();
         }
 
-        #endregion
+        #endregion "Constructor"
 
         #region "Properties"
 
@@ -157,7 +167,7 @@ namespace XiboClient
                 return _currentOverlaySchedule;
             }
         }
-        
+
         /// <summary>
         /// Get or Set the current layout id
         /// </summary>
@@ -174,7 +184,7 @@ namespace XiboClient
             }
         }
 
-        #endregion
+        #endregion "Properties"
 
         #region "Methods"
 
@@ -210,6 +220,8 @@ namespace XiboClient
                     {
                         // If we are restarting, reset
                         _manualReset.Reset();
+
+                        _scheduleAgent.scheduleAgent();
 
                         Trace.WriteLine(new LogMessage("ScheduleManager - Run", "Schedule Timer Ticked"), LogType.Audit.ToString());
 
@@ -277,6 +289,15 @@ namespace XiboClient
             Trace.WriteLine(new LogMessage("ScheduleManager - Run", "Thread Stopped"), LogType.Info.ToString());
         }
 
+        private ScheduleAndFilesAgent MakeAgent()
+        {
+            var agent = new ScheduleAndFilesAgent();
+            agent.ScheduleLocation = _location;
+            agent.CurrentScheduleManager = this;
+
+            return agent;
+        }
+
         /// <summary>
         /// Determine if there is a new schedule available
         /// </summary>
@@ -318,7 +339,7 @@ namespace XiboClient
                 }
                 catch (Exception ex)
                 {
-                    Trace.WriteLine(new LogMessage("IsNewScheduleAvailable", string.Format("Unable to load schedule from disk: {0}", ex.Message)), 
+                    Trace.WriteLine(new LogMessage("IsNewScheduleAvailable", string.Format("Unable to load schedule from disk: {0}", ex.Message)),
                         LogType.Error.ToString());
 
                     // If we cant load the schedule from disk then use an empty schedule.
@@ -353,7 +374,7 @@ namespace XiboClient
                 }
                 currentScheduleString.Add(layout.ToString());
             }
-            
+
             foreach (ScheduleItem layout in _currentSchedule)
             {
                 newScheduleString.Add(layout.ToString());
@@ -361,7 +382,6 @@ namespace XiboClient
 
             Trace.WriteLine(new LogMessage("ScheduleManager - IsNewScheduleAvailable", "Layouts in Current Schedule: " + string.Join(Environment.NewLine, currentScheduleString)), LogType.Audit.ToString());
             Trace.WriteLine(new LogMessage("ScheduleManager - IsNewScheduleAvailable", "Layouts in New Schedule: " + string.Join(Environment.NewLine, newScheduleString)), LogType.Audit.ToString());
-
 
             // Are all the items that were in the _currentOverlaySchedule still there?
             foreach (ScheduleItem layout in _currentOverlaySchedule)
@@ -396,7 +416,7 @@ namespace XiboClient
             Collection<ScheduleItem> newSchedule = new Collection<ScheduleItem>();
             Collection<ScheduleItem> prioritySchedule = new Collection<ScheduleItem>();
             Collection<ScheduleItem> layoutChangeSchedule = new Collection<ScheduleItem>();
-            
+
             // Temporary default Layout incase we have no layout nodes.
             ScheduleItem defaultLayout = new ScheduleItem();
 
@@ -417,46 +437,46 @@ namespace XiboClient
                 // If we haven't already assessed this layout before, then check that it is valid
                 if (!validLayoutIds.Contains(layout.id))
                 {
-                if (!ApplicationSettings.Default.ExpireModifiedLayouts && layout.id == CurrentLayoutId)
-                {
-                    Trace.WriteLine(new LogMessage("ScheduleManager - LoadNewSchedule", "Skipping validity test for current layout."), LogType.Audit.ToString());
-                }
-                else
-                {
-                    // Is the layout valid in the cachemanager?
-                    try
+                    if (!ApplicationSettings.Default.ExpireModifiedLayouts && layout.id == CurrentLayoutId)
                     {
-                        if (!_cacheManager.IsValidPath(layout.id + ".xlf"))
+                        Trace.WriteLine(new LogMessage("ScheduleManager - LoadNewSchedule", "Skipping validity test for current layout."), LogType.Audit.ToString());
+                    }
+                    else
+                    {
+                        // Is the layout valid in the cachemanager?
+                        try
                         {
+                            if (!_cacheManager.IsValidPath(layout.id + ".xlf"))
+                            {
+                                invalidLayouts.Add(layout.id);
+                                Trace.WriteLine(new LogMessage("ScheduleManager - LoadNewSchedule", "Layout invalid: " + layout.id), LogType.Info.ToString());
+                                continue;
+                            }
+                        }
+                        catch
+                        {
+                            // Ignore this layout.. raise an error?
                             invalidLayouts.Add(layout.id);
-                            Trace.WriteLine(new LogMessage("ScheduleManager - LoadNewSchedule", "Layout invalid: " + layout.id), LogType.Info.ToString());
+                            Trace.WriteLine(new LogMessage("ScheduleManager - LoadNewSchedule", "Unable to determine if layout is valid or not"), LogType.Error.ToString());
                             continue;
                         }
-                    }
-                    catch
-                    {
-                        // Ignore this layout.. raise an error?
-                        invalidLayouts.Add(layout.id);
-                        Trace.WriteLine(new LogMessage("ScheduleManager - LoadNewSchedule", "Unable to determine if layout is valid or not"), LogType.Error.ToString());
-                        continue;
-                    }
 
-                    // Check dependents
-                    bool validDependents = true;
-                    foreach (string dependent in layout.Dependents)
-                    {
-                        if (!string.IsNullOrEmpty(dependent) && !_cacheManager.IsValidPath(dependent))
+                        // Check dependents
+                        bool validDependents = true;
+                        foreach (string dependent in layout.Dependents)
                         {
-                            invalidLayouts.Add(layout.id);
-                            Trace.WriteLine(new LogMessage("ScheduleManager - LoadNewSchedule", "Layout has invalid dependent: " + dependent), LogType.Info.ToString());
+                            if (!string.IsNullOrEmpty(dependent) && !_cacheManager.IsValidPath(dependent))
+                            {
+                                invalidLayouts.Add(layout.id);
+                                Trace.WriteLine(new LogMessage("ScheduleManager - LoadNewSchedule", "Layout has invalid dependent: " + dependent), LogType.Info.ToString());
 
-                            validDependents = false;
-                            break;
+                                validDependents = false;
+                                break;
+                            }
                         }
-                    }
 
-                    if (!validDependents)
-                        continue;
+                        if (!validDependents)
+                            continue;
                     }
                 }
 
@@ -528,7 +548,7 @@ namespace XiboClient
             Collection<ScheduleItem> newSchedule = new Collection<ScheduleItem>();
             Collection<ScheduleItem> prioritySchedule = new Collection<ScheduleItem>();
             Collection<ScheduleItem> overlayActionSchedule = new Collection<ScheduleItem>();
-            
+
             // Store the valid layout id's
             List<int> validLayoutIds = new List<int>();
             List<int> invalidLayouts = new List<int>();
@@ -660,6 +680,7 @@ namespace XiboClient
                         command.Date = DateTime.Parse(attributes["date"].Value, CultureInfo.InvariantCulture);
                         command.Code = attributes["code"].Value;
                         command.ScheduleId = int.Parse(attributes["scheduleid"].Value);
+                        command.Command.AdditionalInfo = attributes["commandAdditionalInfo"]?.Value;
 
                         // Add to the collection
                         _commands.Add(command);
@@ -714,14 +735,14 @@ namespace XiboClient
             temp.layoutFile = ApplicationSettings.Default.LibraryPath + @"\" + layoutFile + @".xlf";
             temp.id = int.Parse(layoutFile);
 
-                    // Dependents
-                    if (attributes["dependents"] != null && !string.IsNullOrEmpty(attributes["dependents"].Value))
-                    {
-                        foreach (string dependent in attributes["dependents"].Value.Split(','))
-                        {
-                            temp.Dependents.Add(dependent);
-                        }
-                    }
+            // Dependents
+            if (attributes["dependents"] != null && !string.IsNullOrEmpty(attributes["dependents"].Value))
+            {
+                foreach (string dependent in attributes["dependents"].Value.Split(','))
+                {
+                    temp.Dependents.Add(dependent);
+                }
+            }
 
             // Get attributes that only exist on the default
             if (temp.NodeName != "default")
@@ -789,7 +810,7 @@ namespace XiboClient
                     continue;
 
                 DateTime actionCreateDt = DateTime.Parse(action.createdDt);
-                
+
                 ScheduleItem item = new ScheduleItem();
                 item.FromDt = actionCreateDt.AddSeconds(-1);
                 item.ToDt = DateTime.MaxValue;
@@ -862,9 +883,9 @@ namespace XiboClient
         private XmlDocument GetScheduleXml()
         {
             Debug.WriteLine("Getting the Schedule XML", LogType.Info.ToString());
-            
+
             XmlDocument scheduleXml;
-            
+
             // Check the schedule file exists
             if (File.Exists(_location))
             {
@@ -1089,6 +1110,6 @@ namespace XiboClient
             }
         }
 
-        #endregion
+        #endregion "Methods"
     }
 }

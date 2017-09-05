@@ -382,7 +382,7 @@ namespace XiboClient.XmdsAgents
         /// <summary>
         /// Schedule Agent
         /// </summary>
-        private void scheduleAgent()
+        public void scheduleAgent()
         {
             try
             {
