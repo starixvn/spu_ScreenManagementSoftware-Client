@@ -10,7 +10,7 @@
     {
         private const string PRODUCTCODE = "{1169316E-B092-48F5-951D-7CF486C35F93}";
         private const string SMSINSTALLER = @"\SMSClientInstaller.msi";
-        private const string ADOBEFLASHINSTALLER = @"\Adobe_Flash_Player_26_PPAPI_sib.msi";
+        //private const string ADOBEFLASHINSTALLER = @"\Adobe_Flash_Player_26_PPAPI_sib.msi";
         private static string currentDirectory = Directory.GetCurrentDirectory();
 
         static void Main(string[] args)
@@ -19,7 +19,7 @@
             {
                 currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SMS Client Library\SMSClientInstaller";
             }
-
+            
             System.Console.WriteLine("Current Directory: " + currentDirectory);
 
             System.Console.WriteLine("Current App's Directory");
@@ -30,8 +30,8 @@
             System.Console.WriteLine("Remove the old version");
             UninstallSMSClient();
 
-            System.Console.WriteLine("Install Adobe Flash Player");
-            InstallFlash();
+            //System.Console.WriteLine("Install Adobe Flash Player");
+            //InstallFlash();
 
             Thread.Sleep(500);
 
@@ -66,37 +66,37 @@
             task.Wait();
         }
 
-        private static void InstallFlash()
-        {
-            if (File.Exists(currentDirectory + ADOBEFLASHINSTALLER))
-            {
-                System.Console.WriteLine(currentDirectory + ADOBEFLASHINSTALLER);
+        //private static void InstallFlash()
+        //{
+        //    if (File.Exists(currentDirectory + ADOBEFLASHINSTALLER))
+        //    {
+        //        System.Console.WriteLine(currentDirectory + ADOBEFLASHINSTALLER);
 
-                var task = Task.Factory.StartNew(() =>
-                {
-                    var file = "\"" + currentDirectory + ADOBEFLASHINSTALLER + "\"";
+        //        var task = Task.Factory.StartNew(() =>
+        //        {
+        //            var file = "\"" + currentDirectory + ADOBEFLASHINSTALLER + "\"";
 
-                    using (Process process = new Process())
-                    {
-                        ProcessStartInfo startInfo = new ProcessStartInfo();
-                        startInfo.WorkingDirectory = currentDirectory;
-                        startInfo.CreateNoWindow = true;
-                        startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                        startInfo.FileName = @"msiexec.exe";
-                        startInfo.Arguments = @"/i " + file + " /passive";
-                        startInfo.UseShellExecute = false;
-                        startInfo.Verb = "runas";
-                        process.EnableRaisingEvents = true;
-                        process.StartInfo = startInfo;
-                        process.Start();
-                        process.WaitForExit();
-                        process.Dispose();
-                    }
-                });
+        //            using (Process process = new Process())
+        //            {
+        //                ProcessStartInfo startInfo = new ProcessStartInfo();
+        //                startInfo.WorkingDirectory = currentDirectory;
+        //                startInfo.CreateNoWindow = true;
+        //                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+        //                startInfo.FileName = @"msiexec.exe";
+        //                startInfo.Arguments = @"/i " + file + " /passive";
+        //                startInfo.UseShellExecute = false;
+        //                startInfo.Verb = "runas";
+        //                process.EnableRaisingEvents = true;
+        //                process.StartInfo = startInfo;
+        //                process.Start();
+        //                process.WaitForExit();
+        //                process.Dispose();
+        //            }
+        //        });
 
-                task.Wait();
-            }
-        }
+        //        task.Wait();
+        //    }
+        //}
 
         private static void UninstallSMSClient()
         {

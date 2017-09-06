@@ -40,8 +40,8 @@ namespace XiboClient
         private List<string> _globalProperties;
 
         // Application Specific Settings we want to protect
-        private string _clientVersion = "1.8.4";
-        private string _version = "5";
+        private string _clientVersion = "1.8.5";
+        private string _version = "0";
         private int _clientCodeVersion = 134;
 
         public string ClientVersion { set { _clientVersion = value;} get { return _clientVersion; } }
