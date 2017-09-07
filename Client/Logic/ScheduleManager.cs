@@ -292,7 +292,7 @@ namespace XiboClient
         private ScheduleAndFilesAgent MakeAgent()
         {
             var agent = new ScheduleAndFilesAgent();
-            agent.CurrentCacheManager = _cacheManager;          
+            agent.CurrentCacheManager = _cacheManager;
             agent.CurrentScheduleManager = this;
             agent.ScheduleLocation = _location;
             agent.HardwareKey = new HardwareKey().Key;
@@ -682,7 +682,7 @@ namespace XiboClient
                         command.Date = DateTime.Parse(attributes["date"].Value, CultureInfo.InvariantCulture);
                         command.Code = attributes["code"].Value;
                         command.ScheduleId = int.Parse(attributes["scheduleid"].Value);
-                        command.AdditionalInfo = attributes["AdditionalInfo"]?.Value;
+                        command.AdditionalInfo = attributes["AdditionalInfo"] == null ? null : attributes["AdditionalInfo"].Value;
 
                         // Add to the collection
                         _commands.Add(command);
