@@ -7,7 +7,7 @@
  * Xibo is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * any later version. 
+ * any later version.
  *
  * Xibo is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,17 +17,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Xibo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Serialization;
 using XiboClient.Logic;
 
 namespace XiboClient
@@ -41,13 +38,24 @@ namespace XiboClient
 
         // Application Specific Settings we want to protect
         private string _clientVersion = "1.8.5";
-        private string _version = "0";
-        private int _clientCodeVersion = 134;
 
-        public string ClientVersion { set { _clientVersion = value;} get { return _clientVersion; } }
+        private string _version = "5";
+        private int _clientCodeVersion = 138;
+
+        public string ClientVersion
+        {
+            set
+            {
+                _clientVersion = value;
+            }
+            get
+            {
+                return _clientVersion;
+            }
+        }
+
         public string Version { get { return _version; } }
         public int ClientCodeVersion { set { _clientCodeVersion = value; } get { return _clientCodeVersion; } }
-
 
         private string _serverUri;
 
@@ -317,6 +325,7 @@ namespace XiboClient
         }
 
         #region "The Settings"
+
         public int XmdsResetTimeout { get; set; }
 
         public decimal SizeX { get; set; }
@@ -336,9 +345,9 @@ namespace XiboClient
         public string RequiredFilesFile { get; set; }
         public string VideoRenderingEngine { get; set; }
 
-        public string LibraryPath 
-        { 
-            get 
+        public string LibraryPath
+        {
+            get
             {
                 if (_libraryPath == "DEFAULT")
                 {
@@ -354,14 +363,12 @@ namespace XiboClient
                 }
 
                 return _libraryPath;
-            } 
-            set 
+            }
+            set
             {
-                _libraryPath = value; 
-            } 
+                _libraryPath = value;
+            }
         }
-
-
 
         public string ServerKey
         {
@@ -392,8 +399,8 @@ namespace XiboClient
         /// <summary>
         /// Server Address
         /// </summary>
-        public string ServerUri 
-        { 
+        public string ServerUri
+        {
             get
             {
                 return (string.IsNullOrEmpty(_serverUri)) ? "http://localhost" : _serverUri;
@@ -420,14 +427,16 @@ namespace XiboClient
 
         // Download window
         public string DisplayTimeZone { get; set; }
+
         public string DownloadStartWindow { get; set; }
         public string DownloadEndWindow { get; set; }
 
         // Embedded web server config
         public int EmbeddedServerPort { get; set; }
-        public string EmbeddedServerAddress 
-        { 
-            get 
+
+        public string EmbeddedServerAddress
+        {
+            get
             {
                 return "http://localhost:" + ((EmbeddedServerPort == 0) ? 9696 : EmbeddedServerPort) + "/";
             }
@@ -533,6 +542,7 @@ namespace XiboClient
 
         // XMDS Status Flags
         private DateTime _xmdsLastConnection;
+
         public DateTime XmdsLastConnection { get { return _xmdsLastConnection; } set { _xmdsErrorCountSinceSuccessful = 0; _xmdsLastConnection = value; } }
         private int _xmdsErrorCountSinceSuccessful = 0;
         public int XmdsErrorCountSinceSuccessful { get { return _xmdsErrorCountSinceSuccessful; } }
@@ -555,7 +565,7 @@ namespace XiboClient
 
         public List<Command> Commands { get; set; }
 
-        #endregion
+        #endregion "The Settings"
 
         // Settings HASH
         public string Hash { get; set; }
