@@ -642,7 +642,7 @@ namespace XiboClient
                 // Destroy the Current Layout
                 try
                 {
-                    if (!(_overlayStarts || _overlayEnds) && layoutPath != _currentLayout) DestroyLayout();
+                    if (!(_overlayStarts || _overlayEnds)) DestroyLayout();
                 }
                 catch (Exception e)
                 {
@@ -660,11 +660,10 @@ namespace XiboClient
                 // Prepare the next layout
                 try
                 {
-                    if (!(_overlayStarts || _overlayEnds) && layoutPath != _currentLayout) PrepareLayout(layoutPath);
+                    if (!(_overlayStarts || _overlayEnds)) PrepareLayout(layoutPath);
 
                     _clientInfoForm.CurrentLayoutId = layoutPath;
                     _schedule.CurrentLayoutId = _layoutId;
-                    _currentLayout = layoutPath;
                 }
                 catch (DefaultLayoutException)
                 {
@@ -742,7 +741,7 @@ namespace XiboClient
             if (!Controls.Contains(labelPleaseWait))
             {
                 Controls.Add(labelPleaseWait);
-                Trace.WriteLine(new LogMessage("PLEASE WAIT", "PrepareLayout"), LogType.Error.ToString());
+                //Trace.WriteLine(new LogMessage("PLEASE WAIT", "PrepareLayout"), LogType.Info.ToString());
             }
 
             // Get this layouts XML

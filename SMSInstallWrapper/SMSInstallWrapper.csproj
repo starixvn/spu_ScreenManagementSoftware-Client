@@ -60,11 +60,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Version.tt">
+    <Content Include="version.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.txt</LastGenOutput>
     </Content>
-    <Content Include="Version.txt">
+    <Content Include="version.txt">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Version.tt</DependentUpon>
