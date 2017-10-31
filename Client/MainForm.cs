@@ -75,6 +75,9 @@ namespace XiboClient
         double _scaleFactor;
         private Size _clientSize;
 
+        private bool _overlayStart = false;
+        private bool _overlayEnd = false;
+
         private StatLog _statLog;
         private Stat _stat;
         private CacheManager _cacheManager;
@@ -612,7 +615,6 @@ namespace XiboClient
 
         delegate void SetEnableCallback(System.Windows.Forms.Control control, bool enable);
 
-
         private void SetVisible(System.Windows.Forms.Control control, bool enable)
         {
             if (control.InvokeRequired)
@@ -647,7 +649,7 @@ namespace XiboClient
                 // Destroy the Current Layout
                 try
                 {
-                    DestroyLayout();
+                    if(!_overlayStart && !_overlayEnd) DestroyLayout();
                 }
                 catch (Exception e)
                 {
@@ -665,10 +667,13 @@ namespace XiboClient
                 // Prepare the next layout
                 try
                 {
-                    PrepareLayout(layoutPath);
+                    if (!_overlayStart && !_overlayEnd)
+                    {
+                        PrepareLayout(layoutPath);
 
-                    _clientInfoForm.CurrentLayoutId = layoutPath;
-                    _schedule.CurrentLayoutId = _layoutId;
+                        _clientInfoForm.CurrentLayoutId = layoutPath;
+                        _schedule.CurrentLayoutId = _layoutId; 
+                    }
                 }
                 catch (DefaultLayoutException)
                 {
@@ -1223,6 +1228,12 @@ namespace XiboClient
         /// <param name="overlays"></param>
         void ScheduleOverlayChangeEvent(Collection<ScheduleItem> overlays)
         {
+            var currentStart = _overlayStart;
+
+            _overlayStart = overlays.Any();
+
+            _overlayEnd = currentStart && overlays.Count == 0;
+
             if (InvokeRequired)
             {
                 BeginInvoke(new ManageOverlaysDelegate(ManageOverlays), overlays);
