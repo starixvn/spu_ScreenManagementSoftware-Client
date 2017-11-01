@@ -77,6 +77,7 @@ namespace XiboClient
 
         private bool _overlayStart = false;
         private bool _overlayEnd = false;
+        private string _currentLayout = null;
 
         private StatLog _statLog;
         private Stat _stat;
@@ -649,7 +650,7 @@ namespace XiboClient
                 // Destroy the Current Layout
                 try
                 {
-                    if(!_overlayStart && !_overlayEnd) DestroyLayout();
+                    if((!_overlayStart && !_overlayEnd) || _currentLayout != layoutPath) DestroyLayout();
                 }
                 catch (Exception e)
                 {
@@ -667,7 +668,7 @@ namespace XiboClient
                 // Prepare the next layout
                 try
                 {
-                    if (!_overlayStart && !_overlayEnd)
+                    if ((!_overlayStart && !_overlayEnd) || _currentLayout != layoutPath)
                     {
                         PrepareLayout(layoutPath);
 
@@ -725,6 +726,8 @@ namespace XiboClient
 
             // We have finished changing the layout
             _changingLayout = false;
+
+            if (!string.IsNullOrEmpty(layoutPath)) _currentLayout = layoutPath;
         }
 
         /// <summary>
