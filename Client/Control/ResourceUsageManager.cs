@@ -23,9 +23,9 @@
                 int cpuUsage = (int)cpuCounter.NextValue();
                 System.Threading.Thread.Sleep(500);
                 cpuUsage = (int)cpuCounter.NextValue();
-                long ramTotal = (long)(new Microsoft.VisualBasic.Devices.ComputerInfo()).TotalPhysicalMemory / 1024 / 1024;
-                long ramAvailable = (long)ramCounter.NextValue();
-                int ramUsage = (int)((ramTotal - ramAvailable) / ramTotal * 100);
+                int ramTotal = (int)(new Microsoft.VisualBasic.Devices.ComputerInfo()).TotalPhysicalMemory / 1024 / 1024;
+                int ramAvailable = (int)ramCounter.NextValue();
+                int ramUsage = ramTotal == 0 ? 0 : (int)((float)(ramTotal - ramAvailable) / ramTotal * 100);
 
                 if (ApplicationSettings.Default.IsForcedSendResourceUsage || cpuUsage >= ApplicationSettings.Default.BenchmarkCPUUsage || ramUsage >= ApplicationSettings.Default.BenchmarkRAMUsage)
                 {
