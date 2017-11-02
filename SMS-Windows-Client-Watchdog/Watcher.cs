@@ -95,6 +95,10 @@ namespace XiboClientWatchdog
                         string SMSClientPath = Directory.Exists(@"C:\Program Files (x86)") ? @"C:\Program Files (x86)" : @"C:\Program Files";
                         string processPath = _config.Configs["Main"].GetString("watch-process", SMSClientPath + Settings.Default.ProcessPath);
 
+#if debug
+                        processPath = Debug.ChangeProcessPath;
+#endif
+
                         // Are we in a check period that should kill the player?
                         bool killPlayerPeriod = false;
 
