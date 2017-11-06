@@ -31,13 +31,6 @@ namespace XiboClientWatchdog
                 // Release when we've stopped
                 mutex.ReleaseMutex();
             }
-
-            NexcelCustomize();
-        }
-
-        static void NexcelCustomize()
-        {
-            NativeFunction.SetThreadExecutionState(NativeFunction.ES_CONTINUOUS | NativeFunction.ES_SYSTEM_REQUIRED | NativeFunction.ES_DISPLAY_REQUIRED);
         }
     }
 }

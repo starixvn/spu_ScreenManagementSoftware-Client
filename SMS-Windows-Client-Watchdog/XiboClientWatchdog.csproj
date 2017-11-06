@@ -98,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Debug.cs" />
-    <Compile Include="NativeFunction.cs" />
     <Compile Include="Tray.cs">
       <SubType>Form</SubType>
     </Compile>
