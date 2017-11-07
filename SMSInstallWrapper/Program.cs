@@ -6,20 +6,21 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    class Program
+    internal class Program
     {
         private const string PRODUCTCODE = "{1169316E-B092-48F5-951D-7CF486C35F93}";
         private const string SMSINSTALLER = @"\SMSClientInstaller.msi";
+
         //private const string ADOBEFLASHINSTALLER = @"\Adobe_Flash_Player_26_PPAPI_sib.msi";
         private static string currentDirectory = Directory.GetCurrentDirectory();
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (!File.Exists(currentDirectory + SMSINSTALLER))
             {
                 currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SMS Client Library\SMSClientInstaller";
             }
-            
+
             System.Console.WriteLine("Current Directory: " + currentDirectory);
 
             System.Console.WriteLine("Current App's Directory");
@@ -29,6 +30,9 @@
 
             System.Console.WriteLine("Remove the old version");
             UninstallSMSClient();
+
+            System.Console.WriteLine("Remove old cached files");
+            DeleteCachedFiles();
 
             //System.Console.WriteLine("Install Adobe Flash Player");
             //InstallFlash();
@@ -121,6 +125,25 @@
             });
 
             task.Wait();
+        }
+
+        private static void DeleteCachedFiles()
+        {
+            try
+            {
+                var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var document = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                var xmlPath = appdata + "/SMSClient.xml";
+                var smsFolder = document + "/SMS Client Library";
+
+                if (File.Exists(xmlPath)) File.Delete(xmlPath);
+                if (Directory.Exists(smsFolder)) Directory.Delete(smsFolder, true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("{0} - {1}", e.GetType().Name, e.Message);
+            }
         }
 
         private static void InstallSMSClient()
