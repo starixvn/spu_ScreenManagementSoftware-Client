@@ -61,7 +61,7 @@ namespace XiboClient.xmds {
         
         /// <remarks/>
         public xmds() {
-            this.Url = "https://ha.nexdev.net:7709/xmds.php?v=5";
+            this.Url = "https://sms.nexdev.net/xmds.php?v=5";
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;
@@ -188,7 +188,7 @@ namespace XiboClient.xmds {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:xmds#StoreClientCpuRamUsage", RequestNamespace="urn:xmds", ResponseNamespace="urn:xmds")]
         [return: System.Xml.Serialization.SoapElementAttribute("success")]
-        public bool StoreClientCpuRamUsage(string hardwareKey, int cpuUsage, long ramTotal, long ramAvailable) {
+        public bool StoreClientCpuRamUsage(string hardwareKey, int cpuUsage, int ramTotal, int ramAvailable) {
             object[] results = this.Invoke("StoreClientCpuRamUsage", new object[] {
                         hardwareKey,
                         cpuUsage,
@@ -198,12 +198,12 @@ namespace XiboClient.xmds {
         }
         
         /// <remarks/>
-        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, long ramTotal, long ramAvailable) {
+        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, int ramTotal, int ramAvailable) {
             this.StoreClientCpuRamUsageAsync(hardwareKey, cpuUsage, ramTotal, ramAvailable, null);
         }
         
         /// <remarks/>
-        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, long ramTotal, long ramAvailable, object userState) {
+        public void StoreClientCpuRamUsageAsync(string hardwareKey, int cpuUsage, int ramTotal, int ramAvailable, object userState) {
             if ((this.StoreClientCpuRamUsageOperationCompleted == null)) {
                 this.StoreClientCpuRamUsageOperationCompleted = new System.Threading.SendOrPostCallback(this.OnStoreClientCpuRamUsageOperationCompleted);
             }
