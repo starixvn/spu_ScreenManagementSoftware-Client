@@ -38,7 +38,7 @@
             }
             catch (Exception err)
             {
-                resourceUsageTimer.Stop();
+                //resourceUsageTimer.Stop();
                 Trace.WriteLine(new LogMessage("Client Resource Collector", "Error: " + err.Message), LogType.Error.ToString());
             }
         }
