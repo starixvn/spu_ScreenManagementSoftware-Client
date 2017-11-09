@@ -23,16 +23,17 @@
                 int cpuUsage = (int)cpuCounter.NextValue();
                 System.Threading.Thread.Sleep(500);
                 cpuUsage = (int)cpuCounter.NextValue();
-                int ramTotal = (int)(new Microsoft.VisualBasic.Devices.ComputerInfo()).TotalPhysicalMemory / 1024 / 1024;
+                long totalRam = (long)(new Microsoft.VisualBasic.Devices.ComputerInfo()).TotalPhysicalMemory;
+                int ramTotal = (int)(totalRam / 1024 / 1024);
                 int ramAvailable = (int)ramCounter.NextValue();
                 int ramUsage = ramTotal == 0 ? 0 : (int)((float)(ramTotal - ramAvailable) / ramTotal * 100);
+                Trace.WriteLine(new LogMessage("Client Resource Collector", "CPU Usage: " + cpuUsage + "%; RAM Total: " + ramTotal + " MB; RAM Available: " + ramAvailable + " MB; RAM Usage: " + ramUsage + " %"), LogType.Info.ToString());
 
                 if (ApplicationSettings.Default.IsForcedSendResourceUsage || cpuUsage >= ApplicationSettings.Default.BenchmarkCPUUsage || ramUsage >= ApplicationSettings.Default.BenchmarkRAMUsage)
                 {
                     using (xmds.xmds xmds1 = new xmds.xmds())
                     {
-                        var result = xmds1.StoreClientCpuRamUsage(ApplicationSettings.Default.HardwareKey, cpuUsage, ramTotal, ramAvailable);
-                        Trace.WriteLine(new LogMessage("Client Resource Collector", "CPU Usage: " + cpuUsage + "%; RAM Available: " + ramAvailable), LogType.Info.ToString());
+                        var result = xmds1.StoreClientCpuRamUsage(ApplicationSettings.Default.HardwareKey, cpuUsage, ramTotal, ramAvailable);                        
                     }
                 }
             }
