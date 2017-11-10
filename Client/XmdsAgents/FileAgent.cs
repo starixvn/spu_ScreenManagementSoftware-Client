@@ -174,6 +174,7 @@ namespace XiboClient.XmdsAgents
 
                     // File completed
                     file.Downloading = false;
+                    file.Complete = true;
 
                     // Check MD5
                     string md5 = _requiredFiles.CurrentCacheManager.GetMD5(file.SaveAs);
