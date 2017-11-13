@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Mime;
+using XiboClient.Forms.Components;
 
 /// 17/02/12 Dan Created
 /// 21/02/12 Dan Added OnComplete Delegate and Event
@@ -167,7 +168,7 @@ namespace XiboClient.XmdsAgents
                 else if (file.Http)
                 {
                     // Download using HTTP and the rf.Path
-                    using (WebClient wc = new WebClient())
+                    using (SMSWebClient wc = new SMSWebClient())
                     {
                         wc.DownloadFile(file.Path, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
                     }

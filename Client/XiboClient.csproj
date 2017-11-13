@@ -155,6 +155,9 @@
     <Compile Include="Forms\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Components\SMSWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Logic\BlackList.cs" />
     <Compile Include="Logic\CacheManager.cs" />
     <Compile Include="Action\Command.cs" />
