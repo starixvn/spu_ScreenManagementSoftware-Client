@@ -31,8 +31,11 @@
             System.Console.WriteLine("Remove the old version");
             UninstallSMSClient();
 
+#if !upgrade
+
             System.Console.WriteLine("Remove old cached files");
-            DeleteCachedFiles();
+            DeleteCachedFiles(); 
+#endif
 
             //System.Console.WriteLine("Install Adobe Flash Player");
             //InstallFlash();

@@ -61,7 +61,7 @@ namespace XiboClient.xmds {
         
         /// <remarks/>
         public xmds() {
-            this.Url = "https://sms.nexdev.net/xmds.php?v=5";
+            this.Url = "https://ha.nexdev.net:7709/xmds.php?v=5";
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;

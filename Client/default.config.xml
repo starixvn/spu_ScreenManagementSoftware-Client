@@ -17,7 +17,7 @@
   <LibraryPath>DEFAULT</LibraryPath>
   <ServerKey>123456</ServerKey>
   <DisplayName>COMPUTERNAME</DisplayName>
-  <ServerUri>https://sms.nexdev.net</ServerUri>
+  <ServerUri>https://ha.nexdev.net:7709</ServerUri>
   <ProxyUser></ProxyUser>
   <ProxyPassword></ProxyPassword>
   <ProxyDomain></ProxyDomain>
@@ -38,7 +38,7 @@
   <PowerpointEnabled>false</PowerpointEnabled>
   <StatsEnabled>true</StatsEnabled>
   <ExpireModifiedLayouts>true</ExpireModifiedLayouts>
-  <EnableMouse>false</EnableMouse>
+  <EnableMouse>true</EnableMouse>
   <DoubleBuffering>true</DoubleBuffering>
   <EnableShellCommands>false</EnableShellCommands>
   <ShowInTaskbar>true</ShowInTaskbar>

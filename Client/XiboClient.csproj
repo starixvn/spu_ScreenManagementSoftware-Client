@@ -83,6 +83,24 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Upgrade|AnyCPU'">
+    <OutputPath>bin\Upgrade\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Upgrade|x86'">
+    <OutputPath>bin\x86\Upgrade\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AsyncIO, Version=0.1.25.0, Culture=neutral, PublicKeyToken=44a94435bd6f33f8, processorArchitecture=MSIL">
       <HintPath>packages\AsyncIO.0.1.26.0\lib\net40\AsyncIO.dll</HintPath>
@@ -321,10 +339,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="https://sms.nexdev.net/xmds.php%3fv=5&amp;WSDL">
+    <WebReferenceUrl Include="https://ha.nexdev.net:7709/xmds.php%3fv=5&amp;WSDL">
       <UrlBehavior>Static</UrlBehavior>
       <RelPath>Web References\xmds\</RelPath>
-      <UpdateFromURL>https://sms.nexdev.net/xmds.php%3fv=5&amp;WSDL</UpdateFromURL>
+      <UpdateFromURL>https://ha.nexdev.net:7709/xmds.php%3fv=5&amp;WSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
