@@ -318,6 +318,8 @@ namespace XiboClient.XmdsAgents
             // Set the status on the client info screen
             if (_requiredFiles.FilesDownloading == 0)
             {
+                Thread.Sleep(1000);
+
                 _clientInfoForm.RequiredFilesStatus = "Sleeping";
 
                 // If we are the last download thread to complete, then we should report media inventory and raise an event to say we've got everything
