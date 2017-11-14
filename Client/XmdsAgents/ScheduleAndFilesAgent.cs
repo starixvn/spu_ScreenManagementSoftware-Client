@@ -321,6 +321,12 @@ namespace XiboClient.XmdsAgents
                 _clientInfoForm.RequiredFilesStatus = "Sleeping";
 
                 // If we are the last download thread to complete, then we should report media inventory and raise an event to say we've got everything
+                foreach (var file in _requiredFiles.RequiredFileList)
+                {
+                    file.Complete = true;
+                    file.Downloading = false;
+                }
+
                 _requiredFiles.ReportInventory();
 
                 // Raise an event to say we've completed
