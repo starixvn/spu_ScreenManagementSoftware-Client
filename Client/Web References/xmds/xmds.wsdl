@@ -333,7 +333,7 @@
   </binding>
   <service name="xmds">
     <port name="xmdsPort" binding="tns:xmdsBinding">
-      <soap:address location="https://ha.nexdev.net:7709/xmds.php?v=5" />
+      <soap:address location="https://sms.nexdev.net/xmds.php?v=5" />
     </port>
   </service>
 </definitions>

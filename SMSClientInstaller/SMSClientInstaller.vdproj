@@ -249,6 +249,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_CA3958043B154D5DB61C7A9B64F7E680"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_CBE71F5B1A07A2B02BEA7AC187A67085"
         "OwnerKey" = "8:_A3CBBAEE4A354BAC94FEDD37A130082B"
         "MsmSig" = "8:_UNDEFINED"
@@ -257,6 +263,12 @@
         {
         "MsmKey" = "8:_D4EF522DC7F490070E3420D738AED7A3"
         "OwnerKey" = "8:_23A9A20A66D847309CF5A3DA856BC22D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D4EF522DC7F490070E3420D738AED7A3"
+        "OwnerKey" = "8:_CA3958043B154D5DB61C7A9B64F7E680"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -323,6 +335,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A3CBBAEE4A354BAC94FEDD37A130082B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CA3958043B154D5DB61C7A9B64F7E680"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2583,7 +2601,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_23A9A20A66D847309CF5A3DA856BC22D"
             {
-            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Upgrade\\SMSClientWatchdog.exe"
+            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Release\\SMSClientWatchdog.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_4FA5651E7F1948CFA9268171B0D41BB8"
@@ -2611,7 +2629,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3BD246B292EA4DE3A1BF9A29CF75A5D2"
             {
-            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Upgrade\\SMSClientWatchdog.exe"
+            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Release\\SMSClientWatchdog.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_1C44B0A997CB4D4CA9E05C6DF653437D"
@@ -2639,7 +2657,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A3CBBAEE4A354BAC94FEDD37A130082B"
             {
-            "SourcePath" = "8:..\\Client\\obj\\Upgrade\\SMSClient.exe"
+            "SourcePath" = "8:..\\Client\\obj\\Release\\SMSClient.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7A9314B555894FAC93C79C547C845E2B"
@@ -2660,6 +2678,34 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{9E6CFE88-0171-4360-BDF4-84D74A90FD55}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CA3958043B154D5DB61C7A9B64F7E680"
+            {
+            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Release\\SMSClientWatchdog.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_7A9314B555894FAC93C79C547C845E2B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{7C5DE0A1-D6BE-4FAE-AE24-30C0B8276469}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

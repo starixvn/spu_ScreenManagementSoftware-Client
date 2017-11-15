@@ -650,7 +650,7 @@ namespace XiboClient
                 // Destroy the Current Layout
                 try
                 {
-                    if((!_overlayStart && !_overlayEnd) || _currentLayout != layoutPath) DestroyLayout();
+                    if((!_overlayStart && !_overlayEnd) && _currentLayout != layoutPath) DestroyLayout();
                 }
                 catch (Exception e)
                 {
@@ -668,7 +668,7 @@ namespace XiboClient
                 // Prepare the next layout
                 try
                 {
-                    if ((!_overlayStart && !_overlayEnd) || _currentLayout != layoutPath)
+                    if ((!_overlayStart && !_overlayEnd) && _currentLayout != layoutPath)
                     {
                         PrepareLayout(layoutPath);
 
