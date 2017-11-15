@@ -712,8 +712,8 @@ namespace XiboClient
                 if (!(ex is DefaultLayoutException))
                     Trace.WriteLine(new LogMessage("MainForm - ChangeToNextLayout", "Layout Change to " + layoutPath + " failed. Exception raised was: " + ex.Message), LogType.Error.ToString());
 
-                if (!_showingSplash)
-                    ShowSplashScreen();
+                //if (!_showingSplash)
+                //    ShowSplashScreen();
 
                 // In 10 seconds fire the next layout
                 System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
