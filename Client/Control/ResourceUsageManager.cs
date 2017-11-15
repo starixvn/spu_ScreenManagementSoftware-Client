@@ -12,6 +12,8 @@
             resourceUsageTimer = new System.Timers.Timer(ApplicationSettings.Default.ResourceUsageInterval);
             resourceUsageTimer.Elapsed += CollectClientResourceUsage;
             resourceUsageTimer.Start();
+
+            CollectClientResourceUsage(null, null);
         }
 
         private static void CollectClientResourceUsage(object sender, System.Timers.ElapsedEventArgs e)
@@ -33,7 +35,7 @@
                 {
                     using (xmds.xmds xmds1 = new xmds.xmds())
                     {
-                        var result = xmds1.StoreClientCpuRamUsage(ApplicationSettings.Default.HardwareKey, cpuUsage, ramTotal, ramAvailable);                        
+                        xmds1.StoreClientCpuRamUsageAsync(ApplicationSettings.Default.HardwareKey, cpuUsage, ramTotal, ramAvailable);
                     }
                 }
             }
