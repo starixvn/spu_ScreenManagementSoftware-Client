@@ -128,6 +128,7 @@
             this.Controls.Add(this.lastAccessedLabel);
             this.Controls.Add(this.libraryLabel);
             this.Controls.Add(this.processLabel);
+            this.Enabled = false;
             this.Name = "Tray";
             this.Text = "Watch Dog";
             this.notifyContextMenu.ResumeLayout(false);
