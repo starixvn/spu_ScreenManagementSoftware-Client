@@ -1,4 +1,3 @@
-using Microsoft.Win32;
 /*
  * Xibo - Digitial Signage - http://www.xibo.org.uk
  * Copyright (C) 2006-16 Daniel Garner
@@ -8,7 +7,7 @@ using Microsoft.Win32;
  * Xibo is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * any later version. 
+ * any later version.
  *
  * Xibo is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,21 +17,16 @@ using Microsoft.Win32;
  * You should have received a copy of the GNU Affero General Public License
  * along with Xibo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -42,7 +36,6 @@ using XiboClient.Control;
 using XiboClient.Error;
 using XiboClient.Log;
 using XiboClient.Logic;
-using XiboClient.Properties;
 
 namespace XiboClient
 {
@@ -70,9 +63,9 @@ namespace XiboClient
         private bool _showingSplash = false;
         private bool _isApproved = false;
 
-        double _layoutWidth;
-        double _layoutHeight;
-        double _scaleFactor;
+        private double _layoutWidth;
+        private double _layoutHeight;
+        private double _scaleFactor;
         private Size _clientSize;
 
         private string _currentLayout = null;
@@ -86,6 +79,7 @@ namespace XiboClient
         private static System.Windows.Forms.Timer _pingTimer;
 
         private delegate void ChangeToNextLayoutDelegate(string layoutPath);
+
         private delegate void ManageOverlaysDelegate(Collection<ScheduleItem> overlays);
 
         /// <summary>
@@ -94,7 +88,7 @@ namespace XiboClient
         private BorderStyle _borderStyle = BorderStyle.None;
 
         [FlagsAttribute]
-        enum EXECUTION_STATE : uint
+        private enum EXECUTION_STATE : uint
         {
             ES_AWAYMODE_REQUIRED = 0x00000040,
             ES_CONTINUOUS = 0x80000000,
@@ -103,7 +97,7 @@ namespace XiboClient
         }
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
+        private static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
 
         // Changes the parent window of the specified child window
         [DllImport("user32.dll")]
@@ -125,15 +119,15 @@ namespace XiboClient
         {
             InitializeComponent();
 
-            // Set the preview window of the screen saver selection 
+            // Set the preview window of the screen saver selection
             // dialog in Windows as the parent of this form.
             SetParent(this.Handle, previewHandle);
 
-            // Set this form to a child form, so that when the screen saver selection 
+            // Set this form to a child form, so that when the screen saver selection
             // dialog in Windows is closed, this form will also close.
             SetWindowLong(this.Handle, -16, new IntPtr(GetWindowLong(this.Handle, -16) | 0x40000000));
 
-            // Set the size of the screen saver to the size of the screen saver 
+            // Set the size of the screen saver to the size of the screen saver
             // preview window in the screen saver selection dialog in Windows.
             Rectangle ParentRect;
             GetClientRect(previewHandle, out ParentRect);
@@ -363,7 +357,7 @@ namespace XiboClient
             }
         }
 
-        void Instance_MouseEvent()
+        private void Instance_MouseEvent()
         {
             Close();
         }
@@ -372,7 +366,7 @@ namespace XiboClient
         /// Handle the Key Event
         /// </summary>
         /// <param name="name"></param>
-        void Instance_KeyPress(string name)
+        private void Instance_KeyPress(string name)
         {
             Debug.WriteLine("KeyPress " + name);
             if (name == "ClientInfo")
@@ -411,7 +405,7 @@ namespace XiboClient
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void MainForm_Shown(object sender, EventArgs e)
+        private void MainForm_Shown(object sender, EventArgs e)
         {
             var task = Task.Factory.StartNew(() =>
             {
@@ -584,7 +578,7 @@ namespace XiboClient
         /// Handles the ScheduleChange event
         /// </summary>
         /// <param name="layoutPath"></param>
-        void ScheduleChangeEvent(string layoutPath, int scheduleId, int layoutId)
+        private void ScheduleChangeEvent(string layoutPath, int scheduleId, int layoutId)
         {
             Trace.WriteLine(new LogMessage("MainForm - ScheduleChangeEvent", string.Format("Schedule Changing to {0}", layoutPath)), LogType.Audit.ToString());
 
@@ -612,7 +606,7 @@ namespace XiboClient
             ChangeToNextLayout(layoutPath);
         }
 
-        delegate void SetEnableCallback(System.Windows.Forms.Control control, bool enable);
+        private delegate void SetEnableCallback(System.Windows.Forms.Control control, bool enable);
 
         private void SetVisible(System.Windows.Forms.Control control, bool enable)
         {
@@ -642,13 +636,15 @@ namespace XiboClient
                     Trace.WriteLine(new LogMessage("MainForm - ChangeToNextLayout", "Unable to set Thread Execution state"), LogType.Info.ToString());
                 }
             }
-
+        
             try
             {
+                var layoutHash = layoutPath == null ? null : HashLayout(layoutPath);
+
                 // Destroy the Current Layout
                 try
                 {
-                    if(_currentLayout != layoutPath) DestroyLayout();
+                    if (layoutHash != null && _currentLayout != layoutHash) DestroyLayout();
                 }
                 catch (Exception e)
                 {
@@ -666,12 +662,12 @@ namespace XiboClient
                 // Prepare the next layout
                 try
                 {
-                    if (_currentLayout != layoutPath)
+                    if (layoutHash != null && _currentLayout != layoutHash)
                     {
                         PrepareLayout(layoutPath);
 
                         _clientInfoForm.CurrentLayoutId = layoutPath;
-                        _schedule.CurrentLayoutId = _layoutId; 
+                        _schedule.CurrentLayoutId = _layoutId;
                     }
                 }
                 catch (DefaultLayoutException)
@@ -704,6 +700,8 @@ namespace XiboClient
                     Trace.WriteLine(new LogMessage("MainForm - ChangeToNextLayout", "Notify Status Failed. Exception raised was: " + e.Message), LogType.Info.ToString());
                     throw;
                 }
+
+                if (!string.IsNullOrEmpty(layoutPath)) _currentLayout = layoutHash;
             }
             catch (Exception ex)
             {
@@ -724,8 +722,6 @@ namespace XiboClient
 
             // We have finished changing the layout
             _changingLayout = false;
-
-            if (!string.IsNullOrEmpty(layoutPath)) _currentLayout = layoutPath;
         }
 
         /// <summary>
@@ -733,7 +729,7 @@ namespace XiboClient
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void splashScreenTimer_Tick(object sender, EventArgs e)
+        private void splashScreenTimer_Tick(object sender, EventArgs e)
         {
             Debug.WriteLine(new LogMessage("timer_Tick", "Loading next layout after splashscreen"));
 
@@ -797,7 +793,6 @@ namespace XiboClient
             // Set the background and size of the form
             _layoutWidth = int.Parse(layoutAttributes["width"].Value, CultureInfo.InvariantCulture);
             _layoutHeight = int.Parse(layoutAttributes["height"].Value, CultureInfo.InvariantCulture);
-
 
             // Scaling factor, will be applied to all regions
             _scaleFactor = Math.Min(_clientSize.Width / _layoutWidth, _clientSize.Height / _layoutHeight);
@@ -1080,15 +1075,15 @@ namespace XiboClient
             }
         }
 
-        /// <summary> 
-        /// Returns the image codec with the given mime type 
-        /// </summary> 
+        /// <summary>
+        /// Returns the image codec with the given mime type
+        /// </summary>
         private static ImageCodecInfo GetEncoderInfo(string mimeType)
         {
-            // Get image codecs for all image formats 
+            // Get image codecs for all image formats
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
 
-            // Find the correct image codec 
+            // Find the correct image codec
             for (int i = 0; i < codecs.Length; i++)
                 if (codecs[i].MimeType == mimeType)
                     return codecs[i];
@@ -1098,7 +1093,7 @@ namespace XiboClient
         /// <summary>
         /// The duration of a Region has been reached
         /// </summary>
-        void temp_DurationElapsedEvent()
+        private void temp_DurationElapsedEvent()
         {
             Trace.WriteLine(new LogMessage("MainForm - DurationElapsedEvent", "Region Elapsed"), LogType.Audit.ToString());
 
@@ -1227,7 +1222,7 @@ namespace XiboClient
         /// Overlay change event.
         /// </summary>
         /// <param name="overlays"></param>
-        void ScheduleOverlayChangeEvent(Collection<ScheduleItem> overlays)
+        private void ScheduleOverlayChangeEvent(Collection<ScheduleItem> overlays)
         {
             if (InvokeRequired)
             {
@@ -1421,6 +1416,18 @@ namespace XiboClient
             catch (Exception e)
             {
                 Trace.WriteLine(new LogMessage("MainForm - _schedule_OverlayChangeEvent", "Unknown issue managing overlays. Ex = " + e.Message), LogType.Info.ToString());
+            }
+        }
+
+        private string HashLayout(string layoutPath)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var file = File.OpenRead(layoutPath))
+                {
+                    var hash = md5.ComputeHash(file);
+                    return BitConverter.ToString(hash);
+                }
             }
         }
     }
