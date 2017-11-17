@@ -68,6 +68,10 @@ namespace XiboClient
         private double _scaleFactor;
         private Size _clientSize;
 
+        private bool _overlayStartSignal = false;
+        private bool _overlayStartSignalSaved = false;
+        private bool _overlayEndSignal = false;
+
         private string _currentLayout = null;
 
         private StatLog _statLog;
@@ -636,15 +640,13 @@ namespace XiboClient
                     Trace.WriteLine(new LogMessage("MainForm - ChangeToNextLayout", "Unable to set Thread Execution state"), LogType.Info.ToString());
                 }
             }
-        
+
             try
             {
-                var layoutHash = layoutPath == null ? null : HashLayout(layoutPath);
-
                 // Destroy the Current Layout
                 try
                 {
-                    if (layoutHash != null && _currentLayout != layoutHash) DestroyLayout();
+                    if (!_overlayStartSignal && !_overlayEndSignal) DestroyLayout();
                 }
                 catch (Exception e)
                 {
@@ -662,7 +664,7 @@ namespace XiboClient
                 // Prepare the next layout
                 try
                 {
-                    if (layoutHash != null && _currentLayout != layoutHash)
+                    if (!_overlayStartSignal && !_overlayEndSignal)
                     {
                         PrepareLayout(layoutPath);
 
@@ -701,15 +703,21 @@ namespace XiboClient
                     throw;
                 }
 
-                if (!string.IsNullOrEmpty(layoutPath)) _currentLayout = layoutHash;
+                _overlayStartSignal = false;
+
+                if (_overlayEndSignal)
+                {
+                    _overlayStartSignalSaved = false;
+                    _overlayEndSignal = false;
+                }
             }
             catch (Exception ex)
             {
                 if (!(ex is DefaultLayoutException))
                     Trace.WriteLine(new LogMessage("MainForm - ChangeToNextLayout", "Layout Change to " + layoutPath + " failed. Exception raised was: " + ex.Message), LogType.Error.ToString());
 
-                //if (!_showingSplash)
-                //    ShowSplashScreen();
+                if (!_showingSplash)
+                    ShowSplashScreen();
 
                 // In 10 seconds fire the next layout
                 System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -1224,6 +1232,12 @@ namespace XiboClient
         /// <param name="overlays"></param>
         private void ScheduleOverlayChangeEvent(Collection<ScheduleItem> overlays)
         {
+            _overlayStartSignal = overlays.Count > 0;
+
+            if (_overlayStartSignal) _overlayStartSignalSaved = true;
+
+            _overlayEndSignal = _overlayStartSignalSaved && overlays.Count == 0;
+
             if (InvokeRequired)
             {
                 BeginInvoke(new ManageOverlaysDelegate(ManageOverlays), overlays);
