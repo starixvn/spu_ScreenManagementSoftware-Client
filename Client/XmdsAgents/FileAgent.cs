@@ -168,7 +168,7 @@ namespace XiboClient.XmdsAgents
                 else if (file.Http)
                 {
                     // Download using HTTP and the rf.Path
-                    using (SMSWebClient wc = new SMSWebClient())
+                    using (WebClient wc = new WebClient())
                     {
                         wc.DownloadFile(file.Path, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
                     }
