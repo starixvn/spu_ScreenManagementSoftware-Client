@@ -12,7 +12,7 @@ namespace XiboClient.Forms.Components
         protected override WebRequest GetWebRequest(Uri uri)
         {
             WebRequest w = base.GetWebRequest(uri);
-            w.Timeout = 60 * 60 * 1000;
+            w.Timeout = 30 * 60 * 1000;
             return w;
         }
     }
