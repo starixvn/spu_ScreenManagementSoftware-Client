@@ -36,6 +36,7 @@ using XiboClient.Control;
 using XiboClient.Error;
 using XiboClient.Log;
 using XiboClient.Logic;
+using XiboClient.XmdsAgents;
 
 namespace XiboClient
 {
@@ -442,7 +443,21 @@ namespace XiboClient
                                 break;
                             }
                         }
-                        catch { }
+                        catch {
+                            var key = new HardwareKey();
+
+                            RegisterAgent.ProcessRegisterXml(xmds.RegisterDisplay(
+                                ApplicationSettings.Default.ServerKey,
+                                key.Key,
+                                ApplicationSettings.Default.DisplayName,
+                                "windows",
+                                ApplicationSettings.Default.ClientVersion,
+                                ApplicationSettings.Default.ClientCodeVersion,
+                                Environment.OSVersion.ToString(),
+                                key.MacAddress,
+                                key.Channel,
+                                key.getXmrPublicKey()));
+                        }
                     }
 
                     Thread.Sleep(3000);
