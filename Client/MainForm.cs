@@ -443,7 +443,8 @@ namespace XiboClient
                                 break;
                             }
                         }
-                        catch {
+                        catch
+                        {
                             var key = new HardwareKey();
 
                             RegisterAgent.ProcessRegisterXml(xmds.RegisterDisplay(
@@ -733,6 +734,8 @@ namespace XiboClient
 
                 if (!_showingSplash)
                     ShowSplashScreen();
+
+                if (string.IsNullOrEmpty(layoutPath)) return;
 
                 // In 10 seconds fire the next layout
                 System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
