@@ -141,7 +141,13 @@
                 var smsFolder = document + "/SMS Client Library";
 
                 if (File.Exists(xmlPath)) File.Delete(xmlPath);
-                if (Directory.Exists(smsFolder)) Directory.Delete(smsFolder, true);
+                if (Directory.Exists(smsFolder))
+                {
+                    foreach (var file in Directory.GetFiles(smsFolder))
+                    {
+                        if (!file.Contains("msi")) File.Delete(file);
+                    }
+                }
             }
             catch (Exception e)
             {
