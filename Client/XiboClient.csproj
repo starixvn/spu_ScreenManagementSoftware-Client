@@ -269,7 +269,9 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Web References\xmds\xmds.wsdl" />
+    <None Include="Web References\xmds\xmds.wsdl">
+      <SubType>Designer</SubType>
+    </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>

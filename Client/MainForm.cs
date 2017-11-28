@@ -420,8 +420,8 @@ namespace XiboClient
                     {
                         try
                         {
-                            var isAuthorized = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
-                            if (isAuthorized)
+                            _isApproved = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
+                            if (_isApproved)
                             {
                                 if (!_screenSaver)
                                 {
