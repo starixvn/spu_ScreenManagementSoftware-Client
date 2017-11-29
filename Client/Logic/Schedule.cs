@@ -253,7 +253,10 @@ namespace XiboClient
             _currentLayout = 0;
 
             // Raise a schedule change event
-            ScheduleChangeEvent(_layoutSchedule[0].layoutFile, _layoutSchedule[0].scheduleid, _layoutSchedule[0].id);
+            if (!string.IsNullOrEmpty(_layoutSchedule[0].layoutFile))
+            {
+                ScheduleChangeEvent(_layoutSchedule[0].layoutFile, _layoutSchedule[0].scheduleid, _layoutSchedule[0].id);
+            }
 
             // Pass a new set of overlay's to subscribers
             if (OverlayChangeEvent != null)

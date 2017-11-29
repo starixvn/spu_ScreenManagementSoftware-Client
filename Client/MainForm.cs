@@ -677,6 +677,21 @@ namespace XiboClient
                     throw e;
                 }
 
+                if (!_showingSplash)
+                {
+                    _showingSplash = true;
+                    ShowSplashScreen();
+
+                    // In 2 seconds fire the next layout
+                    System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                    timer.Interval = 2000;
+                    timer.Tick += new EventHandler(splashScreenTimer_Tick);
+
+                    // Start the timer
+                    timer.Start();
+                    return;
+                }
+
                 // Prepare the next layout
                 try
                 {

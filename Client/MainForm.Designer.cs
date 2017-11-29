@@ -33,14 +33,14 @@ namespace XiboClient
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelPleaseWait = new System.Windows.Forms.Label();
-            this.labelPleaseWait.AutoSize = true;
-            this.labelPleaseWait.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPleaseWait.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.labelPleaseWait.Location = new System.Drawing.Point(0, 0);
-            this.labelPleaseWait.Size = new System.Drawing.Size(296, 42);
-            this.labelPleaseWait.TabIndex = 0;
-            this.labelPleaseWait.Text = "PLEASE WAIT...";
+            //this.labelPleaseWait = new System.Windows.Forms.Label();
+            //this.labelPleaseWait.AutoSize = true;
+            //this.labelPleaseWait.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            //this.labelPleaseWait.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            //this.labelPleaseWait.Location = new System.Drawing.Point(0, 0);
+            //this.labelPleaseWait.Size = new System.Drawing.Size(296, 42);
+            //this.labelPleaseWait.TabIndex = 0;
+            //this.labelPleaseWait.Text = "PLEASE WAIT...";
             //this.Controls.Add(this.labelPleaseWait);
             //labelPleaseWait.Visible = false;
 
