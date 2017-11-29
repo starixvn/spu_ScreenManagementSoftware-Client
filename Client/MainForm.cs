@@ -72,6 +72,7 @@ namespace XiboClient
         private bool _overlayStartSignal = false;
         private bool _overlayStartSignalSaved = false;
         private bool _overlayEndSignal = false;
+        private bool _firstTime = true;
 
         private string _currentLayout = null;
 
@@ -662,7 +663,7 @@ namespace XiboClient
                 // Destroy the Current Layout
                 try
                 {
-                    if (!_overlayStartSignal && !_overlayEndSignal) DestroyLayout();
+                    if ((!_overlayStartSignal && !_overlayEndSignal) || _firstTime) DestroyLayout();
                 }
                 catch (Exception e)
                 {
@@ -695,7 +696,7 @@ namespace XiboClient
                 // Prepare the next layout
                 try
                 {
-                    if (!_overlayStartSignal && !_overlayEndSignal)
+                    if ((!_overlayStartSignal && !_overlayEndSignal) || _firstTime)
                     {
                         PrepareLayout(layoutPath);
 
@@ -733,6 +734,8 @@ namespace XiboClient
                     Trace.WriteLine(new LogMessage("MainForm - ChangeToNextLayout", "Notify Status Failed. Exception raised was: " + e.Message), LogType.Info.ToString());
                     throw;
                 }
+
+                _firstTime = false;
 
                 _overlayStartSignal = false;
 
@@ -1265,7 +1268,7 @@ namespace XiboClient
         /// <param name="overlays"></param>
         private void ScheduleOverlayChangeEvent(Collection<ScheduleItem> overlays)
         {
-            _overlayStartSignal = overlays.Count > 0;
+            _overlayStartSignal = overlays.Count > 0 && !_overlayStartSignalSaved;
 
             if (_overlayStartSignal) _overlayStartSignalSaved = true;
 
