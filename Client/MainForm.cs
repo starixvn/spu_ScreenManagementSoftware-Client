@@ -186,7 +186,7 @@ namespace XiboClient
             this.Close();
         }
 
-        private void InitializeXibo()
+        private void InitializeAuthorization()
         {
             try
             {
@@ -213,20 +213,11 @@ namespace XiboClient
                        _hardwareKey.getXmrPublicKey());
                 }
             }
+        }
 
+        private void InitializeXibo()
+        {
             this.Text = Application.ProductName;
-
-            //using (xmds.xmds xmds1 = new xmds.xmds())
-            //{
-            //    if (!xmds1.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey))
-            //    {
-            //        // The timer to ping for admin's approval
-            //        _pingTimer = new System.Windows.Forms.Timer();
-            //        _pingTimer.Tick += new EventHandler(CheckRegisterStatus);
-            //        _pingTimer.Interval = _PING_INTERVAL;
-            //        _pingTimer.Start();
-            //    }
-            //}
 
             Thread.CurrentThread.Name = "UI Thread";
 
@@ -421,7 +412,7 @@ namespace XiboClient
                     {
                         try
                         {
-                            _isApproved = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
+                            _isApproved = _isApproved || xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
                             if (_isApproved)
                             {
                                 if (!_screenSaver)
@@ -441,6 +432,7 @@ namespace XiboClient
                                         Trace.WriteLine(new LogMessage("MainForm - InitializeXibo", "Cannot start watchdog. E = " + ee.Message), LogType.Error.ToString());
                                     }
                                 }
+
                                 break;
                             }
                         }
@@ -507,6 +499,8 @@ namespace XiboClient
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
+            InitializeAuthorization();
+
             // Is the mouse enabled?
             if (!ApplicationSettings.Default.EnableMouse)
                 // Hide the cursor
