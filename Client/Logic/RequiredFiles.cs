@@ -105,8 +105,8 @@ namespace XiboClient
 
             foreach (XmlNode file in fileNodes)
             {
-                RequiredFile rf = new RequiredFile(); 
-                
+                RequiredFile rf = new RequiredFile();
+
                 XmlAttributeCollection attributes = file.Attributes;
 
                 rf.FileType = attributes["type"].Value;
@@ -140,7 +140,7 @@ namespace XiboClient
                         rf.Path = rf.Path + ".xlf";
                         rf.SaveAs = rf.Path;
                     }
-                    
+
                     rf.ChunkSize = rf.Size;
                 }
                 else if (rf.FileType == "resource")
@@ -155,7 +155,7 @@ namespace XiboClient
                         rf.MediaId = attributes["mediaid"].Value;
                         rf.Path = rf.MediaId + ".htm";
                         rf.SaveAs = rf.Path;
-                        
+
                         // Set the size to something arbitary
                         rf.Size = 10000;
 
@@ -169,7 +169,7 @@ namespace XiboClient
                             {
                                 updated = int.Parse(attributes["updated"].Value);
                             }
-                            catch (Exception) {}
+                            catch (Exception) { }
 
                             DateTime updatedDt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                             updatedDt = updatedDt.AddSeconds(updated);
@@ -417,14 +417,21 @@ namespace XiboClient
         /// <returns></returns>
         public static RequiredFiles LoadFromDisk()
         {
-            lock (_locker)
+            try
             {
-                using (FileStream fileStream = File.Open(ApplicationSettings.Default.LibraryPath + @"\" + ApplicationSettings.Default.RequiredFilesFile, FileMode.Open))
+                lock (_locker)
                 {
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(RequiredFiles));
+                    using (FileStream fileStream = File.Open(ApplicationSettings.Default.LibraryPath + @"\" + ApplicationSettings.Default.RequiredFilesFile, FileMode.Open))
+                    {
+                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(RequiredFiles));
 
-                    return (RequiredFiles)xmlSerializer.Deserialize(fileStream);
+                        return (RequiredFiles)xmlSerializer.Deserialize(fileStream);
+                    }
                 }
+            }
+            catch
+            {
+                return null;
             }
         }
     }

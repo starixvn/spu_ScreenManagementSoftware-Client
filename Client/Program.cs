@@ -19,21 +19,12 @@ using Microsoft.Win32;
  * along with Xibo.  If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
 using XiboClient.Logic;
-using XiboClient.Properties;
-using XiboClient.Control;
 
 namespace XiboClient
 {
@@ -131,7 +122,7 @@ namespace XiboClient
             // Always flush at the end
             Trace.WriteLine(new LogMessage("Main", "Application Finished"), LogType.Info.ToString());
             Trace.Flush();
-            
+
             return 0;
         }
 
@@ -144,7 +135,7 @@ namespace XiboClient
                 regKey.SetValue("SMSClient.exe", 11000, Microsoft.Win32.RegistryValueKind.DWord);
             }
         }
-        
+
         private static void RunClient()
         {
             Trace.WriteLine(new LogMessage("Main", "Client Started"), LogType.Info.ToString());
@@ -170,9 +161,7 @@ namespace XiboClient
             xmds1.Url = ApplicationSettings.Default.XiboClient_xmds_xmds;
 
             // Commit these changes back to the user settings
-            var optionForm = new OptionForm();
             var hardwareKey = new HardwareKey();
-            optionForm.buttonSaveSettings.PerformClick();
 
             // Call register
             xmds1.RegisterDisplayAsync(
@@ -203,7 +192,7 @@ namespace XiboClient
             Application.EnableVisualStyles(); // donot wanna show the form
 
             Trace.WriteLine(new LogMessage("Main", "Options Started"), LogType.Info.ToString());
-            Application.Run(new MainForm("Register"));            
+            //Application.Run(new MainForm("Register"));
         }
         private static string GetCPUId()
         {
@@ -287,7 +276,7 @@ namespace XiboClient
 
             // What happens if we cannot start?
             Trace.WriteLine(new LogMessage("Main", "Unhandled Exception: " + e.Message), LogType.Error.ToString());
-            Trace.WriteLine(new LogMessage("Main", "Stack Trace: " + e.StackTrace), LogType.Audit.ToString());
+            Trace.WriteLine(new LogMessage("Main", "Stack Trace: " + e.StackTrace), LogType.Error.ToString());
 
             try
             {
@@ -315,7 +304,7 @@ namespace XiboClient
         }
 
         [DllImport("User32.dll")]
-        public static extern int ShowWindowAsync(IntPtr hWnd , int swCommand);
+        public static extern int ShowWindowAsync(IntPtr hWnd, int swCommand);
 
         internal static class NativeMethods
         {

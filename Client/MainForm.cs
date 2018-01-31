@@ -165,25 +165,7 @@ namespace XiboClient
 
         public MainForm(string register)
         {
-            HardwareKey _hardwareKey = new HardwareKey();
-            using (var xmds1 = new xmds.xmds())
-            {
-                xmds1.RegisterDisplayAsync(
-                   ApplicationSettings.Default.ServerKey,
-                   ApplicationSettings.Default.HardwareKey,
-                   ApplicationSettings.Default.DisplayName,
-                   "windows",
-                   ApplicationSettings.Default.ClientVersion,
-                   ApplicationSettings.Default.ClientCodeVersion,
-                   Environment.OSVersion.ToString(),
-                   _hardwareKey.MacAddress,
-                   _hardwareKey.Channel,
-                   _hardwareKey.getXmrPublicKey());
-            }
-
-            InitializeComponent();
-            InitializeXibo();
-            this.Close();
+            this.Dispose();
         }
 
         private void InitializeAuthorization()

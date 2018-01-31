@@ -105,18 +105,25 @@ namespace XiboClient.XmdsAgents
                         // Get required files from disk
                         _requiredFiles = RequiredFiles.LoadFromDisk();
 
+                        if (_requiredFiles == null)
+                        {
+                            _manualReset.WaitOne(2700 * 1000);
+
+                            continue;
+                        }
+
                         Trace.WriteLine(new LogMessage("LibraryAgent - Run", "Number of required files = " + _requiredFiles.RequiredFileList.Count), LogType.Audit.ToString());
 
                         // Build a list of files in the library
                         DirectoryInfo directory = new DirectoryInfo(ApplicationSettings.Default.LibraryPath);
-                        
+
                         // Check each one and see if it is in required files
                         foreach (FileInfo fileInfo in directory.GetFiles())
                         {
                             // Never delete certain system files
                             // Also do not delete log/stat files as they are managed by their respective agents
-                            if (_persistentFiles.Contains(fileInfo.Name) || 
-                                fileInfo.Name.Contains(ApplicationSettings.Default.LogLocation) || 
+                            if (_persistentFiles.Contains(fileInfo.Name) ||
+                                fileInfo.Name.Contains(ApplicationSettings.Default.LogLocation) ||
                                 fileInfo.Name.Contains(ApplicationSettings.Default.StatsLogFile)
                                 )
                                 continue;
