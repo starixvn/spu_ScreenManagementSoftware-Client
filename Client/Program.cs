@@ -134,6 +134,9 @@ namespace XiboClient
             {
                 regKey.SetValue("SMSClient.exe", 11000, Microsoft.Win32.RegistryValueKind.DWord);
             }
+
+            var ieKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
+            ieKey.SetValue("CertificateRevocation", 0, RegistryValueKind.DWord);
         }
 
         private static void RunClient()

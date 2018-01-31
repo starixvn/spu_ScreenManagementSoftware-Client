@@ -709,10 +709,7 @@ namespace XiboClient
             catch (Exception ex)
             {
                 if (!(ex is DefaultLayoutException))
-                    Trace.WriteLine(new LogMessage("MainForm - ChangeToNextLayout", "Layout Change to " + layoutPath + " failed. Exception raised was: " + ex.Message), LogType.Error.ToString());
-
-                if (!_showingSplash)
-                    ShowSplashScreen();
+                    Trace.WriteLine(new LogMessage("MainForm - ChangeToNextLayout", "Layout Change to " + layoutPath + " failed. Exception raised was: " + ex.Message + ". Type: " + ex.GetType().Name), LogType.Error.ToString());
 
                 if (string.IsNullOrEmpty(layoutPath)) return;
 

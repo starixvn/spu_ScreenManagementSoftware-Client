@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F147B200-C008-4299-A12B-F2A15D0B4204}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,6 +16,8 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SMSClientInstaller", "..\SMSClientInstaller\SMSClientInstaller.vdproj", "{837C9845-9493-45D4-A7AC-A23D2201AB37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInstallWrapper", "..\SMSInstallWrapper\SMSInstallWrapper.csproj", "{12166CD6-24F4-4B56-B341-F933CF8A8E7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "Debugger\Debugger.csproj", "{E66F96ED-3196-427E-BBE9-17720C7101AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +92,24 @@ Global
 		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Upgrade|x64.Build.0 = Upgrade|Any CPU
 		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Upgrade|x86.ActiveCfg = Upgrade|Any CPU
 		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Upgrade|x86.Build.0 = Upgrade|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Debug|x64.Build.0 = Debug|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Debug|x86.Build.0 = Debug|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|x64.ActiveCfg = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|x64.Build.0 = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|x86.ActiveCfg = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|x86.Build.0 = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Upgrade|Any CPU.ActiveCfg = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Upgrade|Any CPU.Build.0 = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Upgrade|x64.ActiveCfg = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Upgrade|x64.Build.0 = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Upgrade|x86.ActiveCfg = Release|Any CPU
+		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Upgrade|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
