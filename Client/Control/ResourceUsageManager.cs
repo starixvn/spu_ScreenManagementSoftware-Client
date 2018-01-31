@@ -43,6 +43,8 @@
             {
                 //resourceUsageTimer.Stop();
                 Trace.WriteLine(new LogMessage("Client Resource Collector", "Error: " + err.Message), LogType.Error.ToString());
+
+                Logger.ExceptionSerializer.Serialize(err, () => Trace.WriteLine(new LogMessage("Logger", "Exception logged"), LogType.Info.ToString()));
             }
         }
     }

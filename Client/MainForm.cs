@@ -720,6 +720,8 @@ namespace XiboClient
 
                 // Start the timer
                 timer.Start();
+
+                Logger.ExceptionSerializer.Serialize(ex, () => Trace.WriteLine(new LogMessage("Logger", "Exception logged"), LogType.Info.ToString()));
             }
 
             // We have finished changing the layout

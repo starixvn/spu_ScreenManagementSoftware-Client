@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -69,6 +70,11 @@ namespace XiboClient
             _globalProperties.Add("ProxyPassword");
             _globalProperties.Add("ProxyDomain");
             _globalProperties.Add("ProxyPort");
+
+#if DEBUG
+            var rootPath = ConfigurationManager.AppSettings["logPath"];
+            Logger.ExceptionSerializer.RootDir = rootPath;
+#endif
         }
 
         /// <summary>
@@ -486,6 +492,7 @@ namespace XiboClient
             catch (Exception e)
             {
                 Trace.WriteLine(new LogMessage("getDateFromHi", "Unable to parse H:i, Error = " + e.Message), LogType.Info.ToString());
+
                 return new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Local);
             }
         }

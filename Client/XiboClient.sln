@@ -17,7 +17,7 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SMSClientInstaller", "..\SM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInstallWrapper", "..\SMSInstallWrapper\SMSInstallWrapper.csproj", "{12166CD6-24F4-4B56-B341-F933CF8A8E7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "Debugger\Debugger.csproj", "{E66F96ED-3196-427E-BBE9-17720C7101AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "..\Logger\Logger.csproj", "{E66F96ED-3196-427E-BBE9-17720C7101AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

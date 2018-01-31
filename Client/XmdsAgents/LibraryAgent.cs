@@ -151,6 +151,8 @@ namespace XiboClient.XmdsAgents
                     {
                         // Log this message, but dont abort the thread
                         Trace.WriteLine(new LogMessage("LibraryAgent - Run", "Exception in Run: " + ex.Message), LogType.Error.ToString());
+
+                        Logger.ExceptionSerializer.Serialize(ex, () => Trace.WriteLine(new LogMessage("Logger", "Exception logged"), LogType.Info.ToString()));
                     }
                 }
 

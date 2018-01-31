@@ -303,6 +303,8 @@ namespace XiboClient.XmdsAgents
                 // Log this message, but dont abort the thread
                 Trace.WriteLine(new LogMessage("FileAgent - Run", "Web Exception in Run: " + webEx.Message), LogType.Info.ToString());
 
+                Logger.ExceptionSerializer.Serialize(webEx, () => Trace.WriteLine(new LogMessage("Logger", "Exception logged"), LogType.Info.ToString()));
+
                 // Mark as not downloading
                 file.Downloading = false;
             }
@@ -313,6 +315,8 @@ namespace XiboClient.XmdsAgents
 
                 // Log this message, but dont abort the thread
                 Trace.WriteLine(new LogMessage("FileAgent - Run", "Exception in Run: " + ex.Message), LogType.Error.ToString());
+
+                Logger.ExceptionSerializer.Serialize(ex, () => Trace.WriteLine(new LogMessage("Logger", "Exception logged"), LogType.Info.ToString()));
 
                 // Mark as not downloading
                 file.Downloading = false;
