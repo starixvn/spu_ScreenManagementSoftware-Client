@@ -25,6 +25,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading;
@@ -1151,8 +1152,11 @@ namespace XiboClient
 
             lock (_regions)
             {
-                foreach (Region region in _regions)
+                var regionArray = _regions.ToArray();
+
+                for(var i = 0; i < regionArray.Length; i++)
                 {
+                    var region = regionArray[i];
                     try
                     {
                         // Remove the region from the list of controls
