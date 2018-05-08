@@ -13,26 +13,27 @@ namespace SMS.Testing.Console
 {
     class Program
     {
-       static DateTime started = DateTime.Now;
-
+        static DateTime started = DateTime.Now;
+        private static readonly object _syncObject = new object();
+        
         static void Main(string[] args)
         {
             try
             {
-                System.Console.Write("Input filename: ");
-                var filename = System.Console.ReadLine();
-                   
-                var apiUrl = System.Configuration.ConfigurationManager.AppSettings["api.url"];
-                //var rsa = new SMS.Core.RSAtoPHPCryptography();
-                //var publicKey = GetPublicKey();
-                //rsa.LoadCertificateFromString(publicKey);
-                //var encodeMessage = rsa.Encrypt(filename);
-                var url = new System.Uri(apiUrl + "/download.php?file=" + filename);
-                var webClient = new WebClient();
-                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
-                webClient.DownloadFileCompleted += DownloadCompleted;
-                webClient.DownloadFileAsync(url, @"D:\Demo\" + filename);
+                //System.Console.Write("Input filename: ");
+                //var filename = System.Console.ReadLine();
+                var filenames = new string[] { "20.mp4", "21.mp4", "22.mp4", "23.mp4", "24.mp4", "25.mp4", "26.mp4", "27.mp4", "28.mp4", "29.mp4" };
 
+                var apiUrl = System.Configuration.ConfigurationManager.AppSettings["api.url"];
+                
+                foreach (var filename in filenames)
+                {
+                    var url = new System.Uri(apiUrl + "/download.php?file=" + filename + "&key=508510b9ffa848cb9ce50fce333aec76");
+                    var webClient = new WebClient();
+                    webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) => wc_DownloadProgressChanged(sender, e, filename));
+                    webClient.DownloadFileCompleted += DownloadCompleted;
+                    webClient.DownloadFileAsync(url, @"D:\Demo\" + filename);
+                }
                 System.Console.ReadLine();
             }
             catch (Exception ex)
@@ -42,8 +43,7 @@ namespace SMS.Testing.Console
 
         }
         public static void DownloadCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-
+        {           
             System.Console.WriteLine("Success");
 
             var elapsedTime = DateTime.Now - started;
@@ -51,13 +51,36 @@ namespace SMS.Testing.Console
             System.Console.WriteLine(elapsedTime.TotalSeconds + "s");
         }
 
-        static void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        public static void Log(string logMessage, TextWriter w)
+        {
+            // only one thread can own this lock, so other threads
+            // entering this method will wait here until lock is
+            // available.
+            lock (_syncObject)
+            {
+                w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
+                    DateTime.Now.ToLongDateString());
+                w.WriteLine("  :");
+                w.WriteLine("  :{0}", logMessage);
+                w.WriteLine("-------------------------------");
+                // Update the underlying file.
+                w.Flush();
+            }
+        }
+
+
+        static void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e, string filename)
         {
             double bytesIn = double.Parse(e.BytesReceived.ToString());
             double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
             double percentage = bytesIn / totalBytes * 100;
 
-            System.Console.WriteLine("Downloaded " + e.BytesReceived + " of " + e.TotalBytesToReceive + ". " + percentage + "% complete...");
+            lock (_syncObject)
+            {
+                File.AppendAllText(@"D:\Demo\log.txt", filename + " is downloading on " + string.Format("{0:0.00}", percentage) + "% complete...\n");
+            }
+
+            System.Console.WriteLine(filename + " is downloading on " + string.Format("{0:0.00}", percentage) + "% complete...");
 
         }
 

@@ -18,6 +18,7 @@
   <ServerKey>123456</ServerKey>
   <DisplayName>COMPUTERNAME</DisplayName>
   <ServerUri>https://ha.nexdev.net:7710</ServerUri>
+  <ContentServerUri>http://10.70.70.210:8081</ContentServerUri>
   <ProxyUser></ProxyUser>
   <ProxyPassword></ProxyPassword>
   <ProxyDomain></ProxyDomain>

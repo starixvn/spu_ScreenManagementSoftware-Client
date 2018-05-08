@@ -24,6 +24,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Security.AccessControl;
 using System.Windows.Forms;
 using System.Xml;
 using XiboClient.Logic;
@@ -41,7 +42,7 @@ namespace XiboClient
         private string _clientVersion = "2.0.0";
 
         private string _version = "5";
-        private int _clientCodeVersion = 25;
+        private int _clientCodeVersion = 27;
 
         public string ClientVersion
         {
@@ -360,8 +361,11 @@ namespace XiboClient
                 // Check the path exists
                 if (!String.IsNullOrEmpty(_libraryPath) && !Directory.Exists(_libraryPath))
                 {
+                    var securityRules = new DirectorySecurity();
+                    securityRules.AddAccessRule(new FileSystemAccessRule("Everyone", FileSystemRights.FullControl, AccessControlType.Allow));
+
                     // Create everything up to the folder name we've specified.
-                    Directory.CreateDirectory(_libraryPath);
+                    Directory.CreateDirectory(_libraryPath, securityRules);
                 }
 
                 return _libraryPath;
@@ -383,6 +387,8 @@ namespace XiboClient
                 _serverKey = value;
             }
         }
+
+        public string ContentServerUri { get; set; }
 
         /// <summary>
         /// XMDS Url configuration
