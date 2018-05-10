@@ -18,14 +18,26 @@ namespace SMS.Testing.Console
         
         static void Main(string[] args)
         {
+
+            DownloadMediaFileFromXMDS();
+        }
+
+        public static void DownloadMediaFileFromXMDS()
+        {
+            using (WebClient wc = new WebClient())
+            {
+                wc.DownloadFile("https://ha.nexdev.net:7710/xmds.php?file=lVUsvZmBtu7sy5wJX5PRPn85513EBBjW&displayId=26&type=M&itemId=11", @"D:\Demo\11.ttf");
+            }
+        }
+
+        public static void Run()
+        {
             try
             {
-                //System.Console.Write("Input filename: ");
-                //var filename = System.Console.ReadLine();
                 var filenames = new string[] { "20.mp4", "21.mp4", "22.mp4", "23.mp4", "24.mp4", "25.mp4", "26.mp4", "27.mp4", "28.mp4", "29.mp4" };
 
                 var apiUrl = System.Configuration.ConfigurationManager.AppSettings["api.url"];
-                
+
                 foreach (var filename in filenames)
                 {
                     var url = new System.Uri(apiUrl + "/download.php?file=" + filename + "&key=508510b9ffa848cb9ce50fce333aec76");
@@ -40,8 +52,8 @@ namespace SMS.Testing.Console
             {
                 System.Console.WriteLine(ex.Message);
             }
-
         }
+
         public static void DownloadCompleted(object sender, AsyncCompletedEventArgs e)
         {           
             System.Console.WriteLine("Success");

@@ -360,12 +360,9 @@ namespace XiboClient
 
                 // Check the path exists
                 if (!String.IsNullOrEmpty(_libraryPath) && !Directory.Exists(_libraryPath))
-                {
-                    var securityRules = new DirectorySecurity();
-                    securityRules.AddAccessRule(new FileSystemAccessRule("Everyone", FileSystemRights.FullControl, AccessControlType.Allow));
-
+                {                   
                     // Create everything up to the folder name we've specified.
-                    Directory.CreateDirectory(_libraryPath, securityRules);
+                    Directory.CreateDirectory(_libraryPath);
                 }
 
                 return _libraryPath;
