@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SMS.Testing.Console
@@ -15,11 +16,44 @@ namespace SMS.Testing.Console
     {
         static DateTime started = DateTime.Now;
         private static readonly object _syncObject = new object();
-        
+
         static void Main(string[] args)
         {
+            string selectedModule;
+            while (true)
+            {
+                System.Console.WriteLine("************* SMS Testing Console *************");
+                System.Console.WriteLine("\n** Module lists:");
+                System.Console.WriteLine("**   1. Connect XMR & get messsages");
+                System.Console.WriteLine("**   2. Download media files");
+                System.Console.WriteLine("**   0. EXIT");
+                System.Console.Write("** Please select module: ");
+                selectedModule = System.Console.ReadLine();
+                switch (selectedModule)
+                {
+                    case "0":
+                        System.Console.WriteLine("** The program is closing...!");
+                        DateTime startTime = DateTime.Now;
+                        while ((DateTime.Now - startTime).Seconds != 2)
+                        {
+                            System.Console.Write("*");
+                            Thread.Sleep(500);
+                        }
 
-            DownloadMediaFileFromXMDS();
+                        Environment.Exit(0);
+                        break;
+                    case "1":
+                        break;
+                    case "2":
+                        break;
+                    default:
+                        System.Console.WriteLine("** This module is not available! Please try again!");
+                        System.Console.WriteLine("**************************************************");
+                        System.Console.WriteLine("**************************************************");
+                        break;
+                }
+            }
+            //DownloadMediaFileFromXMDS();
         }
 
         public static void DownloadMediaFileFromXMDS()
@@ -28,39 +62,6 @@ namespace SMS.Testing.Console
             {
                 wc.DownloadFile("https://ha.nexdev.net:7710/xmds.php?file=lVUsvZmBtu7sy5wJX5PRPn85513EBBjW&displayId=26&type=M&itemId=11", @"D:\Demo\11.ttf");
             }
-        }
-
-        public static void Run()
-        {
-            try
-            {
-                var filenames = new string[] { "20.mp4", "21.mp4", "22.mp4", "23.mp4", "24.mp4", "25.mp4", "26.mp4", "27.mp4", "28.mp4", "29.mp4" };
-
-                var apiUrl = System.Configuration.ConfigurationManager.AppSettings["api.url"];
-
-                foreach (var filename in filenames)
-                {
-                    var url = new System.Uri(apiUrl + "/download.php?file=" + filename + "&key=508510b9ffa848cb9ce50fce333aec76");
-                    var webClient = new WebClient();
-                    webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) => wc_DownloadProgressChanged(sender, e, filename));
-                    webClient.DownloadFileCompleted += DownloadCompleted;
-                    webClient.DownloadFileAsync(url, @"D:\Demo\" + filename);
-                }
-                System.Console.ReadLine();
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine(ex.Message);
-            }
-        }
-
-        public static void DownloadCompleted(object sender, AsyncCompletedEventArgs e)
-        {           
-            System.Console.WriteLine("Success");
-
-            var elapsedTime = DateTime.Now - started;
-
-            System.Console.WriteLine(elapsedTime.TotalSeconds + "s");
         }
 
         public static void Log(string logMessage, TextWriter w)
@@ -78,22 +79,6 @@ namespace SMS.Testing.Console
                 // Update the underlying file.
                 w.Flush();
             }
-        }
-
-
-        static void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e, string filename)
-        {
-            double bytesIn = double.Parse(e.BytesReceived.ToString());
-            double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
-            double percentage = bytesIn / totalBytes * 100;
-
-            lock (_syncObject)
-            {
-                File.AppendAllText(@"D:\Demo\log.txt", filename + " is downloading on " + string.Format("{0:0.00}", percentage) + "% complete...\n");
-            }
-
-            System.Console.WriteLine(filename + " is downloading on " + string.Format("{0:0.00}", percentage) + "% complete...");
-
         }
 
         static string GetPublicKey()
