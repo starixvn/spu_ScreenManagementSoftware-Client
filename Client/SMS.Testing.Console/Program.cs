@@ -1,4 +1,7 @@
-﻿using SMS.Core;
+﻿using NetMQ;
+using NetMQ.Sockets;
+using SMS.Testing.Console.Logic;
+using SMS.Testing.Console.Modules;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 
 namespace SMS.Testing.Console
 {
@@ -43,6 +47,8 @@ namespace SMS.Testing.Console
                         Environment.Exit(0);
                         break;
                     case "1":
+                        var connectXMR = new ConnectXMR();
+                        connectXMR.SubscribeQueue();
                         break;
                     case "2":
                         break;
@@ -55,6 +61,8 @@ namespace SMS.Testing.Console
             }
             //DownloadMediaFileFromXMDS();
         }
+
+        
 
         public static void DownloadMediaFileFromXMDS()
         {
