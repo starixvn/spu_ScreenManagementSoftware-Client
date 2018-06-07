@@ -45,6 +45,10 @@
       <HintPath>..\packages\NetMQ.4.0.0.1\lib\net40\NetMQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -58,9 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action\PlayerAction.cs" />
+    <Compile Include="Action\PlayerActionInterface.cs" />
     <Compile Include="Logic\AppSetting.cs" />
     <Compile Include="Logic\HardwareKey.cs" />
     <Compile Include="Logic\Hashes.cs" />
+    <Compile Include="Logic\OpenSslInterop.cs" />
     <Compile Include="Modules\ConnectXMR.cs" />
     <Compile Include="Modules\DownloadMediaFile.cs" />
     <Compile Include="Program.cs" />
