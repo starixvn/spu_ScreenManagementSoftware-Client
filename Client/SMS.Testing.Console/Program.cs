@@ -48,7 +48,7 @@ namespace SMS.Testing.Console
                         break;
                     case "1":
                         var connectXMR = new ConnectXMR();
-                        connectXMR.SubscribeQueue();
+                        connectXMR.Run();
                         break;
                     case "2":
                         break;

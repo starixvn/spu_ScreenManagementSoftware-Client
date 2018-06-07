@@ -14,8 +14,7 @@ namespace SMS.Testing.Console.Modules
     public class ConnectXMR
     {
         private HardwareKey _hardwareKey;
-
-        public void SubscribeQueue()
+        public void Run()
         {
             // Create a Poller
             var _poller = new NetMQPoller();
@@ -30,7 +29,7 @@ namespace SMS.Testing.Console.Modules
                     socket.Options.Linger = TimeSpan.FromSeconds(0);
 
                     // Bind
-                    socket.Connect(AppSetting.ServerUri);
+                    socket.Connect(AppSetting.XmrAddress);
                     socket.Subscribe("H");
                     socket.Subscribe(_hardwareKey.Channel);
 
@@ -40,6 +39,7 @@ namespace SMS.Testing.Console.Modules
                     // Bind to the receive ready event
                     socket.ReceiveReady += _socket_ReceiveReady;
 
+                    System.Console.WriteLine("Receiving message: ");
                     // Sit and wait, processing messages, indefinitely or until we are interrupted.
                     _poller.Run();
                 }
@@ -70,13 +70,13 @@ namespace SMS.Testing.Console.Modules
                     string code;
                     obj.TryGetValue("commandCode", out code);
 
-                    System.Console.WriteLine("Command action is " + action.action);
-                    System.Console.WriteLine("Command code is " + code);
+                    System.Console.WriteLine("Command action is: " + (string.IsNullOrEmpty(action.action) ? "-" : action.action.ToUpper()));
+                    System.Console.WriteLine("Command code is: " + (string.IsNullOrEmpty(code) ? "-" : code.ToUpper()));
                 }
             }
             else
             {
-                System.Console.WriteLine("There is no any messages");
+                System.Console.WriteLine("There is not any messages");
             }
         }
     }

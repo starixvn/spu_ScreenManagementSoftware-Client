@@ -78,7 +78,7 @@ namespace SMS.Testing.Console.Logic
             _macAddress = GetMacAddress();
 
             // Is the key empty?
-            if (_hardwareKey == "")
+            if (string.IsNullOrEmpty(_hardwareKey))
             {
                 try
                 {

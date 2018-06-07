@@ -15,11 +15,21 @@ namespace SMS.Testing.Console.Logic
             }
         }
 
-        public static string ServerKey {
+        public static string ServerKey
+        {
             get {
                 return ConfigurationManager.AppSettings["server.key"].ToString();
             }
         }
+
+        public static string XmrAddress
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["xmr.address"].ToString();
+            }
+        }
+
 
         public static string LibraryPath {
             get {
