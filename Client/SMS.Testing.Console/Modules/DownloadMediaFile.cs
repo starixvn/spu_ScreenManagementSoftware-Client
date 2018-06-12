@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SMS.Testing.Console.Logic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -12,10 +13,12 @@ namespace SMS.Testing.Console.Modules
     public class DownloadMediaFile
     {
         static DateTime started = DateTime.Now;
+        private HardwareKey _hardwareKey;
         private static readonly object _syncObject = new object();
 
-        public void Download()
+        public void Run()
         {
+            _hardwareKey = new HardwareKey();
             try
             {
                 var filenames = new string[] { "20.mp4", "21.mp4", "22.mp4", "23.mp4", "24.mp4", "25.mp4", "26.mp4", "27.mp4", "28.mp4", "29.mp4" };
@@ -24,7 +27,7 @@ namespace SMS.Testing.Console.Modules
 
                 foreach (var filename in filenames)
                 {
-                    var url = new Uri(apiUrl + "/download.php?file=" + filename + "&key=508510b9ffa848cb9ce50fce333aec76");
+                    var url = new Uri(apiUrl + "/download.php?file=" + filename + "&key=" + _hardwareKey);
                     var webClient = new WebClient();
                     webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) => wc_DownloadProgressChanged(sender, e, filename));
                     webClient.DownloadFileCompleted += DownloadCompleted;
@@ -59,7 +62,6 @@ namespace SMS.Testing.Console.Modules
             }
 
             System.Console.WriteLine(filename + " is downloading on " + string.Format("{0:0.00}", percentage) + "% complete...");
-
         }
     }
 }

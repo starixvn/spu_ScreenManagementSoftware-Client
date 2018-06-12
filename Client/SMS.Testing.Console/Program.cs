@@ -51,6 +51,8 @@ namespace SMS.Testing.Console
                         connectXMR.Run();
                         break;
                     case "2":
+                        var downloader = new DownloadMediaFile();
+                        downloader.Run();
                         break;
                     default:
                         System.Console.WriteLine("** This module is not available! Please try again!");
@@ -58,69 +60,6 @@ namespace SMS.Testing.Console
                         System.Console.WriteLine("**************************************************");
                         break;
                 }
-            }
-            //DownloadMediaFileFromXMDS();
-        }
-
-        
-
-        public static void DownloadMediaFileFromXMDS()
-        {
-            using (WebClient wc = new WebClient())
-            {
-                wc.DownloadFile("https://ha.nexdev.net:7710/xmds.php?file=lVUsvZmBtu7sy5wJX5PRPn85513EBBjW&displayId=26&type=M&itemId=11", @"D:\Demo\11.ttf");
-            }
-        }
-
-        public static void Log(string logMessage, TextWriter w)
-        {
-            // only one thread can own this lock, so other threads
-            // entering this method will wait here until lock is
-            // available.
-            lock (_syncObject)
-            {
-                w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
-                    DateTime.Now.ToLongDateString());
-                w.WriteLine("  :");
-                w.WriteLine("  :{0}", logMessage);
-                w.WriteLine("-------------------------------");
-                // Update the underlying file.
-                w.Flush();
-            }
-        }
-
-        static string GetPublicKey()
-        {
-            var apiUrl = System.Configuration.ConfigurationManager.AppSettings["api.url"];
-
-            return Post(apiUrl + "/GetFile.php", "getkey=y");
-        }
-
-        static string Post(string url, string data)
-        {
-            try
-            {
-                byte[] buffer = Encoding.ASCII.GetBytes(data);
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-
-                // Send request
-                request.Method = "POST";
-                request.ContentType = "application/x-www-form-urlencoded";
-                request.ContentLength = buffer.Length;
-                Stream postData = request.GetRequestStream();
-                postData.Write(buffer, 0, buffer.Length);
-                postData.Close();
-
-                // Get and return response
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream Answer = response.GetResponseStream();
-                StreamReader answer = new StreamReader(Answer);
-
-                return answer.ReadToEnd();
-            }
-            catch (Exception ex)
-            {
-                return "ERROR: " + ex.Message;
             }
         }
     }

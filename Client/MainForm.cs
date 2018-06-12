@@ -405,9 +405,19 @@ namespace XiboClient
                                         // Update/write the status.json file
                                         File.WriteAllText(Path.Combine(ApplicationSettings.Default.LibraryPath, "status.json"), "{\"lastActivity\":\"" + DateTime.Now.ToString() + "\"}");
 
+                                        try
+                                        {
+                                            // Start Client resource collector
+                                            ResourceUsageManager.Start();
+                                            Trace.WriteLine(new LogMessage("MainForm - Client Resource Collector", "Init client resource collector successfully"), LogType.Info.ToString());
+                                        }
+                                        catch (Exception ee)
+                                        {
+                                            Trace.WriteLine(new LogMessage("MainForm - Client Resource Collector", "Cannot start Client Resource Collector. E = " + ee.Message), LogType.Error.ToString());
+                                        }
+
                                         // Start watchdog
                                         WatchDogManager.Start();
-                                        ResourceUsageManager.Start();
                                         Trace.WriteLine(new LogMessage("MainForm - Init Watchdog", "Init watchdog successfully"), LogType.Info.ToString());
                                     }
                                     catch (Exception ee)
