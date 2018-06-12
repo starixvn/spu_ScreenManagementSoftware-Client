@@ -28,8 +28,9 @@ namespace SMS.Testing.Console
             {
                 System.Console.WriteLine("************* SMS Testing Console *************");
                 System.Console.WriteLine("\n** Module lists:");
-                System.Console.WriteLine("**   1. Connect XMR & get messsages");
-                System.Console.WriteLine("**   2. Download media files");
+                System.Console.WriteLine("**   1. Check environment");
+                System.Console.WriteLine("**   2. Connect XMR & get messsages");
+                System.Console.WriteLine("**   3. Download media files");
                 System.Console.WriteLine("**   0. EXIT");
                 System.Console.Write("** Please select module: ");
                 selectedModule = System.Console.ReadLine();
@@ -47,10 +48,14 @@ namespace SMS.Testing.Console
                         Environment.Exit(0);
                         break;
                     case "1":
+                        var checkEnvir = new SmsEnvironment();
+                        checkEnvir.Check();
+                        break;
+                    case "2":
                         var connectXMR = new ConnectXMR();
                         connectXMR.Run();
                         break;
-                    case "2":
+                    case "3":
                         var downloader = new DownloadMediaFile();
                         downloader.Run();
                         break;

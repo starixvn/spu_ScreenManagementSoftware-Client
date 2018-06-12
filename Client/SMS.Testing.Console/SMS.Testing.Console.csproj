@@ -70,8 +70,10 @@
     <Compile Include="Logic\OpenSslInterop.cs" />
     <Compile Include="Modules\ConnectXMR.cs" />
     <Compile Include="Modules\DownloadMediaFile.cs" />
+    <Compile Include="Modules\SmsEnvironment.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
