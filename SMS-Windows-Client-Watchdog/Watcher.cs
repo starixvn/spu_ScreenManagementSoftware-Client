@@ -94,7 +94,6 @@ namespace XiboClientWatchdog
                         string clientLibrary = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Settings.Default.ClientLibrary;
                         string SMSClientPath = Directory.Exists(@"C:\Program Files (x86)") ? @"C:\Program Files (x86)" : @"C:\Program Files";
                         string processPath = _config.Configs["Main"].GetString("watch-process", SMSClientPath + Settings.Default.ProcessPath);
-
 //#if debug
 //                        processPath = Debug.ChangeProcessPath;
 //#endif
@@ -114,7 +113,6 @@ namespace XiboClientWatchdog
 
                         // Check if my Xibo process is running.
                         Process[] proc = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(processPath));
-                        //Process.GetProcesses().Where(l => l.ProcessName.ToLower().StartsWith("sms digital")).ToArray();
 
                         if (proc.Length <= 0)
                         {
