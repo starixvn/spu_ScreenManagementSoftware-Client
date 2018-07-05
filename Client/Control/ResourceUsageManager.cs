@@ -29,7 +29,7 @@
                 int ramTotal = (int)(totalRam / 1024 / 1024);
                 int ramAvailable = (int)ramCounter.NextValue();
                 int ramUsage = ramTotal == 0 ? 0 : (int)((float)(ramTotal - ramAvailable) / ramTotal * 100);
-                Trace.WriteLine(new LogMessage("Client Resource Collector", "CPU Usage: " + cpuUsage + "%; RAM Total: " + ramTotal + " MB; RAM Available: " + ramAvailable + " MB; RAM Usage: " + ramUsage + " %"), LogType.Info.ToString());
+                //Trace.WriteLine(new LogMessage("Client Resource Collector", "CPU Usage: " + cpuUsage + "%; RAM Total: " + ramTotal + " MB; RAM Available: " + ramAvailable + " MB; RAM Usage: " + ramUsage + " %"), LogType.Info.ToString());
 
                 if (ApplicationSettings.Default.IsForcedSendResourceUsage || cpuUsage >= ApplicationSettings.Default.BenchmarkCPUUsage || ramUsage >= ApplicationSettings.Default.BenchmarkRAMUsage)
                 {
