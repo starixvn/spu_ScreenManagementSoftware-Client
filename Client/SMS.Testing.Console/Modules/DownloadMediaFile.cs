@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,22 +17,29 @@ namespace SMS.Testing.Console.Modules
         private HardwareKey _hardwareKey;
         private static readonly object _syncObject = new object();
 
+        private static string mediaPath = @"D:\SMS_Media";
+
         public void Run()
         {
             _hardwareKey = new HardwareKey();
             try
             {
-                var filenames = new string[] { "20.mp4", "21.mp4", "22.mp4", "23.mp4", "24.mp4", "25.mp4", "26.mp4", "27.mp4", "28.mp4", "29.mp4" };
+                var filenames = ConfigurationManager.AppSettings["media.Name"].Split(';');
 
-                var apiUrl = System.Configuration.ConfigurationManager.AppSettings["api.url"];
+                var apiUrl = ConfigurationManager.AppSettings["api.url"];
+                
+                if (!Directory.Exists(mediaPath))
+                {
+                    Directory.CreateDirectory(mediaPath);
+                }
 
                 foreach (var filename in filenames)
                 {
-                    var url = new Uri(apiUrl + "/download.php?file=" + filename + "&key=" + _hardwareKey);
+                    var url = new Uri(apiUrl + "/download.php?file=" + filename + "&key=" + _hardwareKey.Key);
                     var webClient = new WebClient();
                     webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) => wc_DownloadProgressChanged(sender, e, filename));
                     webClient.DownloadFileCompleted += DownloadCompleted;
-                    webClient.DownloadFileAsync(url, @"D:\Demo\" + filename);
+                    webClient.DownloadFileAsync(url, Path.Combine(mediaPath, filename));
                 }
                 System.Console.ReadLine();
             }
@@ -58,7 +66,7 @@ namespace SMS.Testing.Console.Modules
 
             lock (_syncObject)
             {
-                File.AppendAllText(@"D:\Demo\log.txt", filename + " is downloading on " + string.Format("{0:0.00}", percentage) + "% complete...\n");
+                File.AppendAllText(Path.Combine(mediaPath, "log.txt"), filename + " is downloading on " + string.Format("{0:0.00}", percentage) + "% complete...\n");
             }
 
             System.Console.WriteLine(filename + " is downloading on " + string.Format("{0:0.00}", percentage) + "% complete...");

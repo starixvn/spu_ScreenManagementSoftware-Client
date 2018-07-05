@@ -70,8 +70,15 @@ namespace SMS.Testing.Console.Modules
                     string code;
                     obj.TryGetValue("commandCode", out code);
 
-                    System.Console.WriteLine("Command action is: " + (string.IsNullOrEmpty(action.action) ? "-" : action.action.ToUpper()));
-                    System.Console.WriteLine("Command code is: " + (string.IsNullOrEmpty(code) ? "-" : code.ToUpper()));
+                  //  System.Console.WriteLine("Command action is: " + (string.IsNullOrEmpty(action.action) ? "-" : action.action.ToUpper()));
+                  //  System.Console.WriteLine("Command code is: " + (string.IsNullOrEmpty(code) ? "-" : code.ToUpper()));
+
+                    if (action.action.ToUpper() == "COLLECTNOW")
+                    {
+                        System.Console.WriteLine("Files are downloading...");
+                        var downloader = new DownloadMediaFile();
+                        downloader.Run();
+                    }
                 }
             }
             else
