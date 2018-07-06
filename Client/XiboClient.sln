@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInstallWrapper", "..\SMS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "..\Logger\Logger.csproj", "{E66F96ED-3196-427E-BBE9-17720C7101AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS.Testing.Console", "SMS.Testing.Console\SMS.Testing.Console.csproj", "{88DCA8AA-7225-4321-84F5-4C10F2BE27BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS.Testing.Console", "..\SMS.Testing.Console\SMS.Testing.Console.csproj", "{88DCA8AA-7225-4321-84F5-4C10F2BE27BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

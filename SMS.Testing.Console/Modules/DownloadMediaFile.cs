@@ -35,6 +35,11 @@ namespace SMS.Testing.Console.Modules
 
                 foreach (var filename in filenames)
                 {
+                    if (File.Exists(Path.Combine(mediaPath, filename)))
+                    {
+                        File.Delete(Path.Combine(mediaPath, filename));
+                    }
+
                     var url = new Uri(apiUrl + "/download.php?file=" + filename + "&key=" + _hardwareKey.Key);
                     var webClient = new WebClient();
                     webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) => wc_DownloadProgressChanged(sender, e, filename));
