@@ -207,36 +207,6 @@ namespace XiboClient.XmdsAgents
                         file.Complete = true;
                     }
                 }
-                //else if (file.Http)
-                //{
-                //    // Download using HTTP and the rf.Path
-                //    using (SMSWebClient wc = new SMSWebClient())
-                //    {
-                //        wc.DownloadFile(file.Path, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
-                //    }
-
-                //    // File completed
-                //    file.Downloading = false;
-                //    file.Complete = true;
-
-                //    // Check MD5
-                //    string md5 = _requiredFiles.CurrentCacheManager.GetMD5(file.SaveAs);
-                //    if (file.Md5 == md5)
-                //    {
-                //        // Mark it as complete
-                //        _requiredFiles.MarkComplete(_requiredFileId, file.Md5);
-
-                //        // Add it to the cache manager
-                //        _requiredFiles.CurrentCacheManager.Add(file.SaveAs, file.Md5);
-
-                //        Trace.WriteLine(new LogMessage("FileAgent - Run", "File Downloaded Successfully. " + file.SaveAs), LogType.Info.ToString());
-                //    }
-                //    else
-                //    {
-                //        // Just error - we will pick it up again the next time we download
-                //        Trace.WriteLine(new LogMessage("FileAgent - Run", "Downloaded file failed MD5 check. Calculated [" + md5 + "] & XMDS [ " + file.Md5 + "] . " + file.SaveAs), LogType.Info.ToString());
-                //    }
-                //}
                 else
                 {
                     var externsionName = Path.GetExtension(file.SaveAs);

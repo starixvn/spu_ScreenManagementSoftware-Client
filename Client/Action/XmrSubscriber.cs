@@ -4,8 +4,10 @@ using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using XiboClient.Action;
@@ -290,23 +292,25 @@ namespace XiboClient.Logic
         {
             using (xmds.xmds xmds = new xmds.xmds())
             {
-                xmds.Credentials = null;
-                xmds.Url = ApplicationSettings.Default.XiboClient_xmds_xmds;
-                xmds.UseDefaultCredentials = true;
-
-                var installerFile = xmds.CheckAndUpgradeNewVersion(ApplicationSettings.Default.ClientVersion + "." + ApplicationSettings.Default.ClientCodeVersion.ToString(), upgradeVersionFileName, false);
-
-                if (installerFile != null)
+                using (WebClient webClient = new WebClient())
                 {
-                    using (FileStream fileStream = File.Open(ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME, FileMode.Create, FileAccess.Write, FileShare.Read))
-                    {
-                        fileStream.Write(installerFile, 0, installerFile.Length);
-                        fileStream.Close();
-                    }
+                    var url = new Uri(ApplicationSettings.Default.ContentServerUri + "/xmds/download.php?file=" + upgradeVersionFileName + "&key=" + _hardwareKey.Key + "&upgrade=true");
 
-                    InstallNewVersion();
+                    webClient.DownloadFileCompleted += OnDownloadCompleted();
+
+                    webClient.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + UPGRADEVERSION_FILENAME);
                 }
             }
+        }
+
+        private AsyncCompletedEventHandler OnDownloadCompleted()
+        {
+            Action<object, AsyncCompletedEventArgs> action = (sender, e) =>
+            {
+                InstallNewVersion();
+            };
+
+            return new AsyncCompletedEventHandler(action);
         }
 
         private void InstallNewVersion()
