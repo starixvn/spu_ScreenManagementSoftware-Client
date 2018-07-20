@@ -77,8 +77,6 @@
     <Compile Include="Modules\SmsEnvironment.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TCP\TCPTestClient.cs" />
-    <Compile Include="TCP\TCPTestServer.cs" />
     <Compile Include="Utils\Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
