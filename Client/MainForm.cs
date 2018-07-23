@@ -650,7 +650,11 @@ namespace XiboClient
                 // Destroy the Current Layout
                 try
                 {
-                    if ((!_overlayStartSignal && !_overlayEndSignal) || _firstTime) DestroyLayout();
+                    if (!string.IsNullOrEmpty(layoutPath) && 
+                            ((!_overlayStartSignal && !_overlayEndSignal) || _firstTime))
+                    {
+                        DestroyLayout();
+                    }
                 }
                 catch (Exception e)
                 {

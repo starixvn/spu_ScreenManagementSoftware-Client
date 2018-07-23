@@ -126,6 +126,11 @@ namespace XiboClient.XmdsAgents
         {
             Action<object, AsyncCompletedEventArgs> action = (sender, e) =>
             {
+                if (file.ChunkSize != 0)
+                {
+                    return;
+                }
+
                 // File completed
                 file.Complete = true;
                 file.Downloading = false;
@@ -251,12 +256,10 @@ namespace XiboClient.XmdsAgents
                     {
                         using (WebClient webClient = new WebClient())
                         {
-                            var url = new System.Uri(ApplicationSettings.Default.ContentServerUri + "/xmds/download.php?file=" + file.SaveAs + "&key=" + _hardwareKey);
+                            var url = new Uri(ApplicationSettings.Default.ContentServerUri + "/xmds/download.php?file=" + file.SaveAs + "&key=" + _hardwareKey);
 
                             webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) => OnDownloading(sender, e, ref file));
-
                             webClient.DownloadFileCompleted += OnDownloadCompleted(file);
-
                             webClient.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
                         }
                     }
