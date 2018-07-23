@@ -8,8 +8,8 @@
     class ResourceUsageManager
     {
         private static Timer resourceUsageTimer;
-        private static PerformanceCounter performanceCounter;      
-        
+        // private static PerformanceCounter performanceCounter;      
+
         public static void Start()
         {
             resourceUsageTimer = new Timer(ApplicationSettings.Default.ResourceUsageInterval);
@@ -21,15 +21,20 @@
 
         private static int CPUUsage()
         {
-            performanceCounter = new PerformanceCounter() {
+            var performanceCounter = new PerformanceCounter()
+            {
                 CategoryName = "Processor",
                 CounterName = "% Processor Time",
                 InstanceName = "_Total"
             };
 
-            if(performanceCounter != null)
+            if (performanceCounter != null)
             {
-                return Convert.ToInt32(performanceCounter.NextValue());
+                var nextValue = performanceCounter.NextValue();
+                System.Threading.Thread.Sleep(500);
+                nextValue = performanceCounter.NextValue();
+
+                return Convert.ToInt32(nextValue);
             }
 
             return 0;
@@ -37,7 +42,7 @@
 
         private static int MemoryUsage(int memoryTotal)
         {
-            performanceCounter = new PerformanceCounter()
+            var performanceCounter = new PerformanceCounter()
             {
                 CategoryName = "Memory",
                 CounterName = "Available MBytes"
@@ -45,9 +50,11 @@
 
             if (performanceCounter != null)
             {
-                var memoryAvailable = Convert.ToInt32(performanceCounter.NextValue());
+                var nextValue = performanceCounter.NextValue();
 
-                return Convert.ToInt32((memoryTotal - memoryAvailable) / memoryTotal * 100);
+                return Convert.ToInt32(nextValue);
+
+                
             }
 
             return 0;
@@ -62,8 +69,9 @@
 
             var cpuUsage = CPUUsage();
             var memoryUsage = MemoryUsage(memoryTotal);
+            var memoryAvailable = Convert.ToInt32(Convert.ToDecimal(memoryTotal - memoryUsage) / memoryTotal * 100);
 
-            if (ApplicationSettings.Default.IsForcedSendResourceUsage || cpuUsage >= ApplicationSettings.Default.BenchmarkCPUUsage || memoryUsage >= ApplicationSettings.Default.BenchmarkRAMUsage)
+            if (ApplicationSettings.Default.IsForcedSendResourceUsage || cpuUsage >= ApplicationSettings.Default.BenchmarkCPUUsage || memoryAvailable >= ApplicationSettings.Default.BenchmarkRAMUsage)
             {
 
                 using (xmds.xmds xmds1 = new xmds.xmds())
@@ -71,7 +79,7 @@
                     xmds1.StoreClientCpuRamUsageAsync(ApplicationSettings.Default.HardwareKey, cpuUsage, memoryTotal, memoryUsage);
                 }
 
-            }            
+            }
         }
     }
 }
