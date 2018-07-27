@@ -72,7 +72,7 @@ namespace XiboClient
             _webBrowser.ScrollBarsEnabled = false;
             _webBrowser.ScriptErrorsSuppressed = true;
             _webBrowser.Visible = false;
-
+            
             if (nativeOpen)
             {
                 // Nativate directly
@@ -92,7 +92,7 @@ namespace XiboClient
             }
 
             Controls.Add(_webBrowser);
-
+            
             // Show the control
             Show();
         }

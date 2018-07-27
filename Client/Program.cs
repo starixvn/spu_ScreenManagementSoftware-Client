@@ -24,6 +24,7 @@ using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XiboClient.Control;
 using XiboClient.Logic;
 
 namespace XiboClient
@@ -62,7 +63,8 @@ namespace XiboClient
                 {
                     if (args[0].ToString() == "RegisterNewPlayer")
                     {
-                        CheckRegistry();
+                        // CheckRegistry();
+                        WebBrowserHelper.FixBrowserVersion("SMSClient");
                         RunSettings();
                     }
                     else
