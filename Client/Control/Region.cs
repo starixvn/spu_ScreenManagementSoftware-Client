@@ -552,7 +552,7 @@ namespace XiboClient
 
             if (options.render == "html")
             {
-                media = new IeWebMedia(options);
+                media = new ChromeWebMedia(options);
             }
             else
             {
@@ -600,7 +600,7 @@ namespace XiboClient
                     case "ticker":
                     case "text":
                     case "webpage":
-                        media = new IeWebMedia(options);
+                        media = new ChromeWebMedia(options);
 
                         break;
 

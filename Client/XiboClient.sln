@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F147B200-C008-4299-A12B-F2A15D0B4204}"
 	ProjectSection(SolutionItems) = preProject
@@ -34,22 +34,22 @@ Global
 		Upgrade|x86 = Upgrade|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Debug|Any CPU.Build.0 = Debug|x86
 		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Debug|x86.ActiveCfg = Debug|x86
 		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Debug|x86.Build.0 = Debug|x86
-		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Release|Any CPU.ActiveCfg = Release|x86
+		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Release|Any CPU.Build.0 = Release|x86
 		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Release|x64.ActiveCfg = Release|Any CPU
-		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Release|x86.ActiveCfg = Release|x86
-		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Release|x86.Build.0 = Release|x86
+		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Release|x86.ActiveCfg = Debug|x86
+		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Release|x86.Build.0 = Debug|x86
 		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Upgrade|Any CPU.ActiveCfg = Upgrade|Any CPU
 		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Upgrade|Any CPU.Build.0 = Upgrade|Any CPU
 		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Upgrade|x64.ActiveCfg = Upgrade|Any CPU
 		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Upgrade|x64.Build.0 = Upgrade|Any CPU
-		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Upgrade|x86.ActiveCfg = Upgrade|x86
-		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Upgrade|x86.Build.0 = Upgrade|x86
+		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Upgrade|x86.ActiveCfg = Debug|x86
+		{9E6CFE88-0171-4360-BDF4-84D74A90FD55}.Upgrade|x86.Build.0 = Debug|x86
 		{7C5DE0A1-D6BE-4FAE-AE24-30C0B8276469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7C5DE0A1-D6BE-4FAE-AE24-30C0B8276469}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C5DE0A1-D6BE-4FAE-AE24-30C0B8276469}.Debug|x64.ActiveCfg = Debug|x64
@@ -88,6 +88,7 @@ Global
 		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Release|x64.ActiveCfg = Release|Any CPU
 		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Release|x86.ActiveCfg = Release|Any CPU
+		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Release|x86.Build.0 = Release|Any CPU
 		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Upgrade|Any CPU.ActiveCfg = Upgrade|Any CPU
 		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Upgrade|Any CPU.Build.0 = Upgrade|Any CPU
 		{12166CD6-24F4-4B56-B341-F933CF8A8E7D}.Upgrade|x64.ActiveCfg = Upgrade|Any CPU
@@ -105,7 +106,6 @@ Global
 		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|x64.ActiveCfg = Release|Any CPU
 		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|x64.Build.0 = Release|Any CPU
 		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|x86.ActiveCfg = Release|Any CPU
-		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Release|x86.Build.0 = Release|Any CPU
 		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Upgrade|Any CPU.ActiveCfg = Release|Any CPU
 		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Upgrade|Any CPU.Build.0 = Release|Any CPU
 		{E66F96ED-3196-427E-BBE9-17720C7101AE}.Upgrade|x64.ActiveCfg = Release|Any CPU
@@ -123,7 +123,6 @@ Global
 		{88DCA8AA-7225-4321-84F5-4C10F2BE27BC}.Release|x64.ActiveCfg = Release|Any CPU
 		{88DCA8AA-7225-4321-84F5-4C10F2BE27BC}.Release|x64.Build.0 = Release|Any CPU
 		{88DCA8AA-7225-4321-84F5-4C10F2BE27BC}.Release|x86.ActiveCfg = Release|Any CPU
-		{88DCA8AA-7225-4321-84F5-4C10F2BE27BC}.Release|x86.Build.0 = Release|Any CPU
 		{88DCA8AA-7225-4321-84F5-4C10F2BE27BC}.Upgrade|Any CPU.ActiveCfg = Release|Any CPU
 		{88DCA8AA-7225-4321-84F5-4C10F2BE27BC}.Upgrade|Any CPU.Build.0 = Release|Any CPU
 		{88DCA8AA-7225-4321-84F5-4C10F2BE27BC}.Upgrade|x64.ActiveCfg = Release|Any CPU
