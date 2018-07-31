@@ -65,6 +65,9 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="SMSClientInstaller.msi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="description.txt" />

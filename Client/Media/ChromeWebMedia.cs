@@ -39,7 +39,7 @@ namespace XiboClient
                 Cef.Initialize();
             }
 
-            webBrowser = new ChromiumWebBrowser("http://ourcodeworld.com")
+            webBrowser = new ChromiumWebBrowser("about:blank")
             {
                 Size = Size,
                 Visible = true,
@@ -56,7 +56,7 @@ namespace XiboClient
             {
                 ReadControlMeta();
 
-                webBrowser.LoadHtml(localWebPath);
+                webBrowser.Load(localWebPath);
             }
             else
             {
@@ -161,7 +161,7 @@ namespace XiboClient
                         {
                             UpdateCache();
 
-                            webBrowser.LoadHtml(localWebPath);
+                            webBrowser.Load(localWebPath);
                         }
                         else
                         {
@@ -206,7 +206,7 @@ namespace XiboClient
                         ReadControlMeta();
 
                         // Handle Navigate in here because we will not have done it during first load
-                        webBrowser.LoadHtml(localWebPath);
+                        webBrowser.Load(localWebPath);
                     }
                 }
             }
