@@ -78,7 +78,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)/VersionGen.exe $(SolutionDir)$(OutDir)\SMSClient.exe $(ProjectDir)\description.txt $(ProjectDir)\$(OutDir)</PostBuildEvent>
+    <PostBuildEvent>$(ProjectDir)/VersionGen.exe $(SolutionDir)\client\$(OutDir)\SMSClient.exe $(ProjectDir)\description.txt $(ProjectDir)\$(OutDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
