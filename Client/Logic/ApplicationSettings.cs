@@ -42,7 +42,7 @@ namespace XiboClient
         private string _clientVersion = "2.0.0";
 
         private string _version = "5";
-        private int _clientCodeVersion = 30;
+        private int _clientCodeVersion = 73;
 
         public string ClientVersion
         {

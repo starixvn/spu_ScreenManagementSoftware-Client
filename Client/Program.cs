@@ -63,8 +63,8 @@ namespace XiboClient
                 {
                     if (args[0].ToString() == "RegisterNewPlayer")
                     {
-                        // CheckRegistry();
-                        WebBrowserHelper.FixBrowserVersion("SMSClient");
+                        CheckRegistry();
+
                         RunSettings();
                     }
                     else
@@ -118,6 +118,8 @@ namespace XiboClient
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+
                 HandleUnhandledException(ex);
             }
 
@@ -134,11 +136,16 @@ namespace XiboClient
             Object keyValue = regKey.GetValue("SMSClient.exe");
             if (keyValue == null)
             {
-                regKey.SetValue("SMSClient.exe", 11000, Microsoft.Win32.RegistryValueKind.DWord);
+                regKey.SetValue("SMSClient.exe", 11001, Microsoft.Win32.RegistryValueKind.DWord);
             }
 
-            var ieKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
-            ieKey.SetValue("CertificateRevocation", 0, RegistryValueKind.DWord);
+            //WebBrowserHelper.FixBrowserVersion("SMSClient");
+
+            Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true)
+            .SetValue("CertificateRevocation", 0, RegistryValueKind.DWord);
+
+            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System", true)
+            .SetValue("EnableLUA", 0, RegistryValueKind.DWord);
         }
 
         private static void RunClient()
