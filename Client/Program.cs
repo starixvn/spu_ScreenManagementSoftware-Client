@@ -132,14 +132,14 @@ namespace XiboClient
 
         private static void CheckRegistry()
         {
-            RegistryKey regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", true);
-            Object keyValue = regKey.GetValue("SMSClient.exe");
-            if (keyValue == null)
-            {
-                regKey.SetValue("SMSClient.exe", 11001, Microsoft.Win32.RegistryValueKind.DWord);
-            }
+            //RegistryKey regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", true);
+            //Object keyValue = regKey.GetValue("SMSClient.exe");
+            //if (keyValue == null)
+            //{
+            //    regKey.SetValue("SMSClient.exe", 11000, Microsoft.Win32.RegistryValueKind.DWord);
+            //}
 
-            //WebBrowserHelper.FixBrowserVersion("SMSClient");
+            WebBrowserHelper.FixBrowserVersion("SMSClient");
 
             Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true)
             .SetValue("CertificateRevocation", 0, RegistryValueKind.DWord);
