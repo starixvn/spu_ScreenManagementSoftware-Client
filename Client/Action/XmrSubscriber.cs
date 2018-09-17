@@ -8,8 +8,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using XiboClient.Action;
 using XiboClient.Log;
 
@@ -342,15 +344,12 @@ namespace XiboClient.Logic
         }
 
         private void RestartPlayer()
-        {
-            Process[] processes = Process.GetProcessesByName("SMSClient");
+        {            
+            var filePath = Assembly.GetExecutingAssembly().Location;
+            Process.Start(filePath);
 
-            Thread.Sleep(1000);
-            foreach (var process in processes)
-            {
-                process.Kill();
-            }
-        }
+            Application.Exit();
+        }                
 
         public void Restart()
         {
