@@ -164,6 +164,7 @@
     <Compile Include="Action\PlayerActionInterface.cs" />
     <Compile Include="Action\RevertToSchedulePlayerAction.cs" />
     <Compile Include="Control\EmbeddedServer.cs" />
+    <Compile Include="Control\ResourceLogger.cs" />
     <Compile Include="Control\ResourceUsageManager.cs" />
     <Compile Include="Control\WatchDogManager.cs" />
     <Compile Include="Control\WebBrowserHelper.cs" />

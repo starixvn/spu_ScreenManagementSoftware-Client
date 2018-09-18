@@ -62,7 +62,6 @@
 
         private static void CollectClientResourceUsage(object sender, System.Timers.ElapsedEventArgs e)
         {
-
             var computerInfo = new ComputerInfo();
             var totalPhysicalMemory = computerInfo.TotalPhysicalMemory;
             var memoryTotal = Convert.ToInt32(totalPhysicalMemory / 1024 / 1024);

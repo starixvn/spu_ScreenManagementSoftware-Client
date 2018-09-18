@@ -408,7 +408,7 @@ namespace XiboClient
                                         try
                                         {
                                             // Start Client resource collector
-                                            ResourceUsageManager.Start();
+                                            ResourceLogger.Start();
                                             Trace.WriteLine(new LogMessage("MainForm - Client Resource Collector", "Init client resource collector successfully"), LogType.Info.ToString());
                                         }
                                         catch (Exception ee)
