@@ -31,8 +31,7 @@
             System.Console.WriteLine("Remove the old version");
             UninstallSMSClient();
 
-#if !upgrade
-
+#if !UPGRADE
             System.Console.WriteLine("Remove old cached files");
             DeleteCachedFiles(); 
 #endif
