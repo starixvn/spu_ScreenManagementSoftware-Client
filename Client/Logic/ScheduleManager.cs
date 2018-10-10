@@ -966,7 +966,7 @@ namespace XiboClient
         /// <returns></returns>
         private string LayoutsInSchedule()
         {
-            string layoutsInSchedule = "";
+          string layoutsInSchedule = "";
 
             foreach (ScheduleItem layoutSchedule in CurrentSchedule)
             {

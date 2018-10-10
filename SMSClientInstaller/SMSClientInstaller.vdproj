@@ -358,6 +358,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B5B003650143AEA145CFFE00F9E467EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_0726B39E9A2E4B3D9CB0670666822467"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -371,12 +377,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C2461927E9164D659D845209562EC4C4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B5B003650143AEA145CFFE00F9E467EA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -532,6 +532,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
         "Release"
@@ -1866,7 +1874,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SMSClient"
         "ProductCode" = "8:{1169316E-B092-48F5-951D-7CF486C35F93}"
-        "PackageCode" = "8:{0B74568C-D50A-4342-BD03-143A88309EB6}"
+        "PackageCode" = "8:{4A5FCB99-DC14-47D4-A057-E621A901BA6A}"
         "UpgradeCode" = "8:{D8005279-5009-46F4-AB8E-B069EC1BDC0D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2256,20 +2264,6 @@
             "Icon" = "8:_96EC8EB69BFE4FED8BDE63F8D159F043"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4C7589C91EB846D5A0B2BE0664DA2EA6"
-            {
-            "Name" = "8:Uninstall SMS Client"
-            "Arguments" = "8:/x {3bd467a4-4ef9-466a-b156-a79c13a863f7} /qr"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_9BE3CC90EC1E44338A06ADE82B8EAA73"
-            "Folder" = "8:_4939AA1EB9374BAA8448D62BD83BFD5D"
-            "WorkingFolder" = "8:_763902933FA948D8BDDA335900865139"
-            "Icon" = "8:_72B02017D1D24B5490AB924C23B6B148"
-            "Feature" = "8:"
-            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_608A266C3B704FCA9E5F83C4DDF0554E"
             {
             "Name" = "8:SMS Client Player"
@@ -2282,6 +2276,20 @@
             "Folder" = "8:_4939AA1EB9374BAA8448D62BD83BFD5D"
             "WorkingFolder" = "8:_7A9314B555894FAC93C79C547C845E2B"
             "Icon" = "8:_96EC8EB69BFE4FED8BDE63F8D159F043"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_EFA4D586A1B24330A6F09801627ECF64"
+            {
+            "Name" = "8:Uninstall SMS Client Player"
+            "Arguments" = "8:/x {1169316E-B092-48F5-951D-7CF486C35F93} /qr"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_9BE3CC90EC1E44338A06ADE82B8EAA73"
+            "Folder" = "8:_4939AA1EB9374BAA8448D62BD83BFD5D"
+            "WorkingFolder" = "8:_763902933FA948D8BDDA335900865139"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F3ED2942BB494453B993ADE4810F9B26"
@@ -2699,7 +2707,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_23A9A20A66D847309CF5A3DA856BC22D"
             {
-            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Upgrade\\SMSClientWatchdog.exe"
+            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Debug\\SMSClientWatchdog.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_4FA5651E7F1948CFA9268171B0D41BB8"
@@ -2727,7 +2735,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3BD246B292EA4DE3A1BF9A29CF75A5D2"
             {
-            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Upgrade\\SMSClientWatchdog.exe"
+            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Debug\\SMSClientWatchdog.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_1C44B0A997CB4D4CA9E05C6DF653437D"
@@ -2811,7 +2819,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CA3958043B154D5DB61C7A9B64F7E680"
             {
-            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Upgrade\\SMSClientWatchdog.exe"
+            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Debug\\SMSClientWatchdog.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7A9314B555894FAC93C79C547C845E2B"

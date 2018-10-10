@@ -137,14 +137,18 @@
                 var document = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
                 var xmlPath = appdata + "/SMSClient.xml";
-                var smsFolder = document + "/SMS Client Library";
+                var smsFolder = document + "/SMS Client Library";                
 
                 if (File.Exists(xmlPath)) File.Delete(xmlPath);
                 if (Directory.Exists(smsFolder))
                 {
                     foreach (var file in Directory.GetFiles(smsFolder))
                     {
-                        if (!file.Contains("msi")) File.Delete(file);
+                        if (!file.Contains("msi"))
+                        {
+                            File.Delete(file);
+                        }
+                            
                     }
                 }
             }
