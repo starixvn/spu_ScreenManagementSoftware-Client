@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -33,9 +34,12 @@
 
 #if !UPGRADE
             System.Console.WriteLine("Remove old cached files");
-            DeleteCachedFiles(); 
+            DeleteCachedFiles();
 #endif
 
+#if !DEBUG
+            DownloadDebuggingTool();
+#endif
             //System.Console.WriteLine("Install Adobe Flash Player");
             //InstallFlash();
 
@@ -197,6 +201,33 @@
             proc.FileName = "cmd";
             proc.Arguments = "/C shutdown -f -r -t 0";
             Process.Start(proc);
+        }
+
+        private static void DownloadDebuggingTool()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
+            var url = "https://github.com/0xd4d/dnSpy/releases/download/v5.0.0/dnSpy.zip";
+
+            Console.WriteLine($"Downloading debugger from {url}");
+
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    client.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) => Console.Write($"\rProgress: {e.ProgressPercentage}%");
+                    var tsk = client.DownloadFileTaskAsync(url, $"{Environment.CurrentDirectory}/dnspy.zip");
+
+                    Task.WaitAll(tsk);
+
+                    Console.Write("\n");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"\nDownloading failed, error: {e.Message}");
+                    Console.WriteLine("Download aborted");
+                }
+            }
         }
     }
 }

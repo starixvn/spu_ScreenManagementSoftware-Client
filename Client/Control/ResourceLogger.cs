@@ -17,17 +17,18 @@ namespace XiboClient.Control
             ramCounter = new ComputerInfo();
             totalRam = ramCounter.TotalPhysicalMemory;
 
-            cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            cpuCounter = new PerformanceCounter("Processor Information", "% Processor Time", "_Total");
 
             cpuCounter.NextValue();
 
-            timer = new Timer(obj => Run(), null, 1000, 1000);
+            timer = new Timer(obj => Run(), null, 1000, 3000);
         }
 
         public static void Run()
         {
             var total = totalRam / 1024 / 1024;
-            var free = ramCounter.AvailablePhysicalMemory / 1024 / 1024;
+            var raw = ramCounter.AvailablePhysicalMemory;
+            var free = raw / 1024 / 1024;
             var cpu = cpuCounter.NextValue();
 
             using (xmds.xmds xmds1 = new xmds.xmds())
