@@ -17,42 +17,54 @@
 
         private static void Main(string[] args)
         {
-            if (!File.Exists(currentDirectory + SMSINSTALLER))
+            try
             {
-                currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SMS Client Library\SMSClientInstaller";
-            }
+                NormalizeRegistry();
 
-            System.Console.WriteLine("Current Directory: " + currentDirectory);
+                if (!File.Exists(currentDirectory + SMSINSTALLER))
+                {
+                    currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SMS Client Library\SMSClientInstaller";
+                }
 
-            System.Console.WriteLine("Current App's Directory");
-            KillOldProcess();
+                System.Console.WriteLine("Current Directory: " + currentDirectory);
 
-            Thread.Sleep(500);
+                System.Console.WriteLine("Current App's Directory");
+                KillOldProcess();
 
-            System.Console.WriteLine("Remove the old version");
-            UninstallSMSClient();
+                Thread.Sleep(500);
+
+                System.Console.WriteLine("Remove the old version");
+                UninstallSMSClient();
 
 #if !UPGRADE
-            System.Console.WriteLine("Remove old cached files");
-            DeleteCachedFiles();
+                System.Console.WriteLine("Remove old cached files");
+                DeleteCachedFiles();
 #endif
 
-#if !DEBUG
-            DownloadDebuggingTool();
-#endif
-            //System.Console.WriteLine("Install Adobe Flash Player");
-            //InstallFlash();
+                //System.Console.WriteLine("Install Adobe Flash Player");
+                //InstallFlash();
 
-            Thread.Sleep(500);
+                Thread.Sleep(500);
 
-            System.Console.WriteLine("Install the new version");
-            InstallSMSClient();
+                System.Console.WriteLine("Install the new version");
+                InstallSMSClient();
 
-            System.Console.WriteLine("Done!");
+                System.Console.WriteLine("Done!");
 
-            Thread.Sleep(500);
+                Thread.Sleep(500);
 
-            Restart();
+                Restart();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while running wrapper");
+
+                Console.WriteLine($"Error type: {ex.GetType().FullName}");
+
+                Console.WriteLine($"stack:\n {ex.StackTrace}");
+
+                Console.ReadLine();
+            }
         }
 
         private static void KillOldProcess()
@@ -141,7 +153,7 @@
                 var document = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
                 var xmlPath = appdata + "/SMSClient.xml";
-                var smsFolder = document + "/SMS Client Library";                
+                var smsFolder = document + "/SMS Client Library";
 
                 if (File.Exists(xmlPath)) File.Delete(xmlPath);
                 if (Directory.Exists(smsFolder))
@@ -152,7 +164,6 @@
                         {
                             File.Delete(file);
                         }
-                            
                     }
                 }
             }
@@ -209,14 +220,18 @@
 
             var url = "https://github.com/0xd4d/dnSpy/releases/download/v5.0.0/dnSpy.zip";
 
+            var file = $"{currentDirectory}/dnspy.zip";
+
             Console.WriteLine($"Downloading debugger from {url}");
+
+            Console.WriteLine($"Saving to {file}");
 
             using (var client = new WebClient())
             {
                 try
                 {
                     client.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) => Console.Write($"\rProgress: {e.ProgressPercentage}%");
-                    var tsk = client.DownloadFileTaskAsync(url, $"{Environment.CurrentDirectory}/dnspy.zip");
+                    var tsk = client.DownloadFileTaskAsync(url, file);
 
                     Task.WaitAll(tsk);
 
@@ -228,6 +243,26 @@
                     Console.WriteLine("Download aborted");
                 }
             }
+        }
+
+        private static void NormalizeRegistry()
+        {
+            var cmd = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "cmd",
+                    Arguments = "/C lodctr /r",
+                    UseShellExecute = false
+                }
+            };
+
+            Console.WriteLine("Normalizing registry");
+
+            cmd.Start();
+
+            cmd.WaitForExit();
         }
     }
 }

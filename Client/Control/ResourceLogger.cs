@@ -5,14 +5,15 @@ using System.Threading;
 
 namespace XiboClient.Control
 {
-    public static class ResourceLogger
+    public class ResourceLogger
     {
         private static ComputerInfo ramCounter;
         private static ulong totalRam;
         private static PerformanceCounter cpuCounter;
         private static Timer timer;
+        private readonly Action<Exception> logger;
 
-        public static void Start()
+        public ResourceLogger(Action<Exception> logger)
         {
             ramCounter = new ComputerInfo();
             totalRam = ramCounter.TotalPhysicalMemory;
@@ -21,19 +22,28 @@ namespace XiboClient.Control
 
             cpuCounter.NextValue();
 
+            this.logger = logger;
+
             timer = new Timer(obj => Run(), null, 1000, 3000);
         }
 
-        public static void Run()
+        public void Run()
         {
-            var total = totalRam / 1024 / 1024;
-            var raw = ramCounter.AvailablePhysicalMemory;
-            var free = raw / 1024 / 1024;
-            var cpu = cpuCounter.NextValue();
-
-            using (xmds.xmds xmds1 = new xmds.xmds())
+            try
             {
-                xmds1.StoreClientCpuRamUsageAsync(ApplicationSettings.Default.HardwareKey, Convert.ToInt32(cpu), Convert.ToInt32(total), Convert.ToInt32(free));
+                var total = totalRam / 1024 / 1024;
+                var raw = ramCounter.AvailablePhysicalMemory;
+                var free = raw / 1024 / 1024;
+                var cpu = cpuCounter.NextValue();
+
+                using (xmds.xmds xmds1 = new xmds.xmds())
+                {
+                    xmds1.StoreClientCpuRamUsageAsync(ApplicationSettings.Default.HardwareKey, Convert.ToInt32(cpu), Convert.ToInt32(total), Convert.ToInt32(free));
+                }
+            }
+            catch (Exception ex)
+            {
+                logger(ex);
             }
         }
     }

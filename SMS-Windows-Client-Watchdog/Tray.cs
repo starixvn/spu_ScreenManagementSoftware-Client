@@ -1,4 +1,5 @@
 ﻿using Nini.Config;
+
 /*
  * Xibo - Digitial Signage - http://www.xibo.org.uk
  * Copyright (C) 2006 - 2014 Daniel Garner
@@ -8,7 +9,7 @@
  * Xibo is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * any later version. 
+ * any later version.
  *
  * Xibo is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,15 +19,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Xibo.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using XiboClientWatchdog.Properties;
 
@@ -64,7 +61,7 @@ namespace XiboClientWatchdog
             ArgvConfigSource source = new ArgvConfigSource(Environment.GetCommandLineArgs());
             source.AddSwitch("Main", "watch-process", "p");
             source.AddSwitch("Main", "library", "l");
-                    
+
             // Create a watcher
             _watcher = new Watcher(source);
             _watcher.OnNotifyActivity += _watcher_OnNotifyActivity;
@@ -80,7 +77,18 @@ namespace XiboClientWatchdog
             processLabel.Text = source.Configs["Main"].GetString("watch-process", Settings.Default.ProcessPath);
         }
 
-        void _watcher_OnNotifyError(string message)
+        public void LogException(Exception e)
+        {
+            var msg = new StringBuilder();
+
+            msg.AppendLine(e.GetType().FullName);
+            msg.AppendLine(e.Message);
+            msg.AppendLine(e.StackTrace);
+
+            errorTextBox.Invoke(new MethodInvoker(() => errorTextBox.Text = msg.ToString()));
+        }
+
+        private void _watcher_OnNotifyError(string message)
         {
             if (InvokeRequired)
                 BeginInvoke(new StatusDelegate(setErrorText), message);
@@ -88,7 +96,7 @@ namespace XiboClientWatchdog
                 setErrorText(message);
         }
 
-        void _watcher_OnNotifyRestart(string message)
+        private void _watcher_OnNotifyRestart(string message)
         {
             if (InvokeRequired)
                 BeginInvoke(new StatusDelegate(setRestartText), message);
@@ -96,7 +104,7 @@ namespace XiboClientWatchdog
                 setRestartText(message);
         }
 
-        void _watcher_OnNotifyActivity()
+        private void _watcher_OnNotifyActivity()
         {
             if (InvokeRequired)
                 BeginInvoke(new StatusDelegate(setLastActivityText), "");
@@ -104,22 +112,22 @@ namespace XiboClientWatchdog
                 setLastActivityText("");
         }
 
-        void setLastActivityText(string message)
+        private void setLastActivityText(string message)
         {
             lastAccessedLabel.Text = "Checked: " + DateTime.Now.ToString();
         }
 
-        void setRestartText(string message)
+        private void setRestartText(string message)
         {
             string formattedMessage = "Restarted: " + DateTime.Now.ToString() + " " + message;
 
             showBalloon("Restarting", formattedMessage);
-            
+
             // Also store on the tool strip
             lastRestartLabel.Text = formattedMessage;
         }
 
-        void setErrorText(string message)
+        private void setErrorText(string message)
         {
             showBalloon("Error", message);
 
@@ -127,7 +135,7 @@ namespace XiboClientWatchdog
             errorTextBox.Text = message;
         }
 
-        void showBalloon(string title, string message)
+        private void showBalloon(string title, string message)
         {
             notifyIcon.BalloonTipTitle = title;
             notifyIcon.BalloonTipText = message;
@@ -135,7 +143,7 @@ namespace XiboClientWatchdog
             notifyIcon.ShowBalloonTip(3000);
         }
 
-        void Tray_FormClosing(object sender, FormClosingEventArgs e)
+        private void Tray_FormClosing(object sender, FormClosingEventArgs e)
         {
             _watcher.Stop();
         }
