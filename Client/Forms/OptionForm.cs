@@ -137,6 +137,7 @@ namespace XiboClient
         /// <param name="e"></param>
         private void buttonSaveSettings_Click(object sender, EventArgs e)
         {
+            Trace.WriteLine(new LogMessage("Save Settings clicked!"));
             tbStatus.ResetText();
             try
             {
