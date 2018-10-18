@@ -19,15 +19,13 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using XiboClient.Properties;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Net.Mime;
+using System.Text;
+using System.Threading;
 using XiboClient.Forms.Components;
-using System.ComponentModel;
 
 /// 17/02/12 Dan Created
 /// 21/02/12 Dan Added OnComplete Delegate and Event
@@ -161,9 +159,13 @@ namespace XiboClient.XmdsAgents
 
         public void OnDownloading(object sender, DownloadProgressChangedEventArgs e, ref RequiredFile file)
         {
-            file.ChunkOffset = e.BytesReceived;
-            file.ChunkSize = file.Size - file.ChunkOffset;
-            OnPartComplete(file.Id);
+            if (!file.Complete)
+            {
+                file.ChunkOffset = e.BytesReceived;
+                file.ChunkSize = file.Size - file.ChunkOffset;
+
+                OnPartComplete(file.Id);
+            }
         }
 
         /// <summary>
@@ -261,6 +263,11 @@ namespace XiboClient.XmdsAgents
                             webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) => OnDownloading(sender, e, ref file));
                             webClient.DownloadFileCompleted += OnDownloadCompleted(file);
                             webClient.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
+
+                            while(webClient.IsBusy)
+                            {
+                                Thread.Sleep(10);
+                            }
                         }
                     }
                     else
