@@ -5,15 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using XiboClient.Control;
 
 namespace XiboClientWatchdog
 {
     static class Program
     {
         static Mutex mutex;
-
-        private static ResourceLogger resourceLogger;
 
         /// <summary>
         /// The main entry point for the application.
@@ -27,13 +24,9 @@ namespace XiboClientWatchdog
 
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
-                var tray = new Tray();
-
-                resourceLogger = new ResourceLogger(tray.LogException);
-
                 Application.EnableVisualStyles();
-                //Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(tray);
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Tray());
 
                 // Release when we've stopped
                 mutex.ReleaseMutex();
