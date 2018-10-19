@@ -124,34 +124,32 @@ namespace XiboClient.XmdsAgents
         {
             Action<object, AsyncCompletedEventArgs> action = (sender, e) =>
             {
-                if (file.ChunkSize != 0)
+                if (file.Size == file.ChunkOffset)
                 {
-                    return;
+                    // File completed
+                    file.Complete = true;
+                    file.Downloading = false;
+
+                    // Check MD5
+                    string md5 = _requiredFiles.CurrentCacheManager.GetMD5(file.SaveAs);
+                    if (file.Md5 == md5)
+                    {
+                        // Mark it as complete
+                        _requiredFiles.MarkComplete(_requiredFileId, file.Md5);
+
+                        // Add it to the cache manager
+                        _requiredFiles.CurrentCacheManager.Add(file.SaveAs, file.Md5);
+
+                        Trace.WriteLine(new LogMessage("FileAgent - Run", "File Downloaded Successfully. " + file.SaveAs), LogType.Info.ToString());
+                    }
+                    else
+                    {
+                        // Just error - we will pick it up again the next time we download
+                        Trace.WriteLine(new LogMessage("FileAgent - Run", "Downloaded file failed MD5 check. Calculated [" + md5 + "] & XMDS [ " + file.Md5 + "] . " + file.SaveAs), LogType.Info.ToString());
+                    }
+
+                    OnComplete(file.Id, file.FileType);
                 }
-
-                // File completed
-                file.Complete = true;
-                file.Downloading = false;
-
-                // Check MD5
-                string md5 = _requiredFiles.CurrentCacheManager.GetMD5(file.SaveAs);
-                if (file.Md5 == md5)
-                {
-                    // Mark it as complete
-                    _requiredFiles.MarkComplete(_requiredFileId, file.Md5);
-
-                    // Add it to the cache manager
-                    _requiredFiles.CurrentCacheManager.Add(file.SaveAs, file.Md5);
-
-                    Trace.WriteLine(new LogMessage("FileAgent - Run", "File Downloaded Successfully. " + file.SaveAs), LogType.Info.ToString());
-                }
-                else
-                {
-                    // Just error - we will pick it up again the next time we download
-                    Trace.WriteLine(new LogMessage("FileAgent - Run", "Downloaded file failed MD5 check. Calculated [" + md5 + "] & XMDS [ " + file.Md5 + "] . " + file.SaveAs), LogType.Info.ToString());
-                }
-
-                OnComplete(file.Id, file.FileType);
             };
 
             return new AsyncCompletedEventHandler(action);
@@ -260,11 +258,20 @@ namespace XiboClient.XmdsAgents
                         {
                             var url = new Uri(ApplicationSettings.Default.ContentServerUri + "/xmds/download.php?file=" + file.SaveAs + "&key=" + _hardwareKey);
 
-                            webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) => OnDownloading(sender, e, ref file));
+                            webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) =>
+                            {
+                                if (!file.Complete)
+                                {
+                                    file.ChunkOffset = e.BytesReceived;
+                                    file.ChunkSize = file.Size - file.ChunkOffset;
+
+                                    OnPartComplete(file.Id);
+                                }
+                            });
                             webClient.DownloadFileCompleted += OnDownloadCompleted(file);
                             webClient.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
 
-                            while(webClient.IsBusy)
+                            while (webClient.IsBusy)
                             {
                                 Thread.Sleep(10);
                             }

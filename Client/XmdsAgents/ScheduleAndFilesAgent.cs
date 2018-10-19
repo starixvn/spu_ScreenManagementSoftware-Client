@@ -161,91 +161,102 @@ namespace XiboClient.XmdsAgents
                     {
                         try
                         {
-                            _clientInfoForm.RequiredFilesStatus = "Running: Requesting connection to Xibo Server";
+                            int filesToDownload = _requiredFiles.FilesDownloading;
 
-                            using (xmds.xmds xmds = new xmds.xmds())
+                            if (filesToDownload > 0)
                             {
-                                xmds.Credentials = null;
-                                xmds.Url = ApplicationSettings.Default.XiboClient_xmds_xmds;
-                                xmds.UseDefaultCredentials = false;
+                                _clientInfoForm.RequiredFilesStatus = string.Format("Waiting: {0} Active Downloads", filesToDownload.ToString());
 
-                                // Get required files from XMDS
-                                string requiredFilesXml = xmds.RequiredFiles(ApplicationSettings.Default.ServerKey, _hardwareKey);
-
-                                // Set the flag to indicate we have a connection to XMDS
-                                ApplicationSettings.Default.XmdsLastConnection = DateTime.Now;
-
-                                _clientInfoForm.RequiredFilesStatus = "Running: Data received from Xibo Server";
-
-                                // Load the XML file RF call
-                                XmlDocument xml = new XmlDocument();
-                                xml.LoadXml(requiredFilesXml);
-
-                                // Create a required files object and set it to contain the RF returned this tick
-                                _requiredFiles = new RequiredFiles();
-                                _requiredFiles.CurrentCacheManager = _cacheManager;
-                                _requiredFiles.RequiredFilesXml = xml;
-
-                                // Report what we are doing back to MediaInventory
-                                _requiredFiles.ReportInventory();
-                                Thread.Sleep(1 * 1000);
-
-                                // List of Threads to start
-                                // TODO: Track these threads so that we can abort them if the application closes
-                                List<Thread> threadsToStart = new List<Thread>();
-
-                                // Required files now contains a list of files to download (this will be updated by the various worker threads)
-                                foreach (RequiredFile fileToDownload in _requiredFiles.RequiredFileList)
-                                {
-                                    // Skip downloaded files
-                                    if (fileToDownload.Complete)
-                                        continue;
-
-                                    // Spawn a thread to download this file.
-                                    FileAgent fileAgent = new FileAgent();
-                                    fileAgent.FileDownloadLimit = _fileDownloadLimit;
-                                    fileAgent.HardwareKey = _hardwareKey;
-                                    fileAgent.RequiredFiles = _requiredFiles;
-                                    fileAgent.RequiredFileId = fileToDownload.Id;
-                                    fileAgent.RequiredFileType = fileToDownload.FileType;
-                                    fileAgent.OnComplete += new FileAgent.OnCompleteDelegate(fileAgent_OnComplete);
-                                    fileAgent.OnPartComplete += new FileAgent.OnPartCompleteDelegate(fileAgent_OnPartComplete);
-
-                                    // Create the thread and add it to the list of threads to start
-                                    Thread thread = new Thread(new ThreadStart(fileAgent.Run));
-                                    thread.Name = "FileAgent_" + fileToDownload.FileType + "_Id_" + fileToDownload.Id.ToString();
-                                    threadsToStart.Add(thread);
-                                }
-
-                                _scheduleManager.RunNow();
-                                // Write Required Files
-                                _requiredFiles.WriteRequiredFiles();
-
-                                // Write the Cache Manager to Disk
-                                _cacheManager.WriteCacheManager();
-
-                                // Report the storage usage
-                                reportStorage();
-
-                                // Set the status on the client info screen
-                                if (threadsToStart.Count == 0)
-                                {
-                                    _clientInfoForm.RequiredFilesStatus = "Sleeping (inside download window)";
-
-                                    // Raise an event to say we've completed
-                                    if (OnFullyProvisioned != null)
-                                        OnFullyProvisioned();
-                                }
-                                else
-                                    _clientInfoForm.RequiredFilesStatus = string.Format("{0} files to download", threadsToStart.Count.ToString());
-
-                                _clientInfoForm.UpdateRequiredFiles(RequiredFilesString());
-
-                                // Start the threads after we have built them all - otherwise they will modify the collection we 
-                                // are iterating over.
-                                foreach (Thread thread in threadsToStart)
-                                    thread.Start();
+                                Trace.WriteLine(new LogMessage("RequiredFilesAgent - Run", "Currently Downloading Files, skipping collect"), LogType.Audit.ToString());
                             }
+                            else
+                            {
+                                _clientInfoForm.RequiredFilesStatus = "Running: Requesting connection to Xibo Server";
+
+                                using (xmds.xmds xmds = new xmds.xmds())
+                                {
+                                    xmds.Credentials = null;
+                                    xmds.Url = ApplicationSettings.Default.XiboClient_xmds_xmds;
+                                    xmds.UseDefaultCredentials = false;
+
+                                    // Get required files from XMDS
+                                    string requiredFilesXml = xmds.RequiredFiles(ApplicationSettings.Default.ServerKey, _hardwareKey);
+
+                                    // Set the flag to indicate we have a connection to XMDS
+                                    ApplicationSettings.Default.XmdsLastConnection = DateTime.Now;
+
+                                    _clientInfoForm.RequiredFilesStatus = "Running: Data received from Xibo Server";
+
+                                    // Load the XML file RF call
+                                    XmlDocument xml = new XmlDocument();
+                                    xml.LoadXml(requiredFilesXml);
+
+                                    // Create a required files object and set it to contain the RF returned this tick
+                                    _requiredFiles = new RequiredFiles();
+                                    _requiredFiles.CurrentCacheManager = _cacheManager;
+                                    _requiredFiles.RequiredFilesXml = xml;
+
+                                    // Report what we are doing back to MediaInventory
+                                    _requiredFiles.ReportInventory();
+                                    Thread.Sleep(1 * 1000);
+
+                                    // List of Threads to start
+                                    // TODO: Track these threads so that we can abort them if the application closes
+                                    List<Thread> threadsToStart = new List<Thread>();
+
+                                    // Required files now contains a list of files to download (this will be updated by the various worker threads)
+                                    foreach (RequiredFile fileToDownload in _requiredFiles.RequiredFileList)
+                                    {
+                                        // Skip downloaded files
+                                        if (fileToDownload.Complete)
+                                            continue;
+
+                                        // Spawn a thread to download this file.
+                                        FileAgent fileAgent = new FileAgent();
+                                        fileAgent.FileDownloadLimit = _fileDownloadLimit;
+                                        fileAgent.HardwareKey = _hardwareKey;
+                                        fileAgent.RequiredFiles = _requiredFiles;
+                                        fileAgent.RequiredFileId = fileToDownload.Id;
+                                        fileAgent.RequiredFileType = fileToDownload.FileType;
+                                        fileAgent.OnComplete += new FileAgent.OnCompleteDelegate(fileAgent_OnComplete);
+                                        fileAgent.OnPartComplete += new FileAgent.OnPartCompleteDelegate(fileAgent_OnPartComplete);
+
+                                        // Create the thread and add it to the list of threads to start
+                                        Thread thread = new Thread(new ThreadStart(fileAgent.Run));
+                                        thread.Name = "FileAgent_" + fileToDownload.FileType + "_Id_" + fileToDownload.Id.ToString();
+                                        threadsToStart.Add(thread);
+                                    }
+
+                                    _scheduleManager.RunNow();
+                                    // Write Required Files
+                                    _requiredFiles.WriteRequiredFiles();
+
+                                    // Write the Cache Manager to Disk
+                                    _cacheManager.WriteCacheManager();
+
+                                    // Report the storage usage
+                                    reportStorage();
+
+                                    // Set the status on the client info screen
+                                    if (threadsToStart.Count == 0)
+                                    {
+                                        _clientInfoForm.RequiredFilesStatus = "Sleeping (inside download window)";
+
+                                        // Raise an event to say we've completed
+                                        if (OnFullyProvisioned != null)
+                                            OnFullyProvisioned();
+                                    }
+                                    else
+                                        _clientInfoForm.RequiredFilesStatus = string.Format("{0} files to download", threadsToStart.Count.ToString());
+
+                                    _clientInfoForm.UpdateRequiredFiles(RequiredFilesString());
+
+                                    // Start the threads after we have built them all - otherwise they will modify the collection we 
+                                    // are iterating over.
+                                    foreach (Thread thread in threadsToStart)
+                                        thread.Start();
+                                }
+                            }                            
                         }
                         catch (WebException webEx)
                         {

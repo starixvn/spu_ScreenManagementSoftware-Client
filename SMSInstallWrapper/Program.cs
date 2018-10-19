@@ -38,7 +38,7 @@
 #endif
 
 #if !DEBUG
-            DownloadDebuggingTool();
+           // DownloadDebuggingTool();
 #endif
             //System.Console.WriteLine("Install Adobe Flash Player");
             //InstallFlash();
