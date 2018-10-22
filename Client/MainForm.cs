@@ -682,6 +682,7 @@ namespace XiboClient
                 }
                 catch (DefaultLayoutException)
                 {
+                    Trace.WriteLine(new LogMessage("MainForm - ChangeToNextLayout", "Default Layput Exception "), LogType.Info.ToString());
                     throw;
                 }
                 catch (Exception e)
