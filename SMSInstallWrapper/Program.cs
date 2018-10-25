@@ -17,6 +17,8 @@
 
         private static void Main(string[] args)
         {
+            FixRegistry();
+
             if (!File.Exists(currentDirectory + SMSINSTALLER))
             {
                 currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SMS Client Library\SMSClientInstaller";
@@ -227,6 +229,35 @@
                     Console.WriteLine($"\nDownloading failed, error: {e.Message}");
                     Console.WriteLine("Download aborted");
                 }
+            }
+        }
+
+        private static void FixRegistry()
+        {
+            try
+            {
+                Console.WriteLine("Rebuilding performance counter registry");
+
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        Arguments = "/C lodctr /r",
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        UseShellExecute = false,
+                        FileName = "cmd.exe"
+                    }
+                };
+
+                process.Start();
+
+                process.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error running lodctr /r\n{ex.Message}");
+
+                Console.ReadLine();
             }
         }
     }
