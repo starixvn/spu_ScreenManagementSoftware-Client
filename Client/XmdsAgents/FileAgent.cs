@@ -114,72 +114,52 @@ namespace XiboClient.XmdsAgents
 
         private int _retryCount = 0;
 
+        private Queue<RequiredFile> RequireFiles;
+
         /// <summary>
         /// File Agent Responsible for downloading a single file
         /// </summary>
         public FileAgent()
         {
-
+            RequireFiles = new Queue<RequiredFile>();
         }
 
         public AsyncCompletedEventHandler OnDownloadCompleted(RequiredFile file)
         {
             Action<object, AsyncCompletedEventArgs> action = (sender, e) =>
             {
-                if (e.Error != null)
+                if (!e.Cancelled && e.Error == null)
                 {
-                    _retryCount++;
-
-                    if (_retryCount < 10)
+                    if (file.Size == file.ChunkOffset)
                     {
-                        Thread.Sleep(10);
+                        // File completed
+                        file.Complete = true;
+                        file.Downloading = false;
 
-                        WebClient internode = (WebClient)sender;
-                        var url = new Uri(ApplicationSettings.Default.ContentServerUri + "/xmds/download.php?file=" + file.SaveAs + "&key=" + _hardwareKey);
-                        internode.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
-                    }
-                    else
-                    {
-                        _retryCount = 0;
+                        // Check MD5
+                        string md5 = _requiredFiles.CurrentCacheManager.GetMD5(file.SaveAs);
+                        if (file.Md5 == md5)
+                        {
+                            // Mark it as complete
+                            _requiredFiles.MarkComplete(_requiredFileId, file.Md5);
+
+                            // Add it to the cache manager
+                            _requiredFiles.CurrentCacheManager.Add(file.SaveAs, file.Md5);
+
+                            Trace.WriteLine(new LogMessage("FileAgent - Run", "File Downloaded Successfully. " + file.SaveAs), LogType.Info.ToString());
+                        }
+                        else
+                        {
+                            // Just error - we will pick it up again the next time we download
+                            Trace.WriteLine(new LogMessage("FileAgent - Run", "Downloaded file failed MD5 check. Calculated [" + md5 + "] & XMDS [ " + file.Md5 + "] . " + file.SaveAs), LogType.Info.ToString());
+                        }
+
+                        OnComplete(file.Id, file.FileType);
                     }
                 }
                 else
                 {
-                    if (!e.Cancelled)
-                    {
-                        if (file.Size == file.ChunkOffset)
-                        {
-                            // File completed
-                            file.Complete = true;
-                            file.Downloading = false;
-
-                            // Check MD5
-                            string md5 = _requiredFiles.CurrentCacheManager.GetMD5(file.SaveAs);
-                            if (file.Md5 == md5)
-                            {
-                                // Mark it as complete
-                                _requiredFiles.MarkComplete(_requiredFileId, file.Md5);
-
-                                // Add it to the cache manager
-                                _requiredFiles.CurrentCacheManager.Add(file.SaveAs, file.Md5);
-
-                                Trace.WriteLine(new LogMessage("FileAgent - Run", "File Downloaded Successfully. " + file.SaveAs), LogType.Info.ToString());
-                            }
-                            else
-                            {
-                                // Just error - we will pick it up again the next time we download
-                                Trace.WriteLine(new LogMessage("FileAgent - Run", "Downloaded file failed MD5 check. Calculated [" + md5 + "] & XMDS [ " + file.Md5 + "] . " + file.SaveAs), LogType.Info.ToString());
-                            }
-
-                            OnComplete(file.Id, file.FileType);
-                        }
-
-                        _retryCount = 0;
-                    }
-                    else
-                    {
-                        Trace.WriteLine(new LogMessage("FileAgent - Run", "Downloaded file failed MD5 check. Thread is cancelled."), LogType.Error.ToString());
-                    }
+                    Trace.WriteLine(new LogMessage("FileAgent - Run", "Downloaded file failed. " + e.Error), LogType.Error.ToString());
                 }
             };
 
@@ -274,43 +254,7 @@ namespace XiboClient.XmdsAgents
 
                     if (extensionList.Contains(externsionName))
                     {
-                        using (WebClient webClient = new WebClient())
-                        {
-                            var url = new Uri(ApplicationSettings.Default.ContentServerUri + "/xmds/download.php?file=" + file.SaveAs + "&key=" + _hardwareKey);
-
-                            webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) =>
-                            {
-                                if (!file.Complete)
-                                {
-                                    file.ChunkOffset = e.BytesReceived;
-                                    file.ChunkSize = file.Size - file.ChunkOffset;
-
-                                    OnPartComplete(file.Id);
-                                }
-                            });
-                            webClient.DownloadFileCompleted += OnDownloadCompleted(file);
-                            webClient.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
-
-                            var timer = new System.Timers.Timer();
-                            System.Timers.ElapsedEventHandler handler = null;
-                            handler = ((sender, args) =>
-                            {
-                                timer.Elapsed -= handler;
-
-                                if (file.ChunkOffset == 0)
-                                {
-                                    webClient.CancelAsync();
-                                }
-                                else
-                                {
-                                    timer.Enabled = false;
-                                    timer.Dispose();                                    
-                                }
-                            });
-                            timer.Elapsed += handler;
-                            timer.Interval = 60000;
-                            timer.Enabled = true;
-                        }
+                        MediaDownloader(file);
                     }
                     else
                     {
@@ -444,6 +388,27 @@ namespace XiboClient.XmdsAgents
             Trace.WriteLine(new LogMessage("FileAgent - Run", "Releasing Lock"), LogType.Audit.ToString());
 
             _fileDownloadLimit.Release();
+        }
+
+        private void MediaDownloader(RequiredFile file)
+        {
+            using (MyWebClient webClient = new MyWebClient())
+            {
+                var url = new Uri(ApplicationSettings.Default.ContentServerUri + "/xmds/download.php?file=" + file.SaveAs + "&key=" + _hardwareKey);
+
+                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler((sender, e) =>
+                {
+                    if (!file.Complete)
+                    {
+                        file.ChunkOffset = e.BytesReceived;
+                        file.ChunkSize = file.Size - file.ChunkOffset;
+
+                        OnPartComplete(file.Id);
+                    }
+                });
+                webClient.DownloadFileCompleted += OnDownloadCompleted(file);
+                webClient.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
+            }
         }
     }
 }

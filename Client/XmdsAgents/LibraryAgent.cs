@@ -19,13 +19,9 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using XiboClient.Properties;
 using System.Diagnostics;
-using System.Xml;
-using XiboClient.Log;
 using System.IO;
+using System.Threading;
 
 /// 09/04/12 Dan Created
 
@@ -132,6 +128,11 @@ namespace XiboClient.XmdsAgents
                             try
                             {
                                 RequiredFile file = _requiredFiles.GetRequiredFile(fileInfo.Name);
+                                
+                                if (!file.Complete)
+                                {
+                                    File.Delete(fileInfo.FullName);
+                                }
                             }
                             catch
                             {

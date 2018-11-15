@@ -24,6 +24,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Diagnostics;
 using XiboClient.Properties;
+using System.Threading;
 
 namespace XiboClient
 {
@@ -113,7 +114,7 @@ namespace XiboClient
             }
             set
             {
-                _options = value;
+                _options = value;                
 
                 EvalOptions();
             }

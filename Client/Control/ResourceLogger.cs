@@ -21,7 +21,7 @@ namespace XiboClient.Control
 
             cpuCounter.NextValue();
 
-            timer = new Timer(obj => Run(), null, 1000, 3000);
+            timer = new Timer(obj => Run(), null, 1000, 6000);
         }
 
         public static void Run()
