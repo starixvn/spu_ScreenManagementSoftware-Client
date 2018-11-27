@@ -319,9 +319,6 @@
     </Compile>
     <Compile Include="Log\XiboTraceListener.cs" />
     <Compile Include="XmdsAgents\LogAgent.cs" />
-    <Compile Include="XmdsAgents\MyWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="XmdsAgents\RegisterAgent.cs" />
     <Compile Include="XmdsAgents\FileAgent.cs" />
     <Compile Include="XmdsAgents\LibraryAgent.cs" />

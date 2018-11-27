@@ -392,7 +392,7 @@ namespace XiboClient.XmdsAgents
 
         private void MediaDownloader(RequiredFile file)
         {
-            using (MyWebClient webClient = new MyWebClient())
+            using (WebClient webClient = new WebClient())
             {
                 var url = new Uri(ApplicationSettings.Default.ContentServerUri + "/xmds/download.php?file=" + file.SaveAs + "&key=" + _hardwareKey);
 
@@ -409,6 +409,6 @@ namespace XiboClient.XmdsAgents
                 webClient.DownloadFileCompleted += OnDownloadCompleted(file);
                 webClient.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
             }
-        }
+        }        
     }
 }
