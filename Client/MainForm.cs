@@ -64,6 +64,7 @@ namespace XiboClient
         private bool _screenSaver = false;
         private bool _showingSplash = false;
         private bool _isApproved = false;
+        private bool _isNetworkProblemed = false;
 
         private double _layoutWidth;
         private double _layoutHeight;
@@ -177,6 +178,10 @@ namespace XiboClient
                 {
                     _isApproved = xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
                 }
+            }
+            catch (System.Net.WebException)
+            {
+                _isNetworkProblemed = true;
             }
             catch
             {
@@ -396,6 +401,9 @@ namespace XiboClient
                         try
                         {
                             _isApproved = _isApproved || xmds.IsAuthorised(ApplicationSettings.Default.ServerKey, ApplicationSettings.Default.HardwareKey);
+
+                            ShowDefaultSplashScreen();
+
                             if (_isApproved)
                             {
                                 if (!_screenSaver)
@@ -428,6 +436,10 @@ namespace XiboClient
 
                                 break;
                             }
+                        }
+                        catch (System.Net.WebException)
+                        {                           
+                            ShowNetworkProblemSplashScreen();
                         }
                         catch
                         {
@@ -503,8 +515,15 @@ namespace XiboClient
             if (!_screenSaver)
                 SetCursorStartPosition();
 
-            // Show the splash screen
-            ShowSplashScreen();
+            if (!_isNetworkProblemed)
+            {
+                // Show the splash screen
+                ShowSplashScreen();
+            }
+            else
+            {
+                ShowNetworkProblemSplashScreen();
+            }
 
             // Change the default Proxy class
             OptionForm.SetGlobalProxy();
@@ -650,7 +669,7 @@ namespace XiboClient
                 // Destroy the Current Layout
                 try
                 {
-                    if (!string.IsNullOrEmpty(layoutPath) && 
+                    if (!string.IsNullOrEmpty(layoutPath) &&
                             ((!_overlayStartSignal && !_overlayEndSignal) || _firstTime))
                     {
                         DestroyLayout();
@@ -1095,6 +1114,24 @@ namespace XiboClient
             }
         }
 
+        private void ShowNetworkProblemSplashScreen()
+        {
+            // Load into a stream and then into an Image
+            try
+            {
+                using (Image bgSplash = Image.FromFile("Resources//splash_network.jpg"))
+                {
+                    Bitmap bmpSplash = new Bitmap(bgSplash, _clientSize);
+                    BackgroundImage = bmpSplash;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log
+                Debug.WriteLine("Failed Showing Splash Screen: " + ex.Message);
+            }
+        }
+
         /// <summary>
         /// Returns the image codec with the given mime type
         /// </summary>
@@ -1169,7 +1206,7 @@ namespace XiboClient
             {
                 var regionArray = _regions.ToArray();
 
-                for(var i = 0; i < regionArray.Length; i++)
+                for (var i = 0; i < regionArray.Length; i++)
                 {
                     var region = regionArray[i];
                     try

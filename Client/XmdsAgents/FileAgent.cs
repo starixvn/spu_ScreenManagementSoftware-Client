@@ -112,7 +112,7 @@ namespace XiboClient.XmdsAgents
         }
         private Semaphore _fileDownloadLimit;
 
-        private int _retryCount = 0;
+        ManualResetEvent manualResetEvent = new ManualResetEvent(false);
 
         private Queue<RequiredFile> RequireFiles;
 
@@ -153,6 +153,8 @@ namespace XiboClient.XmdsAgents
                             // Just error - we will pick it up again the next time we download
                             Trace.WriteLine(new LogMessage("FileAgent - Run", "Downloaded file failed MD5 check. Calculated [" + md5 + "] & XMDS [ " + file.Md5 + "] . " + file.SaveAs), LogType.Info.ToString());
                         }
+
+                        manualResetEvent.Set();
 
                         OnComplete(file.Id, file.FileType);
                     }
@@ -392,6 +394,7 @@ namespace XiboClient.XmdsAgents
 
         private void MediaDownloader(RequiredFile file)
         {
+            
             using (WebClient webClient = new WebClient())
             {
                 var url = new Uri(ApplicationSettings.Default.ContentServerUri + "/xmds/download.php?file=" + file.SaveAs + "&key=" + _hardwareKey);
@@ -407,8 +410,9 @@ namespace XiboClient.XmdsAgents
                     }
                 });
                 webClient.DownloadFileCompleted += OnDownloadCompleted(file);
-                webClient.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);
+                webClient.DownloadFileAsync(url, ApplicationSettings.Default.LibraryPath + @"\" + file.SaveAs);                
+                manualResetEvent.WaitOne();
             }
-        }        
+        }
     }
 }

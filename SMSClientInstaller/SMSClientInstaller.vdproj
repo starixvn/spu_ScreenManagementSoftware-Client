@@ -243,6 +243,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A50064F438AF4615AC8BF4A498414EDB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_B5B003650143AEA145CFFE00F9E467EA"
         "OwnerKey" = "8:_A3CBBAEE4A354BAC94FEDD37A130082B"
         "MsmSig" = "8:_UNDEFINED"
@@ -256,6 +262,12 @@
         "Entry"
         {
         "MsmKey" = "8:_C2461927E9164D659D845209562EC4C4"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C5967177CC4341C1BD7DDD079EEB63AB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -304,6 +316,12 @@
         "Entry"
         {
         "MsmKey" = "8:_D718E50E0BE94D71A06F907133515975"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D7D3B3C1A8B54FB78B39E39CE68AA252"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -598,10 +616,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
                     }
                 }
             }
@@ -1403,6 +1421,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A50064F438AF4615AC8BF4A498414EDB"
+            {
+            "SourcePath" = "8:..\\Client\\Resources\\splash.jpg"
+            "TargetName" = "8:splash.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_DE31F813FD3B435E9EAD4E740E830309"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B5B003650143AEA145CFFE00F9E467EA"
             {
             "AssemblyRegister" = "3:1"
@@ -1440,6 +1478,26 @@
             "TargetName" = "8:xibo-dataset-render.js"
             "Tag" = "8:"
             "Folder" = "8:_1057462FEB08442CB96DEA98EAE13219"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C5967177CC4341C1BD7DDD079EEB63AB"
+            {
+            "SourcePath" = "8:..\\Client\\Resources\\splash_network.jpg"
+            "TargetName" = "8:splash_network.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_DE31F813FD3B435E9EAD4E740E830309"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1542,6 +1600,26 @@
             "TargetName" = "8:xibo-layout-scaler.js"
             "Tag" = "8:"
             "Folder" = "8:_1057462FEB08442CB96DEA98EAE13219"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D7D3B3C1A8B54FB78B39E39CE68AA252"
+            {
+            "SourcePath" = "8:..\\Client\\Resources\\splash_origin.jpg"
+            "TargetName" = "8:splash_origin.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_DE31F813FD3B435E9EAD4E740E830309"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1811,6 +1889,17 @@
                         {
                         }
                     }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_DE31F813FD3B435E9EAD4E740E830309"
+                    {
+                    "Name" = "8:Resources"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_97748AD58DE140CE91C41542B3208B25"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_FDCC78098CAB44C5BFF9C7A69DBC4E27"
@@ -1874,7 +1963,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SMSClient"
         "ProductCode" = "8:{1169316E-B092-48F5-951D-7CF486C35F93}"
-        "PackageCode" = "8:{4A5FCB99-DC14-47D4-A057-E621A901BA6A}"
+        "PackageCode" = "8:{5241C3BE-2E39-40C7-8618-D157277CE751}"
         "UpgradeCode" = "8:{D8005279-5009-46F4-AB8E-B069EC1BDC0D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2707,7 +2796,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_23A9A20A66D847309CF5A3DA856BC22D"
             {
-            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Debug\\SMSClientWatchdog.exe"
+            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Upgrade\\SMSClientWatchdog.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_4FA5651E7F1948CFA9268171B0D41BB8"
@@ -2735,7 +2824,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3BD246B292EA4DE3A1BF9A29CF75A5D2"
             {
-            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Debug\\SMSClientWatchdog.exe"
+            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Upgrade\\SMSClientWatchdog.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_1C44B0A997CB4D4CA9E05C6DF653437D"
@@ -2819,7 +2908,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CA3958043B154D5DB61C7A9B64F7E680"
             {
-            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Debug\\SMSClientWatchdog.exe"
+            "SourcePath" = "8:..\\SMS-Windows-Client-Watchdog\\obj\\Upgrade\\SMSClientWatchdog.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7A9314B555894FAC93C79C547C845E2B"
