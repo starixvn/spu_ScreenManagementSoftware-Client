@@ -341,7 +341,10 @@ namespace XiboClient
                     _scheduleManager.ClearLayoutChangeActions();
                     _scheduleManager.RunNow();
                     break;
-
+                case "updateSettings":
+                    // only update config.xml file
+                    updateSettings();
+                    break;
                 case "collectNow":
                     // Run all of the various agents
                     wakeUpXmds();
@@ -411,6 +414,14 @@ namespace XiboClient
             _registerAgent.WakeUp();
             _scheduleAndRfAgent.WakeUp();
             _logAgent.WakeUp();
+        }
+
+        /// <summary>
+        /// Only update config file
+        /// </summary>
+        public void updateSettings()
+        {
+            _registerAgent.WakeUp();
         }
 
         /// <summary>

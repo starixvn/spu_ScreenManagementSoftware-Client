@@ -258,6 +258,7 @@ namespace XiboClient.Logic
                     break;
 
                 case "collectNow":
+                case "updateSettings":
                 case RevertToSchedulePlayerAction.Name:
                     if (OnAction != null)
                         OnAction(action);
